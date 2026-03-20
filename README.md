@@ -4,17 +4,18 @@ Repositório de sincronização de contexto e skills compartilhadas do **Claude 
 
 ## O que está aqui
 
-| Arquivo / Pasta       | Destino após sync         | Finalidade                                      |
-|-----------------------|---------------------------|-------------------------------------------------|
-| `CLAUDE.md`           | `~/.claude/CLAUDE.md`     | Comportamento e convenções do Claude no time    |
-| `CONTEXT.md`          | `~/.claude/CONTEXT.md`    | Contexto de empresa, fluxo e serviços           |
-| `ARCHITECTURE_MAP.md` | `~/.claude/ARCHITECTURE_MAP.md` | Mapa completo de microsserviços           |
-| `skills/*.md`         | `~/.claude/skills/`       | Skills compartilhadas invocáveis via `/skill`   |
+| Arquivo / Pasta         | Destino após sync                    | Finalidade                                    |
+|-------------------------|--------------------------------------|-----------------------------------------------|
+| `CLAUDE.md`             | `~/.claude/CLAUDE.md`                | Comportamento, convenções e princípios        |
+| `CONTEXT.md`            | `~/.claude/CONTEXT.md`               | Contexto de empresa, fluxo e serviços         |
+| `ARCHITECTURE_MAP.md`   | `~/.claude/ARCHITECTURE_MAP.md`      | Mapa completo de microsserviços               |
+| `guidelines/*.md`       | `~/.claude/guidelines/`              | Guidelines de desenvolvimento por tema        |
+| `skills/<nome>/SKILL.md`| `~/.claude/skills/<nome>/SKILL.md`   | Skills invocáveis via `/<nome>` no Claude Code|
 
 ## Setup inicial (uma vez por máquina)
 
 ```bash
-git clone <url-do-repo> ~/botpag-projects/claude-sync
+git clone git@github.com:BotPag/claude-sync.git ~/botpag-projects/claude-sync
 cd ~/botpag-projects/claude-sync
 npm install        # instala o husky e registra os hooks
 npm run sync       # sincroniza imediatamente
@@ -32,11 +33,28 @@ bash sync.sh
 
 ## Como adicionar uma skill
 
-1. Crie um arquivo `.md` na pasta `skills/` seguindo o template em `skills/example-skill.md`.
-2. Faça commit e push.
-3. O time recebe a skill automaticamente no próximo `git pull`.
+Cada skill é um subdiretório dentro de `skills/` com um arquivo `SKILL.md` dentro. O nome do diretório define o comando de invocação.
 
-A skill ficará disponível no Claude Code via `/nome-da-skill`.
+```
+skills/
+└── minha-skill/
+    └── SKILL.md      # invocada com /minha-skill
+```
+
+**Passos:**
+
+1. Crie o diretório `skills/<nome-da-skill>/`.
+2. Crie o arquivo `SKILL.md` dentro dele, seguindo o template em `skills/example-skill/SKILL.md`.
+3. Faça commit e push.
+4. O time recebe a skill automaticamente no próximo `git pull`.
+
+A skill estará disponível no Claude Code via `/<nome-da-skill>`.
+
+## Como adicionar uma guideline
+
+1. Crie um arquivo `.md` na pasta `guidelines/`.
+2. Referencie-a no `CLAUDE.md` com o gatilho de leitura adequado.
+3. Faça commit e push.
 
 ## Como atualizar os arquivos de contexto
 
@@ -47,13 +65,23 @@ Edite diretamente `CLAUDE.md`, `CONTEXT.md` ou `ARCHITECTURE_MAP.md` neste repos
 ```
 claude-sync/
 ├── .husky/
-│   └── post-merge          # hook disparado após git pull
+│   └── post-merge              # hook disparado após git pull
+├── guidelines/
+│   ├── CONVENTIONS.md          # nomenclatura, código limpo, tipagem
+│   ├── ARCHITECTURE.md         # camadas, fluxo, persistência
+│   ├── ERRORS_AND_VALIDATION.md
+│   ├── API_AND_SECURITY.md
+│   ├── QUALITY.md              # observabilidade, testes, documentação, code review
+│   └── DEVOPS.md               # commits, CI/CD, branching, infra
 ├── skills/
-│   └── *.md                # skills compartilhadas do time
+│   ├── create-issue/
+│   │   └── SKILL.md            # /create-issue
+│   └── example-skill/
+│       └── SKILL.md            # /example-skill
 ├── CLAUDE.md
 ├── CONTEXT.md
 ├── ARCHITECTURE_MAP.md
-├── sync.sh                 # script principal de sincronização
+├── sync.sh                     # script principal de sincronização
 ├── package.json
 └── .gitignore
 ```
