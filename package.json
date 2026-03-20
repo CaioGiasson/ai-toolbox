@@ -1,0 +1,13 @@
+{
+  "name": "claude-sync",
+  "version": "1.0.0",
+  "description": "Repositório de sincronização de contexto e skills compartilhadas do Claude Code para o time.",
+  "private": true,
+  "scripts": {
+    "sync": "bash sync.sh",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Disparado automaticamente após `git pull` (merge).
+# Sincroniza os arquivos de contexto e skills com ~/.claude/
+
+echo ""
+echo "[claude-sync] Pull detectado — sincronizando arquivos com ~/.claude/ ..."
+bash "$(dirname "$0")/../sync.sh"
