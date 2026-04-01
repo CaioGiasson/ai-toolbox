@@ -73,7 +73,23 @@ O usuário invocou esta skill com o seguinte texto:
    - `[DIVIDA-TECNICA]` → `chore/`
    - Outros ou indefinido → `feat/`
 
-3. Crie e faça checkout da branch: `<prefixo><número>` (ex: `feat/123`).
+3. Verifique se uma branch foi passada como argumento em `$ARGUMENTS` (segundo parâmetro após a URL da issue). Se sim, use-a diretamente — faça checkout e pule para a Fase 4.
+
+4. Caso nenhuma branch tenha sido passada como argumento, verifique se já existe uma branch local ou remota associada ao número da issue. Padrões a checar:
+   - `feat/<número>`, `fix/<número>`, `chore/<número>`
+   - Qualquer branch cujo nome contenha o número da issue
+
+   Para checar: `git branch -a | grep <número>`
+
+5. Se uma branch existente for encontrada:
+   ```
+   🌿 Branch existente detectada: <nome-da-branch>
+      [1] Usar esta branch
+      [2] Criar nova branch (<prefixo><número>)
+   ```
+   Aguarde a escolha do usuário.
+
+6. Se nenhuma branch existente for encontrada, crie e faça checkout da branch: `<prefixo><número>` (ex: `feat/123`).
 
 ---
 

@@ -19,6 +19,18 @@ echo "║       claude-sync — sincronizando    ║"
 echo "╚══════════════════════════════════════╝"
 echo ""
 
+# ─── Garante que o Git hook está registrado ────────────────────────────────
+# Husky v9 requer que core.hooksPath aponte para .husky/.
+# Se npm install não foi rodado após o clone, o hook post-merge não dispara.
+# Este bloco corrige isso automaticamente ao rodar sync.sh manualmente.
+HOOKS_PATH="$(git -C "$REPO_DIR" config core.hooksPath 2>/dev/null || true)"
+if [[ "$HOOKS_PATH" != ".husky" ]]; then
+  git -C "$REPO_DIR" config core.hooksPath .husky
+  log_ok "core.hooksPath configurado para .husky (hook post-merge ativado)"
+else
+  log_ok "core.hooksPath já configurado"
+fi
+
 # Garante que ~/.claude existe
 mkdir -p "$CLAUDE_DIR/skills"
 mkdir -p "$CLAUDE_DIR/guidelines"
