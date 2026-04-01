@@ -122,7 +122,74 @@ Aguarde a confirmação antes de continuar.
 
 ---
 
-## FASE 3 — Seleção do projeto e board GitHub
+## FASE 3 — Documento de validação do planejamento
+
+Gere um arquivo `tasks/refinamento-<slug-do-título>.md` no diretório de trabalho atual com todo o refinamento e planejamento consolidados até aqui. O arquivo serve para o usuário revisar, corrigir e aprovar antes de qualquer issue ser criada no GitHub.
+
+**Estrutura do arquivo:**
+
+```markdown
+# Planejamento: <título da feature>
+
+> Gerado em <data>. Revise e confirme antes da criação das issues.
+
+## Objetivo
+
+<o que essa feature entrega e qual problema resolve>
+
+## Regras de negócio
+
+<lista numerada de todas as regras, validações, permissões e fluxos>
+
+## Critérios de aceite
+
+- [ ] <critério 1>
+- [ ] <critério 2>
+- [ ] ...
+
+## Fluxo principal
+
+<passo a passo do fluxo feliz>
+
+## Edge cases
+
+- <edge case e como tratar>
+- ...
+
+## Repositórios afetados
+
+### <nome-do-repo>
+- **O que muda:** <descrição técnica>
+- **Módulos/endpoints afetados:** <lista>
+- **Dependências:** <lista ou "nenhuma">
+- **Cuidados técnicos:** <oriundos do lessons.md e da exploração>
+
+### <nome-do-repo>
+...
+
+## Dependências entre repositórios
+
+<ordem de implementação recomendada e dependências entre os repos>
+
+## Informações pendentes
+
+<lista de itens que ainda precisam ser definidos, se houver — caso contrário, omitir esta seção>
+```
+
+Após gerar o arquivo, informe ao usuário:
+
+```
+📄 Documento de planejamento gerado em tasks/refinamento-<slug>.md
+
+Revise o arquivo e confirme se está correto ou se falta algo.
+Após sua confirmação, prossigo para a criação das issues no GitHub.
+```
+
+**Aguarde a confirmação do usuário antes de continuar.** Se o usuário apontar correções, atualize o arquivo e peça confirmação novamente.
+
+---
+
+## FASE 4 — Seleção do projeto e board GitHub
 
 Pergunte ao usuário:
 
@@ -140,9 +207,9 @@ Aguarde a resposta antes de continuar.
 
 ---
 
-## FASE 4 — Criação das issues
+## FASE 5 — Criação das issues
 
-### 4.1 — Issue principal (visão de produto)
+### 5.1 — Issue principal (visão de produto)
 
 Crie uma issue no repositório principal informado pelo usuário com o seguinte formato:
 
@@ -191,7 +258,7 @@ Crie uma issue no repositório principal informado pelo usuário com o seguinte 
 
 ---
 
-### 4.2 — Sub-issues por repositório
+### 5.2 — Sub-issues por repositório
 
 Para **cada repositório afetado**, crie uma issue no respectivo repositório (`owner/nome-do-repo`) com o seguinte formato:
 
@@ -320,7 +387,7 @@ Se existir o arquivo `tasks/lessons.md` neste repositório, leia-o antes de qual
 
 ---
 
-### 4.3 — Vínculo com projeto do GitHub
+### 5.3 — Vínculo com projeto do GitHub
 
 Se o usuário informou um projeto na Fase 3, vincule cada issue criada (principal e sub-issues) ao projeto do GitHub usando o comando:
 
@@ -340,13 +407,13 @@ Se o vínculo falhar para alguma issue, liste no resumo final sem bloquear as de
 
 ---
 
-## FASE 5 — Atualização da issue principal
+## FASE 6 — Atualização da issue principal
 
 Edite a issue principal para incluir os links das sub-issues criadas na seção `## Sub-issues`.
 
 ---
 
-## FASE 6 — Conclusão
+## FASE 7 — Conclusão
 
 Após criar todas as issues, apresente um resumo:
 
