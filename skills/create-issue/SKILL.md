@@ -14,6 +14,30 @@ O usuário invocou esta skill com o seguinte texto:
 
 ---
 
+## Ferramentas GitHub
+
+Use **por padrão o MCP do GitHub** (`mcp__github__*`) para todas as operações com o GitHub (criar issues, buscar repositórios, etc.).
+
+Antes de qualquer operação GitHub, verifique se o MCP está disponível tentando uma chamada simples. Se não estiver configurado, exiba o aviso abaixo e prossiga usando o **GitHub CLI (`gh`)** como fallback:
+
+```
+⚠ MCP do GitHub não detectado.
+Para uma experiência completa, configure o MCP em ~/.claude/settings.json:
+
+  "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "<seu-token>" }
+    }
+  }
+
+Continuando com o GitHub CLI como fallback...
+```
+
+---
+
 ## FASE 0 — Exploração da codebase
 
 Antes de fazer qualquer pergunta ao usuário, explore a codebase para entender o estado atual do sistema relacionado ao contexto recebido.
