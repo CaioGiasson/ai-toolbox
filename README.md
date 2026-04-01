@@ -31,29 +31,6 @@ npm run sync
 bash sync.sh
 ```
 
-## Diagnóstico — hook post-merge não dispara
-
-O hook `post-merge` depende do Git estar apontando para `.husky/` como diretório de hooks. Isso é configurado automaticamente pelo `npm install` (via script `prepare`), mas pode não ter sido executado após o clone.
-
-**Verificar:**
-```bash
-git config core.hooksPath
-# Deve retornar: .husky
-```
-
-**Corrigir manualmente:**
-```bash
-bash sync.sh
-# O sync.sh detecta e configura o core.hooksPath automaticamente
-```
-
-Ou diretamente:
-```bash
-git config core.hooksPath .husky
-```
-
-Após isso, `git pull` passa a disparar o sync automaticamente.
-
 ## Como adicionar uma skill
 
 Cada skill é um subdiretório dentro de `skills/` com um arquivo `SKILL.md` dentro. O nome do diretório define o comando de invocação.
