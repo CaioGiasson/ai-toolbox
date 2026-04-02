@@ -1,11 +1,13 @@
 ---
 name: start-issue
-description: Recebe o link de uma issue do GitHub, valida o estado do repositório, cria a branch correta, implementa o prompt da issue, cria testes, faz code review automático com correção de itens críticos e gera o primeiro commit para validação do dev.
+description: Recebe o link de uma issue do GitHub, valida o estado do repositório, cria um worktree isolado com a branch correta, implementa o prompt da issue, cria testes, faz code review automático com correção de itens críticos e gera o primeiro commit para validação do dev.
 ---
 
 # Skill: start-issue
 
 Você é um engenheiro de software sênior responsável por iniciar a implementação de uma issue de forma autônoma, seguindo as convenções do time e garantindo qualidade antes do primeiro commit.
+
+Esta skill usa **git worktree** para isolar o trabalho em um diretório separado, permitindo que múltiplos agentes operem em paralelo no mesmo repositório sem conflito de branches.
 
 ## Entrada
 
@@ -40,21 +42,19 @@ Continuando com o GitHub CLI como fallback...
 
 ## FASE 0 — Validação do estado git
 
-1. Verifique se há alterações não commitadas ou staged no repositório (`git status`).
-   - Se houver: **aborte** imediatamente com a mensagem:
-     ```
-     ✖ Existem alterações pendentes na branch atual. Faça commit ou stash antes de continuar.
-     ```
+1. Identifique o diretório raiz do repositório atual (`git rev-parse --show-toplevel`).
 
-2. Verifique a branch atual.
-   - Se não for `main` ou `master`: tente fazer checkout para a branch principal.
-   - Se o checkout falhar por qualquer motivo: **aborte** com mensagem explicando o impedimento.
-
-3. Execute `git pull`.
-   - Se falhar (conflito, erro de rede, etc.): **aborte** com a mensagem:
+2. Verifique se a branch principal (`main` ou `master`) está acessível:
+   ```bash
+   git fetch origin
+   git pull origin main   # ou master, conforme o repo
+   ```
+   - Se falhar (erro de rede, conflito, etc.): **aborte** com a mensagem:
      ```
      ✖ Não foi possível atualizar a branch principal. Resolva o problema e tente novamente.
      ```
+
+3. **Não é necessário** que o working tree atual esteja limpo nem que a branch atual seja `main` — cada agente trabalhará em seu próprio worktree isolado.
 
 ---
 
@@ -87,7 +87,7 @@ Continuando com o GitHub CLI como fallback...
 
 ---
 
-## FASE 3 — Criação da branch
+## FASE 3 — Criação do worktree e branch
 
 1. Extraia o número da issue a partir da URL (ex: `.../issues/123` → `123`).
 
@@ -97,29 +97,54 @@ Continuando com o GitHub CLI como fallback...
    - `[DIVIDA-TECNICA]` → `chore/`
    - Outros ou indefinido → `feat/`
 
-3. Verifique se uma branch foi passada como argumento em `$ARGUMENTS` (segundo parâmetro após a URL da issue). Se sim, use-a diretamente — faça checkout e pule para a Fase 4.
+3. Verifique se uma branch foi passada como argumento em `$ARGUMENTS` (segundo parâmetro após a URL da issue). Se sim, use-a como nome da branch — pule o passo 4.
 
-4. Caso nenhuma branch tenha sido passada como argumento, verifique se já existe uma branch local ou remota associada ao número da issue. Padrões a checar:
-   - `feat/<número>`, `fix/<número>`, `chore/<número>`
-   - Qualquer branch cujo nome contenha o número da issue
+4. Caso nenhuma branch tenha sido passada como argumento, determine o nome da branch:
+   - Verifique se já existe uma branch local ou remota associada ao número da issue:
+     ```bash
+     git branch -a | grep <número>
+     ```
+   - Se encontrada, apresente ao usuário:
+     ```
+     🌿 Branch existente detectada: <nome-da-branch>
+        [1] Usar esta branch
+        [2] Criar nova branch (<prefixo><número>)
+     ```
+     Aguarde a escolha do usuário.
+   - Se não encontrada, o nome da branch será: `<prefixo><número>` (ex: `feat/123`).
 
-   Para checar: `git branch -a | grep <número>`
-
-5. Se uma branch existente for encontrada:
+5. Defina o path do worktree com base na raiz do repositório:
    ```
-   🌿 Branch existente detectada: <nome-da-branch>
-      [1] Usar esta branch
-      [2] Criar nova branch (<prefixo><número>)
+   REPO_ROOT=$(git rev-parse --show-toplevel)
+   REPO_NAME=$(basename $REPO_ROOT)
+   BRANCH_NAME=<branch definida acima>
+   WORKTREE_PATH="$REPO_ROOT/../${REPO_NAME}-worktrees/${BRANCH_NAME//\//-}"
    ```
-   Aguarde a escolha do usuário.
+   Exemplo: se o repo está em `~/projetos/api` e a branch é `feat/123`, o worktree ficará em `~/projetos/api-worktrees/feat-123`.
 
-6. Se nenhuma branch existente for encontrada, crie e faça checkout da branch: `<prefixo><número>` (ex: `feat/123`).
+6. Crie o worktree:
+   - Se a branch **não existe** ainda:
+     ```bash
+     git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" origin/main
+     ```
+   - Se a branch **já existe** localmente ou remotamente:
+     ```bash
+     git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
+     ```
+
+7. Confirme a criação:
+   ```
+   🌿 Worktree criado em: <WORKTREE_PATH>
+      Branch: <BRANCH_NAME>
+   ```
+
+8. **Todas as operações das fases seguintes devem ser executadas dentro de `WORKTREE_PATH`.**
 
 ---
 
 ## FASE 4 — Implementação
 
-Siga as instruções do prompt da issue:
+Siga as instruções do prompt da issue, executando todos os comandos a partir de `WORKTREE_PATH`:
 
 - **O que fazer** — implemente as alterações descritas de forma direta e completa.
 - **Regras e restrições** — respeite todas as regras de negócio e restrições técnicas listadas.
@@ -131,13 +156,15 @@ Aplique os guidelines lidos na Fase 2 durante toda a implementação.
 
 ## FASE 5 — Testes
 
+Todos os comandos desta fase são executados dentro de `WORKTREE_PATH`.
+
 1. Detecte se o projeto possui testes configurados — verifique a existência de `jest.config.*`, `vitest.config.*` ou equivalente, e se há uma pasta `tests/` ou `__tests__/` com arquivos de teste.
 
 2. **Se o projeto tiver testes configurados:**
    - Leia testes existentes para entender o padrão do projeto: estrutura de arquivos, uso de factories, nomenclatura de describes e its, bibliotecas de mock utilizadas.
    - Crie testes automatizados para cada alteração implementada na Fase 4, seguindo o padrão identificado.
    - Priorize testes de useCases e policies — cubra happy paths e edge cases da issue.
-   - Execute os testes (`npm test` ou equivalente).
+   - Execute os testes (`npm test` ou equivalente) dentro de `WORKTREE_PATH`.
    - Se algum teste falhar: corrija a implementação ou os testes até todos passarem antes de continuar.
 
 3. **Se o projeto não tiver testes configurados:** pule esta fase e registre no resumo final:
@@ -172,7 +199,7 @@ Revise toda a implementação (código e testes) contra os guidelines lidos na F
 ### Loop de correção
 
 - Corrija automaticamente todos os itens críticos encontrados.
-- Execute os testes novamente após cada rodada de correção.
+- Execute os testes novamente após cada rodada de correção (dentro de `WORKTREE_PATH`).
 - Repita até que não haja itens críticos — **máximo de 5 iterações**.
 - Se após 5 iterações ainda houver itens críticos: liste-os no resumo e aguarde orientação do usuário antes de continuar.
 
@@ -187,6 +214,7 @@ Apresente o seguinte resumo ao usuário:
 
 📋 Issue: <título> (<link>)
 🌿 Branch: <nome da branch>
+📁 Worktree: <WORKTREE_PATH>
 
 ### O que foi implementado
 <lista de alto nível das alterações realizadas>
@@ -206,14 +234,21 @@ Itens não-críticos: <lista ou "nenhum">
 Revise o diff e confirme para commitar, ou interrompa para ajustes.
 ```
 
-Aguarde. Se o usuário não interromper, prossiga para o commit.
+Aguarde confirmação explícita do usuário antes de prosseguir para o commit.
 
 ---
 
 ## FASE 8 — Primeiro commit
 
-Crie o commit com o seguinte formato:
+Execute o commit dentro de `WORKTREE_PATH`:
 
+```bash
+cd "$WORKTREE_PATH"
+git add .
+git commit -m "<prefixo>: <título da feature> (#<número da issue>)"
+```
+
+Formato do commit:
 ```
 <prefixo>: <título da feature> (#<número da issue>)
 ```
@@ -223,4 +258,14 @@ Exemplos:
 feat: adiciona endpoint de criação de pessoa (#123)
 fix: corrige validação de CPF no useCase (#87)
 chore: remove dependência legada do módulo de pagamento (#210)
+```
+
+Após o commit, exiba:
+```
+✅ Commit criado em: <WORKTREE_PATH>
+   Branch: <BRANCH_NAME>
+
+Para remover o worktree após o merge do PR:
+  git worktree remove <WORKTREE_PATH>
+  git branch -d <BRANCH_NAME>
 ```
