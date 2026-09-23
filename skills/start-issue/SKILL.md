@@ -128,16 +128,18 @@ Continuando com o GitHub CLI como fallback...
    ```
 
 6. Troque para a branch da issue:
-   - Se a branch **não existe** ainda, atualize `main` (ou `master`) e crie a branch a partir dela:
+   - Se a branch **não existe** ainda, atualize a branch padrão do remoto (`main` ou `master`) e crie a branch a partir dela:
      ```bash
-     git switch main
-     git pull origin main
-     git switch -c "$BRANCH_NAME" origin/main
+     BASE_REF=$(git symbolic-ref refs/remotes/origin/HEAD --short)
+     BASE_BRANCH=${BASE_REF#origin/}
+     git switch "$BASE_BRANCH"
+     git pull origin "$BASE_BRANCH"
+     git switch -c "$BRANCH_NAME" "$BASE_REF"
      ```
    - Se a branch **já existe localmente**:
      ```bash
      git switch "$BRANCH_NAME"
-     git pull --ff-only
+     git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 && git pull --ff-only
      ```
    - Se a branch **só existe no remoto**:
      ```bash

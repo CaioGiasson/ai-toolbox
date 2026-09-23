@@ -123,7 +123,7 @@ Internalize esses guias. Eles são a base de toda a análise que você fará nas
    - Se a branch já existe localmente:
      ```bash
      git switch "$PR_BRANCH"
-     git pull --ff-only
+     git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 && git pull --ff-only
      ```
    - Se a branch só existe no remoto:
      ```bash
@@ -333,9 +333,10 @@ Com base na seleção do usuário:
 
 ## FASE 9 — Volta da branch e encerramento
 
-1. Volte para a branch em que o repositório estava antes da revisão:
+1. Restaure arquivos rastreados alterados pelo install, build ou testes, e volte para a branch anterior:
    ```bash
    cd "$REPO_ROOT"
+   git restore .
    git switch "$ORIGINAL_BRANCH"
    ```
 
