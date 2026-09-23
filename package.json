@@ -1,6 +1,6 @@
 {
   "name": "claude-sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Repositório de sincronização de contexto e skills compartilhadas do Claude Code para o time.",
   "private": true,
   "scripts": {

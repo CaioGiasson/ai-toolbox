@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Realiza code review automatizado de uma pull request. Cria worktree isolado, lê a PR e a issue vinculada, verifica testes, roda build, analisa o código com base nos guias do time e posta comentários inline escolhidos pelo usuário diretamente na PR.
+description: Realiza code review automatizado de uma pull request. Faz checkout da branch da PR na pasta raiz do repositório, lê a PR e a issue vinculada, verifica testes, roda build, analisa o código com base nos guias do time e posta comentários inline escolhidos pelo usuário diretamente na PR.
 ---
 
 # Skill: review-pr
@@ -84,11 +84,12 @@ Internalize esses guias. Eles são a base de toda a análise que você fará nas
    - Critérios de aceite
    - Edge cases documentados
 
-3. Se **não encontrar** o link da issue na descrição da PR, exiba:
+3. Se **não encontrar** o link da issue na descrição da PR, registre um item **bloqueador** obrigatório na revisão:
    ```
-   ⚠ Nenhuma issue vinculada encontrada na descrição da PR.
-   A revisão prosseguirá com base apenas no conteúdo da PR.
+   🔴 PR sem issue vinculada.
+   Todo desenvolvimento precisa de issue e de pull request que a referencia (Closes #N).
    ```
+   A revisão do código continua, e esse bloqueador entra na lista de comentários.
 
 4. Com o contexto da issue em mãos, identifique:
    - O que **deveria** estar implementado (critérios de aceite)
@@ -97,55 +98,52 @@ Internalize esses guias. Eles são a base de toda a análise que você fará nas
 
 ---
 
-## FASE 3 — Criação do worktree e checkout
+## FASE 3 — Checkout da branch da PR na pasta do repositório
 
-1. Identifique o diretório raiz do repositório atual:
+1. Identifique a pasta raiz e a branch atual:
    ```bash
-   git rev-parse --show-toplevel
+   REPO_ROOT=$(git rev-parse --show-toplevel)
+   ORIGINAL_BRANCH=$(git branch --show-current)
+   cd "$REPO_ROOT"
    ```
 
-2. Atualize a branch base antes de criar o worktree:
+2. Se o working tree não estiver limpo, **aborte**. Não troque de branch e não use worktree.
+   ```bash
+   git status --porcelain
+   ```
+   ```
+   ✖ A pasta do repositório tem alterações não commitadas.
+   Commit ou descarte essas alterações antes de revisar a PR.
+   ```
+
+3. Atualize as refs e troque para a branch da PR:
    ```bash
    git fetch origin
    ```
-
-3. Defina o path do worktree:
-   ```
-   REPO_ROOT=$(git rev-parse --show-toplevel)
-   REPO_NAME=$(basename $REPO_ROOT)
-   PR_BRANCH=<branch de origem da PR>
-   WORKTREE_PATH="$REPO_ROOT/../${REPO_NAME}-worktrees/review-pr-<número>"
-   ```
-   Exemplo: se o repo está em `~/projetos/api`, o worktree ficará em `~/projetos/api-worktrees/review-pr-47`.
-
-4. Registre o worktree atual antes de criar o novo:
-   ```bash
-   ORIGINAL_WORKTREE=$(pwd)
-   ```
-
-5. Crie o worktree para a branch da PR:
    - Se a branch já existe localmente:
      ```bash
-     git worktree add "$WORKTREE_PATH" "$PR_BRANCH"
+     git switch "$PR_BRANCH"
+     git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 && git pull --ff-only
      ```
-   - Se a branch só existe remotamente:
+   - Se a branch só existe no remoto:
      ```bash
-     git worktree add "$WORKTREE_PATH" -b "$PR_BRANCH" "origin/$PR_BRANCH"
+     git switch -c "$PR_BRANCH" --track "origin/$PR_BRANCH"
      ```
 
-6. Confirme:
+4. Confirme:
    ```
-   🌿 Worktree criado em: <WORKTREE_PATH>
+   🌿 Pasta: <REPO_ROOT>
       Branch: <PR_BRANCH>
+      Branch anterior: <ORIGINAL_BRANCH>
    ```
 
-7. **Todas as operações das fases seguintes são executadas dentro de `WORKTREE_PATH`.**
+5. **Todas as operações das fases seguintes são executadas em `REPO_ROOT`.** Ao encerrar, volte para `ORIGINAL_BRANCH` (Fase 9).
 
 ---
 
 ## FASE 4 — Instalação de dependências e build
 
-Execute dentro de `WORKTREE_PATH`:
+Execute em `REPO_ROOT`:
 
 1. Detecte o gerenciador de pacotes verificando a existência de:
    - `package-lock.json` → `npm`
@@ -171,7 +169,7 @@ Execute dentro de `WORKTREE_PATH`:
 
 ## FASE 5 — Verificação e execução de testes
 
-Execute dentro de `WORKTREE_PATH`:
+Execute em `REPO_ROOT`:
 
 1. Detecte se o projeto possui testes configurados verificando a existência de:
    - `jest.config.*`, `vitest.config.*` ou equivalente
@@ -202,6 +200,8 @@ Execute dentro de `WORKTREE_PATH`:
 ## FASE 6 — Análise e revisão do código
 
 Com base nos guias lidos na Fase 0 e no contexto da issue (Fase 2), analise todos os arquivos alterados da PR.
+
+Se a Fase 2 não encontrou issue vinculada, inclua sempre o bloqueador "PR sem issue vinculada" na lista final, mesmo que o diff em si esteja correto.
 
 ### Estrutura da análise
 
@@ -331,11 +331,13 @@ Com base na seleção do usuário:
 
 ---
 
-## FASE 9 — Limpeza e encerramento
+## FASE 9 — Volta da branch e encerramento
 
-1. Volte ao worktree original:
+1. Restaure arquivos rastreados alterados pelo install, build ou testes, e volte para a branch anterior:
    ```bash
-   cd "$ORIGINAL_WORKTREE"
+   cd "$REPO_ROOT"
+   git restore .
+   git switch "$ORIGINAL_BRANCH"
    ```
 
 2. Exiba o resumo final:
@@ -348,7 +350,6 @@ Com base na seleção do usuário:
       🟡 Importantes: <N>
       🟢 Sugestões: <N>
 
-   🌿 Worktree de review: <WORKTREE_PATH>
-   Para removê-lo quando não precisar mais:
-     git worktree remove <WORKTREE_PATH>
+   🌿 Pasta: <REPO_ROOT>
+      Branch restaurada: <ORIGINAL_BRANCH>
    ```
