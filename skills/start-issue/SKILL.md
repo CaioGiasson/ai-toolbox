@@ -1,13 +1,13 @@
 ---
 name: start-issue
-description: Recebe o link de uma issue do GitHub, valida o estado do repositório, cria um worktree isolado com a branch correta, implementa o prompt da issue, cria testes, faz code review automático com correção de itens críticos e gera o primeiro commit para validação do dev.
+description: Recebe o link de uma issue do GitHub, valida o estado do repositório, troca para a branch da issue na pasta raiz, implementa o prompt da issue, cria testes, faz code review automático com correção de itens críticos, commita, faz push e abre a pull request vinculada.
 ---
 
 # Skill: start-issue
 
 Você é um engenheiro de software sênior responsável por iniciar a implementação de uma issue de forma autônoma, seguindo as convenções do time e garantindo qualidade antes do primeiro commit.
 
-Esta skill usa **git worktree** para isolar o trabalho em um diretório separado, permitindo que múltiplos agentes operem em paralelo no mesmo repositório sem conflito de branches.
+Esta skill trabalha **na pasta raiz do repositório** e troca a branch local para a branch da issue. Não cria git worktree. Todo desenvolvimento parte de uma issue e termina em pull request (`Closes #N`).
 
 ## Entrada
 
@@ -44,17 +44,24 @@ Continuando com o GitHub CLI como fallback...
 
 1. Identifique o diretório raiz do repositório atual (`git rev-parse --show-toplevel`).
 
-2. Verifique se a branch principal (`main` ou `master`) está acessível:
+2. Confirme que o working tree está limpo:
    ```bash
-   git fetch origin
-   git pull origin main   # ou master, conforme o repo
+   git status --porcelain
    ```
-   - Se falhar (erro de rede, conflito, etc.): **aborte** com a mensagem:
+   - Se houver qualquer saída: **aborte**. Não troque de branch e não descarte alterações.
      ```
-     ✖ Não foi possível atualizar a branch principal. Resolva o problema e tente novamente.
+     ✖ A pasta do repositório tem alterações não commitadas.
+     Commit ou descarte essas alterações antes de iniciar a issue.
      ```
 
-3. **Não é necessário** que o working tree atual esteja limpo nem que a branch atual seja `main` — cada agente trabalhará em seu próprio worktree isolado.
+3. Atualize as refs remotas:
+   ```bash
+   git fetch origin
+   ```
+   - Se falhar (erro de rede, autenticação, etc.): **aborte** com a mensagem:
+     ```
+     ✖ Não foi possível atualizar o repositório a partir do remoto. Resolva o problema e tente novamente.
+     ```
 
 ---
 
@@ -87,7 +94,7 @@ Continuando com o GitHub CLI como fallback...
 
 ---
 
-## FASE 3 — Criação do worktree e branch
+## FASE 3 — Checkout da branch na pasta do repositório
 
 1. Extraia o número da issue a partir da URL (ex: `.../issues/123` → `123`).
 
@@ -113,38 +120,44 @@ Continuando com o GitHub CLI como fallback...
      Aguarde a escolha do usuário.
    - Se não encontrada, o nome da branch será: `<prefixo><número>` (ex: `feat/123`).
 
-5. Defina o path do worktree com base na raiz do repositório:
+5. Permaneça na pasta raiz do repositório. Não crie worktree.
    ```
    REPO_ROOT=$(git rev-parse --show-toplevel)
-   REPO_NAME=$(basename $REPO_ROOT)
    BRANCH_NAME=<branch definida acima>
-   WORKTREE_PATH="$REPO_ROOT/../${REPO_NAME}-worktrees/${BRANCH_NAME//\//-}"
+   cd "$REPO_ROOT"
    ```
-   Exemplo: se o repo está em `~/projetos/api` e a branch é `feat/123`, o worktree ficará em `~/projetos/api-worktrees/feat-123`.
 
-6. Crie o worktree:
-   - Se a branch **não existe** ainda:
+6. Troque para a branch da issue:
+   - Se a branch **não existe** ainda, atualize `main` (ou `master`) e crie a branch a partir dela:
      ```bash
-     git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" origin/main
+     git switch main
+     git pull origin main
+     git switch -c "$BRANCH_NAME" origin/main
      ```
-   - Se a branch **já existe** localmente ou remotamente:
+   - Se a branch **já existe localmente**:
      ```bash
-     git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
+     git switch "$BRANCH_NAME"
+     git pull --ff-only
      ```
+   - Se a branch **só existe no remoto**:
+     ```bash
+     git switch -c "$BRANCH_NAME" --track "origin/$BRANCH_NAME"
+     ```
+   - Se o `switch` ou o `pull` falhar: **aborte** e informe o erro. Não use `git worktree`.
 
-7. Confirme a criação:
+7. Confirme:
    ```
-   🌿 Worktree criado em: <WORKTREE_PATH>
+   🌿 Pasta: <REPO_ROOT>
       Branch: <BRANCH_NAME>
    ```
 
-8. **Todas as operações das fases seguintes devem ser executadas dentro de `WORKTREE_PATH`.**
+8. **Todas as operações das fases seguintes devem ser executadas em `REPO_ROOT`.**
 
 ---
 
 ## FASE 4 — Implementação
 
-Siga as instruções do prompt da issue, executando todos os comandos a partir de `WORKTREE_PATH`:
+Siga as instruções do prompt da issue, executando todos os comandos a partir de `REPO_ROOT`:
 
 - **O que fazer** — implemente as alterações descritas de forma direta e completa.
 - **Regras e restrições** — respeite todas as regras de negócio e restrições técnicas listadas.
@@ -156,7 +169,7 @@ Aplique os guidelines lidos na Fase 2 durante toda a implementação.
 
 ## FASE 5 — Testes
 
-Todos os comandos desta fase são executados dentro de `WORKTREE_PATH`.
+Todos os comandos desta fase são executados em `REPO_ROOT`.
 
 1. Detecte se o projeto possui testes configurados — verifique a existência de `jest.config.*`, `vitest.config.*` ou equivalente, e se há uma pasta `tests/` ou `__tests__/` com arquivos de teste.
 
@@ -164,7 +177,7 @@ Todos os comandos desta fase são executados dentro de `WORKTREE_PATH`.
    - Leia testes existentes para entender o padrão do projeto: estrutura de arquivos, uso de factories, nomenclatura de describes e its, bibliotecas de mock utilizadas.
    - Crie testes automatizados para cada alteração implementada na Fase 4, seguindo o padrão identificado.
    - Priorize testes de useCases e policies — cubra happy paths e edge cases da issue.
-   - Execute os testes (`npm test` ou equivalente) dentro de `WORKTREE_PATH`.
+   - Execute os testes (`npm test` ou equivalente) em `REPO_ROOT`.
    - Se algum teste falhar: corrija a implementação ou os testes até todos passarem antes de continuar.
 
 3. **Se o projeto não tiver testes configurados:** pule esta fase e registre no resumo final:
@@ -199,22 +212,22 @@ Revise toda a implementação (código e testes) contra os guidelines lidos na F
 ### Loop de correção
 
 - Corrija automaticamente todos os itens críticos encontrados.
-- Execute os testes novamente após cada rodada de correção (dentro de `WORKTREE_PATH`).
+- Execute os testes novamente após cada rodada de correção (em `REPO_ROOT`).
 - Repita até que não haja itens críticos — **máximo de 5 iterações**.
 - Se após 5 iterações ainda houver itens críticos: liste-os no resumo e aguarde orientação do usuário antes de continuar.
 
 ---
 
-## FASE 7 — Verificação e confirmação
+## FASE 7 — Resumo da implementação
 
 Apresente o seguinte resumo ao usuário:
 
 ```
-✅ Implementação concluída — aguardando confirmação para commit
+✅ Implementação concluída
 
 📋 Issue: <título> (<link>)
 🌿 Branch: <nome da branch>
-📁 Worktree: <WORKTREE_PATH>
+📁 Pasta: <REPO_ROOT>
 
 ### O que foi implementado
 <lista de alto nível das alterações realizadas>
@@ -230,22 +243,21 @@ Itens não-críticos: <lista ou "nenhum">
 ### Critérios de conclusão
 <lista dos critérios da issue com status ✅ ou ⚠>
 
----
-Revise o diff e confirme para commitar, ou interrompa para ajustes.
 ```
 
-Aguarde confirmação explícita do usuário antes de prosseguir para o commit.
+Siga para o commit, o push e a pull request sem pedir confirmação extra.
 
 ---
 
-## FASE 8 — Primeiro commit
+## FASE 8 — Commit, push e pull request
 
-Execute o commit dentro de `WORKTREE_PATH`:
+Execute na pasta raiz, na branch da issue:
 
 ```bash
-cd "$WORKTREE_PATH"
+cd "$REPO_ROOT"
 git add .
 git commit -m "<prefixo>: <título da feature> (#<número da issue>)"
+git push -u origin HEAD
 ```
 
 Formato do commit:
@@ -260,12 +272,24 @@ fix: corrige validação de CPF no useCase (#87)
 chore: remove dependência legada do módulo de pagamento (#210)
 ```
 
-Após o commit, exiba:
-```
-✅ Commit criado em: <WORKTREE_PATH>
-   Branch: <BRANCH_NAME>
+Abra a pull request vinculada à issue, em português, com `Closes #<número>` no corpo:
 
-Para remover o worktree após o merge do PR:
-  git worktree remove <WORKTREE_PATH>
-  git branch -d <BRANCH_NAME>
+```bash
+gh pr create --title "<título>" --body "$(cat <<'EOF'
+## Resumo
+- <o que foi feito>
+
+## Test plan
+- [ ] <como validar>
+
+Closes #<número da issue>
+EOF
+)"
+```
+
+Após o push e a abertura da PR, exiba:
+```
+✅ Commit e push em: <REPO_ROOT>
+   Branch: <BRANCH_NAME>
+   PR: <url>
 ```
