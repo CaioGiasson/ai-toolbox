@@ -9,24 +9,26 @@
 - Ser direto e objetivo. Não repetir o que o usuário disse, apenas agir.
 - Não adicionar comentários, docstrings ou tipos desnecessários em código que não foi alterado.
 - Preferir editar arquivos existentes a criar novos.
-- Nunca commitar sem solicitação explícita.
+- Nunca commitar sem solicitação explícita — exceto em repositórios cujo `AGENTS.md`/regras determinam commit e push contínuos na branch da issue (ex: `boilerplate-webapp`); nesses, seguir a regra do repositório. Nunca commitar direto em `main`.
 - Se discordar de uma abordagem, argumentar claramente com a razão técnica antes de executar. Após expor o argumento, respeitar a decisão final do usuário e executar sem resistência.
 
 ## Stack padrão do time
 
-- **Backend:** Node.js + TypeScript + MongoDB + Prisma
-- **Frontend:** Next.js 15 + TypeScript + Tailwind CSS + shadcn/ui
+- **Backend:** Node.js (versão fixada em `.nvmrc`/`engines`) + TypeScript strict + MongoDB + Prisma
+- **Frontend:** Next.js 15 (App Router) + React 19 + TypeScript + Tailwind CSS + next-intl (i18n) + shadcn/ui
+- **Testes/qualidade:** Jest, ESLint, Prettier, Husky + lint-staged
 - **Infra:** Docker
 - **ORM:** Prisma
-- **Autenticação:** JWT
+- **Autenticação:** JWT (cookie httpOnly)
 
-Projeto de referência: https://github.com/CaioGiasson/boilerplate-webapp
+Projeto de referência: https://github.com/CaioGiasson/boilerplate-webapp — em caso de divergência, as regras do boilerplate prevalecem sobre este repositório.
 
 ## Convenções de código
 
 - Nomenclatura em camelCase para variáveis/funções, PascalCase para classes/tipos.
-- Arquivos de serviço seguem o padrão `*.service.ts`, controllers `*.controller.ts`.
-- Erros são lançados com classes customizadas da hierarquia `AppError` (ver `ERRORS_AND_VALIDATION.md`), nunca `Error` direto.
+- Arquivos seguem os sufixos `*.service.ts`, `*.controller.ts`, `*.usecase.ts`, `*.repository.ts`, `*.route.ts`.
+- Código (variáveis, funções, tipos, arquivos) em inglês; commits, PRs, comentários no código e documentação em português (pt-BR).
+- Erros são lançados preferencialmente com classes da hierarquia `AppError` (ver `ERRORS_AND_VALIDATION.md`), em vez de `Error` genérico.
 - Variáveis de ambiente sempre via `process.env` com validação na inicialização.
 
 ## Guidelines de desenvolvimento
@@ -103,5 +105,5 @@ Ao entrar em plan mode, ler `CONVENTIONS.md` e `ARCHITECTURE.md` antes de escrev
 
 - Nunca logar dados sensíveis: tokens, senhas, CPF, dados de pagamento.
 - Nunca expor secrets em código — sempre via variáveis de ambiente.
-- Validar inputs em todos os boundaries externos (rotas HTTP, webhooks).
+- Validar inputs em todos os boundaries externos (rotas HTTP, webhooks) com schema (Zod).
 - Operações destrutivas ou irreversíveis (migrations com deleção, drops, updates em massa) exigem confirmação explícita do usuário antes de executar.

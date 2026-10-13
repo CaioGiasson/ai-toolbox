@@ -57,6 +57,17 @@ A skill estará disponível no Claude Code via `/<nome-da-skill>`.
 2. Referencie-a no `CLAUDE.md` com o gatilho de leitura adequado.
 3. Faça commit e push.
 
+## Como remover ou renomear uma skill/guideline
+
+O `sync.sh` só copia; não apaga nada por conta própria. Ao remover ou renomear, adicione o nome **antigo** ao `legacy.txt`:
+
+```
+skill create-issue
+guideline ANTIGO.md
+```
+
+Na próxima sincronização, o `sync.sh` apaga esses itens de `~/.claude`. Só os nomes listados são removidos, nomes inválidos (com caminho ou `..`) são ignorados, e itens que ainda existem no repositório nunca são apagados.
+
 ## Como atualizar os arquivos de contexto
 
 Edite diretamente `CLAUDE.md` ou `CONTEXT.md` neste repositório, faça commit e push. Os demais usuários sincronizam automaticamente.
@@ -76,18 +87,21 @@ ai-toolbox/
 │   ├── QUALITY.md              # observabilidade, testes, documentação, code review
 │   └── DEVOPS.md               # commits, CI/CD, branching, infra
 ├── skills/
-│   ├── create-issue/
-│   │   └── SKILL.md            # /create-issue
+│   ├── issue-approve/
+│   │   └── SKILL.md            # /issue-approve
+│   ├── issue-refine/
+│   │   └── SKILL.md            # /issue-refine
 │   ├── example-skill/
 │   │   └── SKILL.md            # /example-skill
-│   ├── review-pr/
-│   │   └── SKILL.md            # /review-pr
-│   ├── slack-to-issue/
-│   │   └── SKILL.md            # /slack-to-issue
-│   └── start-issue/
-│       └── SKILL.md            # /start-issue
+│   ├── issue-start/
+│   │   └── SKILL.md            # /issue-start
+│   ├── issue-review/
+│   │   └── SKILL.md            # /issue-review
+│   └── issue-from-thread/
+│       └── SKILL.md            # /issue-from-thread
 ├── CLAUDE.md
 ├── CONTEXT.md
+├── legacy.txt                  # itens antigos a remover de ~/.claude no sync
 ├── sync.sh                     # script principal de sincronização
 ├── package.json
 └── .gitignore

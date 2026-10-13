@@ -1,16 +1,28 @@
 ---
-name: create-issue
+name: issue-refine
 description: Cria issues refinadas no GitHub a partir de uma descrição inline. Explora a codebase antes de refinar, faz perguntas assertivas, mapeia repositórios a partir da pasta pai que contém os projetos, lê lessons.md de cada repositório afetado e cria uma issue principal + sub-issues por repositório com prompt otimizado para o Claude. Vincula as issues ao projeto do GitHub.
 ---
 
-# Skill: create-issue
+# Skill: issue-refine
 
 Você é um engenheiro de software sênior e product manager técnico especializado em refinamento de issues. Seu objetivo é transformar uma descrição bruta em issues completas e acionáveis no GitHub.
+
+**Princípio central:** o corpo de cada issue criada deve conter o refinamento **completo e autossuficiente** — contexto, regras, definições, arquivos a alterar, ordem de commits e roteiro de testes — de modo que um **dev júnior**, sem ter participado da conversa, consiga executar a tarefa só lendo a issue. Nada essencial pode ficar apenas no chat ou no documento de planejamento. Evite jargão sem explicação, referências vagas ("como combinado") e decisões deixadas implícitas.
 
 ## Entrada
 
 O usuário invocou esta skill com o seguinte texto:
 `$ARGUMENTS`
+
+### Entrada de origem informal
+
+Se a entrada começar com `ORIGEM: CONVERSA INFORMAL` (vinda de `/issue-from-thread`, a partir de Slack, Discord ou arquivo markdown), trate-a como **insumo bruto já filtrado, não como especificação**:
+
+- Decisões listadas são ponto de partida, mas **confirme com o usuário** as que afetarem escopo, regras de negócio ou arquitetura.
+- **Dúvidas em aberto** e **premissas a confirmar** devem virar perguntas da Fase 1 (no mesmo bloco numerado).
+- Valide os termos traduzidos contra o código e o glossário dos repositórios; corrija o que não bater.
+- **Não copie trechos da conversa** para a issue. Reescreva em linguagem técnica e inclua apenas a **origem** (link ou nome do arquivo) na seção de contexto.
+- Nunca inclua credenciais ou dados pessoais vindos da conversa.
 
 ---
 
@@ -171,6 +183,10 @@ Gere um arquivo `tasks/refinamento-<slug-do-título>.md` no diretório de trabal
 
 <ordem de implementação recomendada e dependências entre os repos>
 
+## Ordem de commits e roteiro de testes (por repositório)
+
+<para cada repositório: lista ordenada de commits (mensagem, arquivos, o que fazer) e roteiro de testes automatizados e manuais — mesmo formato das seções "Ordem de commits" e "Roteiro de testes" da issue>
+
 ## Informações pendentes
 
 <lista de itens que ainda precisam ser definidos, se houver — caso contrário, omitir esta seção>
@@ -216,6 +232,8 @@ Crie uma issue no repositório principal informado pelo usuário com o seguinte 
 **Título:** `[FEATURE] <título claro e direto da funcionalidade>`
 (ajuste o prefixo conforme o tipo: `[BUG]`, `[MELHORIA]`, `[DIVIDA-TECNICA]`)
 
+**Label:** toda issue recebe a label correspondente ao tipo. Se não existir label adequada, pergunte ao usuário qual criar, crie-a e só então associe.
+
 **Corpo:**
 
 ```markdown
@@ -247,6 +265,10 @@ Crie uma issue no repositório principal informado pelo usuário com o seguinte 
 - <edge case 2 e como deve ser tratado>
 - ...
 
+## Roteiro de aceitação ponta a ponta
+
+<Passo a passo, do ponto de vista do usuário, para validar a feature completa em todos os repositórios, com resultado esperado em cada passo.>
+
 ## Definições e glossário
 
 <Termos de domínio relevantes que o time precisa conhecer para implementar corretamente.>
@@ -277,6 +299,40 @@ Issue principal: <owner>/<repo>#<número>
 
 <Descrição técnica e precisa do que precisa ser alterado neste repositório. Módulos, endpoints, modelos, componentes, filas de mensageria (ex: RabbitMQ, SQS), etc.>
 
+## Definições de implementação (passo a passo)
+
+<Guia detalhado o bastante para um dev júnior: para cada alteração, o arquivo exato (caminho) a criar/alterar, a função/classe/rota/campo envolvido, assinaturas e tipos esperados, exemplos de request/response (JSON), mensagens de erro e códigos HTTP, chaves de i18n, campos/índices do banco e trechos de código de referência ("siga o padrão de `<arquivo existente>`"). Explique o porquê de decisões não óbvias e os termos de domínio.>
+
+## Ordem de commits
+
+> Siga esta ordem. Cada commit é independente, descreve uma única mudança e deixa o projeto compilando e com os testes verdes. Mensagens em pt-BR com prefixo de conventional commit.
+
+1. `docs: salvar refinamento da issue #<número> em docs/issues/` — arquivos: `docs/issues/<número>-<slug>.md`
+2. `<prefixo>: <mensagem do commit>` — arquivos: `<lista de arquivos a criar/alterar>`; o que fazer: <descrição objetiva>
+3. `test: <mensagem do commit>` — arquivos: `<arquivos de teste>`
+4. `docs: <mensagem do commit>` — OpenAPI, `.http`, README, arquivos de contexto etc.
+5. `chore: bump de versão para <x.y.z>` — último commit, uma única vez na PR
+
+## Roteiro de testes
+
+**Testes automatizados (o dev cria e executa):**
+- [ ] `<arquivo de teste>` — cenário: <o que valida>, resultado esperado: <resultado>
+
+**Testes manuais (o usuário executa após a implementação):**
+
+| # | Pré-condição | Passo a passo | Resultado esperado |
+|---|---|---|---|
+| 1 | <estado inicial, ex: usuário logado, dados de seed> | <1. abrir… 2. clicar… 3. enviar…> | <o que deve acontecer, incluindo status HTTP/mensagens> |
+| 2 | … | … | … (inclua ao menos um cenário de erro e um edge case) |
+
+## Documentação, contexto e versionamento a atualizar
+
+- [ ] Refinamento desta issue salvo em `docs/issues/<número>-<slug>.md`
+- [ ] OpenAPI (`docs/openapi.yaml`), arquivos `requests/*.http` e inventário, quando houver endpoint novo/alterado
+- [ ] README/docs/ADR/glossário afetados: <lista>
+- [ ] Arquivos de contexto (`CLAUDE.md`, `AGENTS.md`, `CONTEXT.md`) se comandos, estrutura ou convenções mudarem: <lista ou "não se aplica">
+- [ ] Bump de versão único na PR (tipo esperado: patch | minor | major)
+
 ## Dependências
 
 <Lista de dependências com outros repositórios ou serviços. Ex: "Depende de CaioGiasson/boilerplate-webapp expor endpoint POST /mfa/enable".>
@@ -297,29 +353,30 @@ Issue principal: <owner>/<repo>#<número>
 
 **Código e arquitetura**
 - [ ] Nomenclatura segue as convenções de mercado (camelCase, PascalCase, UPPER_SNAKE_CASE)
-- [ ] Fluxo de camadas respeitado (middleware → controller → useCase → services/repositories)
+- [ ] Fluxo de camadas respeitado (rota → controller → useCase → services/repositories)
 - [ ] Controllers sem lógica de negócio
-- [ ] `req`/`res` não propagados para camadas internas
+- [ ] `req`/`res` (ou `NextRequest`/`NextResponse`) não propagados para camadas internas
 
 <!-- Se envolver rotas HTTP -->
 **API** *(quando aplicável)*
 - [ ] Rota segue convenções REST (verbo correto, recurso no plural, versionamento)
-- [ ] OpenAPI atualizado
-- [ ] Arquivo `.http` criado em `requests/`
-- [ ] Autenticação via middleware, não no controller
+- [ ] `docs/openapi.yaml` atualizado
+- [ ] Arquivo `.http` criado/atualizado em `requests/` e inventário em `requests/README.md` atualizado
+- [ ] Autenticação via middleware/helper de sessão, não implementada no controller
+- [ ] Autorização nos use cases
 
 <!-- Se envolver persistência -->
 **Persistência** *(quando aplicável)*
 - [ ] Prisma confinado ao repositório
-- [ ] Soft delete implementado via `deletedAt`
+- [ ] Soft delete via `deletedAt` (preferido), com filtro que considera campo ausente/null no Mongo
 - [ ] Transação usada em operações com múltiplas escritas
-- [ ] Query de listagem com paginação
+- [ ] Query de listagem com paginação (cursor + `nextCursor`)
 
 <!-- Se envolver erros ou validação -->
 **Erros e validação** *(quando aplicável)*
-- [ ] Classes de erro específicas criadas (sem `throw new Error` direto)
-- [ ] Validação de formato no controller, regras de domínio no useCase
-- [ ] Resposta de erro no formato `{ success, message, code }`
+- [ ] Classes de erro específicas da hierarquia `AppError` (em vez de `throw new Error` genérico)
+- [ ] Validação de formato (Zod) no controller, regras de domínio no useCase
+- [ ] Resposta de erro no formato `{ success: false, message, code }`
 
 <!-- Se envolver integrações externas -->
 **Integrações** *(quando aplicável)*
@@ -328,7 +385,8 @@ Issue principal: <owner>/<repo>#<número>
 - [ ] Dados externos convertidos para modelos internos antes de sair do service
 
 **Qualidade**
-- [ ] Testes escritos para os useCases e policies afetados
+- [ ] Testes escritos para os useCases, middlewares e regras de autorização afetados
+- [ ] Textos de UI nos catálogos de todos os idiomas (i18n), quando houver UI
 - [ ] Nenhum `console.log` adicionado — usar LogManager
 - [ ] Nenhum dado sensível logado
 
@@ -371,6 +429,14 @@ Se existir o arquivo `tasks/lessons.md` neste repositório, leia-o antes de qual
 
 <Liste os edge cases que a implementação neste repositório deve cobrir.>
 
+### Ordem de commits
+
+<Repita aqui a lista ordenada da seção "Ordem de commits" desta issue. O agente deve segui-la na ordem.>
+
+### Roteiro de testes
+
+<Repita aqui o roteiro de testes (automatizados e manuais) desta issue. Ao final da implementação, o agente deve reapresentá-lo ao usuário.>
+
 ### Critérios de conclusão
 
 - [ ] <critério 1>
@@ -394,6 +460,8 @@ Se o usuário informou um projeto na Fase 3, vincule cada issue criada (principa
 ```bash
 gh project item-add <número-do-projeto> --owner <owner> --url <url-da-issue>
 ```
+
+Após vincular, defina o campo **Status** de cada item como **ToDo** (`gh project field-list` para obter o campo e a opção; `gh project item-edit --id <ITEM_ID> --project-id <PROJECT_ID> --field-id <STATUS_FIELD_ID> --single-select-option-id <TODO_OPTION_ID>`). Se o board não tiver essa opção, registre no resumo.
 
 Sinalize o progresso:
 ```

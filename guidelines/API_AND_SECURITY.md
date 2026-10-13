@@ -4,11 +4,13 @@
 
 - **Recursos no plural** — `/users`, `/batches`, `/shippings`.
 - **Verbos HTTP corretos** — GET (leitura), POST (criação), PUT (substituição), PATCH (atualização parcial), DELETE (remoção).
-- **Códigos HTTP semânticos** — 200, 201, 204, 400, 401, 403, 404, 409, 422, 500.
+- **Códigos HTTP semânticos** — 200, 201, 204, 400, 401, 403, 404, 409, 422, 429, 500.
 - **Versionamento** — `/api/v1/users`, `/api/v2/users`.
-- **Paginação** — resposta com `next`, `prev`, `total`.
-- **Idempotência** — POST idempotente quando possível (idempotency keys). PUT e DELETE são naturalmente idempotentes.
-- **Identificação do usuário pela token** — nunca por parâmetro de rota quando a ação é do próprio usuário.
+- **Resposta padrão** — sucesso `{ success: true, message, data }`; erro `{ success: false, message, code }`.
+- **Paginação** — cursor na query (`?cursor=…`); resposta inclui `nextCursor` (`null` quando acabou). Evitar offset `page/limit` em listagens grandes.
+- **Idempotência** — mutações com risco de retry aceitam header opcional `Idempotency-Key`. PUT e DELETE são naturalmente idempotentes.
+- **Identificação do usuário pela sessão/token** — nunca por parâmetro de rota quando a ação é do próprio usuário (ex: `/users/me`).
+- **Contrato obrigatório** — endpoint criado ou alterado atualiza na mesma PR `docs/openapi.yaml`, `requests/**/*.http` e o inventário em `requests/README.md`.
 
 ```
 // ruim
@@ -41,7 +43,8 @@ Rota `/health` retorna status e lista dependências com suas URLs de healthcheck
 - **Timeout em todas as requisições** — via `AbortController` ou timeouts configuráveis. Nunca sem limite.
 - **Timeouts em variáveis de ambiente** — nunca hardcoded.
 - **Nenhuma URL hardcoded** — toda URL externa vem de variável de ambiente.
-- **Nunca diferenciar ambientes por `NODE_ENV`** — a diferença vem dos valores das variáveis de ambiente.
+- **Ambientes por variável de ambiente** — usar uma variável explícita (ex: `ENVIRONMENT=dev|prod`) para regras de negócio e operadores; `NODE_ENV` apenas onde o runtime exige (ex: cookie `Secure`, stack em logs).
+- **Retry e circuit breaker** — retry com jitter para 429/5xx transitórios; circuit breaker em dependências externas críticas.
 
 ```ts
 // ruim
@@ -55,8 +58,9 @@ const apiUrl = process.env.API_URL
 
 ## 3. Segurança e Autenticação
 
-- **Autenticação via middleware** — nunca em controllers. O middleware pode enriquecer o request (`userId`, `tenant`).
-- **Policies para autorização** — regras encapsuladas em arquivos `*.policy.ts`.
+- **Autenticação via middleware/helpers de sessão** — controllers aplicam o middleware e nunca implementam a verificação.
+- **Autorização nos use cases** — regras (ownership, visibilidade) em use cases/utils testados; `*.policy.ts` não é obrigatório.
+- **Rate limit e CSRF** — rate limit em auth e rotas sensíveis; validar origem em mutações sensíveis. Multi-instância exige store compartilhado (gateway/Redis).
 - **Nunca expor credenciais** — `.env` no `.gitignore`. Manter `.env.example` como template.
 - **Variáveis de ambiente obrigatórias validadas na inicialização.**
 - **CORS com origens explícitas** — nunca `Access-Control-Allow-Origin: *` em produção.

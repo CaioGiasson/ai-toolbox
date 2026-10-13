@@ -1,9 +1,9 @@
 ---
-name: review-pr
-description: Realiza code review automatizado de uma pull request. Faz checkout da branch da PR na pasta raiz do repositório, lê a PR e a issue vinculada, verifica testes, roda build, analisa o código com base nos guias do time e posta comentários inline escolhidos pelo usuário diretamente na PR.
+name: issue-review
+description: Realiza code review de uma pull request. Faz checkout da branch da PR, lê a PR e a issue vinculada, confere se tudo o que foi solicitado foi implementado, verifica se as divergências foram registradas em comentários, roda build e testes, testa a funcionalidade quando possível (anexando evidências ao review), analisa o código com base nos guias do time e posta os comentários escolhidos pelo usuário. Não corrige nada sozinha: pergunta ao usuário e, mediante pedido explícito, corrige em um commit por correção na mesma branch.
 ---
 
-# Skill: review-pr
+# Skill: issue-review
 
 Você é um engenheiro de software sênior realizando um code review criterioso e construtivo. Seu objetivo é revisar uma pull request de forma completa, seguindo os guias do time, e postar comentários diretamente no GitHub — cada um junto ao trecho de código ao qual se refere.
 
@@ -137,7 +137,7 @@ Internalize esses guias. Eles são a base de toda a análise que você fará nas
       Branch anterior: <ORIGINAL_BRANCH>
    ```
 
-5. **Todas as operações das fases seguintes são executadas em `REPO_ROOT`.** Ao encerrar, volte para `ORIGINAL_BRANCH` (Fase 9).
+5. **Todas as operações das fases seguintes são executadas em `REPO_ROOT`.** Ao encerrar, volte para `ORIGINAL_BRANCH` (Fase 12).
 
 ---
 
@@ -197,9 +197,77 @@ Execute em `REPO_ROOT`:
 
 ---
 
-## FASE 6 — Análise e revisão do código
+## FASE 6 — Conferência do que foi solicitado vs. implementado
 
-Com base nos guias lidos na Fase 0 e no contexto da issue (Fase 2), analise todos os arquivos alterados da PR.
+Garanta que **tudo o que foi pedido** foi entregue — e nada além disso sem registro.
+
+1. Monte a lista de **itens solicitados** a partir da issue vinculada e da PR:
+   - Critérios de aceite e critérios de conclusão
+   - Itens de "O que fazer", regras de negócio e edge cases
+   - "Ordem de commits" e "Roteiro de testes" da issue
+   - Documentação a atualizar (OpenAPI, `.http`, README/docs, arquivos de contexto, refinamento em `docs/issues/`, versão)
+   - Ajustes pedidos em comentários da issue ou da PR
+
+2. Para **cada item**, localize a evidência no diff (arquivo:linha, commit ou teste) e classifique:
+   - ✅ **Implementado** — evidência encontrada e coerente com o pedido
+   - ⚠ **Parcial** — implementado em parte ou com comportamento diferente do pedido
+   - ❌ **Ausente** — não encontrado no diff
+   - ➕ **Extra** — mudança relevante que ninguém pediu (fora do escopo)
+
+3. Exiba a tabela de conferência:
+   ```
+   📋 Pedido × Implementado
+   | # | Item solicitado | Status | Evidência |
+   |---|-----------------|--------|-----------|
+   | 1 | <item>          | ✅     | arquivo.ts:42 / commit abc123 |
+   | 2 | <item>          | ❌     | — |
+   ```
+
+4. Classificação dos achados: ❌ em critério de aceite ou regra de negócio = **🔴 Bloqueador**; ⚠ = **🟡 Importante** (🔴 se quebrar um critério de aceite); ❌/⚠ em documentação, testes ou versionamento = **🟡 Importante**; ➕ = **🟡 Importante** (remover ou justificar e registrar). Cada um recebe o bloco **Como resolver**.
+
+5. **Divergências registradas?** Para todo item ⚠, ❌ ou ➕ — e para qualquer desvio da ordem de commits ou das instruções da issue — verifique se o desvio foi **registrado em comentário** (na PR, na issue, ou na seção de divergências da descrição da PR), com **o que mudou e por quê**:
+   - Leia todos os comentários e a descrição da PR e da issue.
+   - Registrado e justificado → ok (cite o comentário).
+   - Não registrado, ou registrado sem justificativa → **🟡 Importante**: "Divergência não registrada". O "Como resolver" deve trazer o texto-modelo do comentário a ser postado:
+     ```
+     **Divergência em relação à issue #<N>**
+     - Pedido: <o que a issue pedia>
+     - Executado: <o que foi feito>
+     - Motivo: <por que>
+     - Impacto: <efeitos no escopo, testes ou docs>
+     ```
+
+---
+
+## FASE 7 — Teste funcional e evidências
+
+Sempre que possível, **teste a funcionalidade de verdade** e colete evidências para anexar ao review.
+
+1. Decida se é possível testar: o projeto sobe localmente (dev server, CLI, container), há dados/seed de teste e o ambiente é **local/de desenvolvimento**. **Nunca** teste contra produção, com dados reais ou com ações destrutivas. Se não for possível (falta de credenciais, dependência externa indisponível, necessidade de ação humana), registre o motivo e marque `⚠ Teste funcional não executado: <motivo>` — isso não é um bloqueador por si só.
+
+2. Execute o **Roteiro de testes** da issue (cenários automatizados e manuais viáveis), usando o meio adequado:
+   - API: `curl`/arquivos `requests/*.http` contra o servidor local
+   - UI: ferramentas de navegador disponíveis na sessão (navegar, preencher, capturar tela)
+   - Lógica: testes automatizados relevantes e scripts de verificação
+   Cubra o caminho feliz, ao menos um erro esperado e um edge case do roteiro.
+
+3. Colete **evidências** de cada cenário: comando ou ação executada, entrada, saída/status HTTP/mensagem obtida, resultado esperado × obtido e veredito (✅/❌). Para telas, descreva o que foi observado e indique o caminho local de eventuais capturas (o GitHub não aceita upload automático de imagens por API — peça ao usuário para anexá-las se quiser). **Mascare tokens, senhas e dados pessoais** nas evidências.
+
+4. Falha em cenário do roteiro = **🔴 Bloqueador** (ou 🟡 se for cenário secundário), com **Como resolver**.
+
+5. Encerre o servidor/processos iniciados e restaure dados de teste alterados.
+
+   ```
+   🧪 Teste funcional
+   | # | Cenário | Ação | Esperado | Obtido | Resultado |
+   |---|---------|------|----------|--------|-----------|
+   ```
+
+---
+
+## FASE 8 — Análise e revisão do código
+
+Com base nos guias lidos na Fase 0 no contexto da issue (Fase 2) e nos resultados das Fases 6 e 7, analise todos os arquivos alterados da PR.
 
 Se a Fase 2 não encontrou issue vinculada, inclua sempre o bloqueador "PR sem issue vinculada" na lista final, mesmo que o diff em si esteja correto.
 
@@ -211,12 +279,13 @@ Para cada arquivo alterado, avalie:
 - Nomenclatura e código limpo
 - TypeScript (uso de `any`, tipagem, interfaces)
 - Funções e métodos (responsabilidade única, parâmetros)
-- Tratamento de erros (classes específicas, não `throw new Error` direto)
+- Tratamento de erros (classes específicas da hierarquia `AppError`, em vez de `throw new Error` genérico)
 - Segurança (validação de inputs, sem hardcode de secrets)
 - Performance (N+1, paginação, cache)
-- APIs REST (convenções, status codes)
-- Banco de dados (soft delete, transações, índices)
-- Observabilidade (logs estruturados, sem `console.log`, sem dados sensíveis)
+- APIs REST (convenções, status codes, `ApiPresenter`; endpoint criado/alterado com `docs/openapi.yaml` + `requests/*.http` + `requests/README.md` atualizados — bloqueador quando ausente)
+- Banco de dados (soft delete preferido considerando campo ausente/null no Mongo, transações, índices)
+- Observabilidade (logger da aplicação, sem `console.log`, sem dados sensíveis)
+- i18n (textos de UI nos catálogos de todos os idiomas, quando houver UI)
 - Variáveis de ambiente (sem hardcode, validação na inicialização)
 
 **Baseado em `CONVENTIONS.md`:**
@@ -251,9 +320,29 @@ Tipo: Change Request | Comentário
 <texto do comentário no formato do guia — construtivo, com explicação do porquê e sugestão concreta>
 ```
 
+### Instruções de correção (obrigatórias para 🔴 e 🟡)
+
+Todo item **🔴 Bloqueador** ou **🟡 Importante** deve incluir, logo após o texto do comentário, um bloco **Como resolver** com informação suficiente para um **dev júnior** corrigir sem perguntar nada:
+
+```
+Como resolver:
+1. Onde: <arquivo(s) e linha(s) exatos a alterar, e arquivos novos a criar, se houver>
+2. O que está errado e por quê: <causa em linguagem simples + risco concreto, citando a regra do guideline (ex: ARCHITECTURE.md §2)>
+3. Passo a passo: <lista numerada de ações, na ordem, sem passos implícitos>
+4. Exemplo: <trecho "antes" e "depois" em código, copiável, seguindo o padrão de um arquivo existente do repositório (cite o caminho)>
+5. Como validar: <teste a criar/rodar (nome do arquivo e comando), cenário manual ou comando de build/lint que deve passar>
+6. Commit sugerido: <mensagem em pt-BR com prefixo de conventional commit>
+```
+
+Regras:
+- Seja específico: nada de "melhore o tratamento de erros" sem dizer qual classe de erro usar, onde lançá-la e como testar.
+- Se a correção tiver mais de uma abordagem válida, recomende **uma** e justifique em uma linha.
+- Se a correção afetar outros arquivos (testes, OpenAPI, `.http`, i18n, docs), liste-os explicitamente.
+- Itens 🟢 Sugestão não exigem o bloco, apenas a sugestão concreta.
+
 ---
 
-## FASE 7 — Apresentação das sugestões ao usuário
+## FASE 9 — Apresentação das sugestões ao usuário
 
 Apresente todas as sugestões organizadas por prioridade:
 
@@ -266,14 +355,17 @@ Apresente todas as sugestões organizadas por prioridade:
 ──────────────────────────────────────────────────
 [1] arquivo.ts:42
     Change Request (🔴): <texto>
+    Como resolver: <onde / o que e por quê / passo a passo / exemplo / como validar / commit sugerido>
 
 [2] outro-arquivo.ts:17
     Change Request (🔴): <texto>
+    Como resolver: <...>
 
 🟡 IMPORTANTES (<N> itens)
 ──────────────────────────────────────────────────
 [3] arquivo.ts:88
     Change Request (🟡): <texto>
+    Como resolver: <...>
 
 🟢 SUGESTÕES (<N> itens)
 ──────────────────────────────────────────────────
@@ -281,6 +373,8 @@ Apresente todas as sugestões organizadas por prioridade:
     Comentário (🟢): <texto>
 
 ──────────────────────────────────────────────────
+📋 ESCOPO: <N>/<M> itens implementados · divergências registradas: ✅ | ⚠ <N> sem registro
+🧪 TESTE FUNCIONAL: ✅ N/N cenários | ❌ N falharam | ⚠ não executado (<motivo>)
 🔨 BUILD: ✅ Passou | ❌ Falhou
 🧪 TESTES: ✅ N/N passaram | ❌ N falharam | ⚠ Sem cobertura do escopo | 🚨 Sem testes
 ══════════════════════════════════════════════════
@@ -290,13 +384,15 @@ Quais comentários deseja postar na PR?
   - Digite "todos" para postar todos
   - Digite "bloqueadores" para postar apenas os 🔴
   - Digite "nenhum" para encerrar sem postar
+
+A tabela de conferência e as evidências do teste funcional vão no corpo do review se algum comentário for postado.
 ```
 
 Aguarde a resposta do usuário antes de continuar.
 
 ---
 
-## FASE 8 — Postagem dos comentários na PR
+## FASE 10 — Postagem do review na PR
 
 Com base na seleção do usuário:
 
@@ -309,14 +405,16 @@ Com base na seleção do usuário:
    ```bash
    gh api repos/<owner>/<repo>/pulls/<número>/reviews \
      --method POST \
-     --field body='' \
+     --field body='<resumo: tabela Pedido × Implementado, divergências, evidências do teste funcional>' \
      --field event='COMMENT' \
      --field 'comments[][path]=<arquivo>' \
      --field 'comments[][line]=<linha>' \
      --field 'comments[][body]=<texto>'
    ```
 
-   Agrupe todos os comentários selecionados em **uma única review**, não em requests separados.
+   O corpo de cada comentário 🔴/🟡 inclui o bloco **Como resolver** completo. Agrupe todos os comentários selecionados em **uma única review**, não em requests separados.
+
+1b. O **corpo (`body`) da review** deve conter, em markdown: o resumo do resultado, a tabela **Pedido × Implementado** (Fase 6), o estado das divergências (registradas ou não) e a seção **🧪 Evidências do teste funcional** (Fase 7: cenários, comandos, saídas obtidas e veredito; ou o motivo de não ter sido executado). Sem tokens, senhas ou dados pessoais.
 
 2. Se houver **itens bloqueadores selecionados**, submeta a review com `event: REQUEST_CHANGES`.
    Se houver **apenas sugestões**, submeta com `event: COMMENT`.
@@ -331,7 +429,31 @@ Com base na seleção do usuário:
 
 ---
 
-## FASE 9 — Volta da branch e encerramento
+## FASE 11 — Correções (somente mediante pedido explícito)
+
+**Esta skill não corrige nada automaticamente.** Após postar (ou decidir não postar) o review:
+
+1. Se houver itens 🔴/🟡, **pergunte ao usuário** se ele quer que as correções sejam feitas:
+   ```
+   Deseja que eu corrija algum item?
+     - Digite os índices (ex: 1,3) ou "bloqueadores" / "importantes" / "todos"
+     - Digite "não" para encerrar sem corrigir
+   ```
+   Aguarde a resposta. Sem pedido explícito, **não altere código, não commite e não faça push**. Sugestões 🟢 só são corrigidas se o usuário as incluir expressamente.
+
+2. Mediante pedido explícito, corrija **somente os itens indicados**, na **mesma branch da PR** (sem criar branch nova):
+   - Antes de começar, descarte alterações de install/build/testes em arquivos rastreados (`git restore .`) e confirme `git status --porcelain` limpo.
+   - Siga o **Como resolver** de cada item.
+   - Faça **um commit por correção** (nunca agrupe itens distintos), com `git add <arquivos da correção>` e mensagem em pt-BR com conventional commit referenciando o item (ex: `fix: validar CPF no createPerson.usecase (review #2)`). Nunca use `--no-verify`.
+   - Rode build, lint e testes após cada correção; se falhar, corrija antes de seguir.
+   - **Sem novo bump de versão** e sem reescrever histórico (`--force`/rebase proibidos).
+   - Ao final, `git push` na mesma branch e comente na PR um resumo: item → commit.
+
+3. Se uma correção exigir decisão de produto ou ampliar o escopo, **pare e pergunte** em vez de decidir sozinha.
+
+---
+
+## FASE 12 — Volta da branch e encerramento
 
 1. Restaure arquivos rastreados alterados pelo install, build ou testes, e volte para a branch anterior:
    ```bash
@@ -346,6 +468,8 @@ Com base na seleção do usuário:
 
    📋 PR #<número>: <título>
    💬 Comentários postados: <N>
+   🧪 Teste funcional: <resultado>
+   🔧 Correções feitas a pedido: <N commits | nenhuma>
       🔴 Bloqueadores: <N>
       🟡 Importantes: <N>
       🟢 Sugestões: <N>

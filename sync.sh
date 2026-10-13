@@ -43,6 +43,46 @@ for file in "${ROOT_FILES[@]}"; do
   fi
 done
 
+# ─── Limpeza de itens legados ──────────────────────────────────────────────
+# legacy.txt lista skills/guidelines removidas ou renomeadas no repositório.
+# Só os nomes listados são apagados de ~/.claude; nada mais é tocado.
+LEGACY_FILE="$REPO_DIR/legacy.txt"
+
+if [[ -f "$LEGACY_FILE" ]]; then
+  legacy_count=0
+  while read -r kind name _; do
+    [[ -z "${kind:-}" || "$kind" == \#* ]] && continue
+
+    # Nome simples apenas: sem caminhos, sem "..", sem curingas
+    if [[ -z "${name:-}" || ! "$name" =~ ^[A-Za-z0-9._-]+$ || "$name" == .* ]]; then
+      log_err "legacy.txt: entrada inválida ignorada → $kind ${name:-}"
+      continue
+    fi
+
+    case "$kind" in
+      skill)
+        src="$REPO_DIR/skills/$name"; dst="$CLAUDE_DIR/skills/$name" ;;
+      guideline)
+        src="$REPO_DIR/guidelines/$name"; dst="$CLAUDE_DIR/guidelines/$name" ;;
+      *)
+        log_err "legacy.txt: tipo desconhecido ignorado → $kind $name"
+        continue ;;
+    esac
+
+    if [[ -e "$src" ]]; then
+      log_info "legacy.txt: $kind/$name ainda existe no repositório — não será apagado"
+      continue
+    fi
+
+    if [[ -e "$dst" ]]; then
+      rm -rf -- "$dst"
+      log_ok "legado removido → $dst"
+      ((legacy_count++)) || true
+    fi
+  done < "$LEGACY_FILE"
+  [[ $legacy_count -eq 0 ]] && log_info "Nenhum item legado para remover"
+fi
+
 # ─── Guidelines ────────────────────────────────────────────────────────────
 GUIDELINES_SRC="$REPO_DIR/guidelines"
 GUIDELINES_DST="$CLAUDE_DIR/guidelines"
