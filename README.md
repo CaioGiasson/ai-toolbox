@@ -76,16 +76,18 @@ ai-toolbox/
 │   ├── QUALITY.md              # observabilidade, testes, documentação, code review
 │   └── DEVOPS.md               # commits, CI/CD, branching, infra
 ├── skills/
-│   ├── create-issue/
-│   │   └── SKILL.md            # /create-issue
+│   ├── issue-approve/
+│   │   └── SKILL.md            # /issue-approve
+│   ├── issue-refine/
+│   │   └── SKILL.md            # /issue-refine
 │   ├── example-skill/
 │   │   └── SKILL.md            # /example-skill
+│   ├── issue-start/
+│   │   └── SKILL.md            # /issue-start
 │   ├── review-pr/
 │   │   └── SKILL.md            # /review-pr
-│   ├── slack-to-issue/
-│   │   └── SKILL.md            # /slack-to-issue
-│   └── start-issue/
-│       └── SKILL.md            # /start-issue
+│   └── slack-to-issue/
+│       └── SKILL.md            # /slack-to-issue
 ├── CLAUDE.md
 ├── CONTEXT.md
 ├── sync.sh                     # script principal de sincronização

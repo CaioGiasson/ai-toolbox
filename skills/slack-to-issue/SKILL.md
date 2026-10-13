@@ -1,6 +1,6 @@
 ---
 name: slack-to-issue
-description: Lê uma thread do Slack, identifica objetivos e serviços referenciados, verifica se já existem fluxos que atendam a necessidade, classifica o impacto da mudança e cria a issue (via create-issue) ou inicia a implementação diretamente (via start-issue) para mudanças de baixo impacto.
+description: Lê uma thread do Slack, identifica objetivos e serviços referenciados, verifica se já existem fluxos que atendam a necessidade, classifica o impacto da mudança e cria a issue (via issue-refine) ou inicia a implementação diretamente (via issue-start) para mudanças de baixo impacto.
 ---
 
 # Skill: slack-to-issue
@@ -151,7 +151,7 @@ Tasks identificadas:
 
 Com base na análise e na verificação de arquitetura, classifique a mudança como **baixo impacto** ou **alto impacto** usando os critérios abaixo.
 
-### Critérios de baixo impacto (→ usar `/start-issue`)
+### Critérios de baixo impacto (→ usar `/issue-start`)
 
 A mudança é de **baixo impacto** se **todos** os critérios abaixo forem verdadeiros:
 
@@ -164,7 +164,7 @@ A mudança é de **baixo impacto** se **todos** os critérios abaixo forem verda
   - Configuração de componente existente sem nova lógica
   - Correção de typo ou ajuste cosmético
 
-### Critérios de alto impacto (→ usar `/create-issue`)
+### Critérios de alto impacto (→ usar `/issue-refine`)
 
 A mudança é de **alto impacto** se **qualquer** condição abaixo for verdadeira:
 
@@ -259,7 +259,7 @@ Se existir `tasks/lessons.md`, leia antes de qualquer ação.
 ---
 ```
 
-### 4.3 — Handoff para start-issue
+### 4.3 — Handoff para issue-start
 
 Após criar a issue, exiba:
 ```
@@ -267,7 +267,7 @@ Após criar a issue, exiba:
 
 Esta é uma mudança de baixo impacto. Para iniciar a implementação:
 
-  /start-issue <link-da-issue>
+  /issue-start <link-da-issue>
 ```
 
 ---
@@ -276,7 +276,7 @@ Esta é uma mudança de baixo impacto. Para iniciar a implementação:
 
 > Siga esta fase apenas se a classificação da Fase 3 foi **ALTO IMPACTO**.
 
-### 4.1 — Preparação do contexto para create-issue
+### 4.1 — Preparação do contexto para issue-refine
 
 Monte uma descrição consolidada a partir de tudo que foi extraído nas fases anteriores:
 
@@ -308,11 +308,11 @@ CONTEXTO ADICIONAL
 <Trechos relevantes das mensagens do Slack que ajudam a entender a demanda>
 ```
 
-### 4.2 — Execução do fluxo create-issue
+### 4.2 — Execução do fluxo issue-refine
 
-Com o contexto preparado acima, execute o fluxo completo da skill `/create-issue` a partir da **FASE 0**, tratando o contexto montado no passo 4.1 como a entrada (`$ARGUMENTS`) daquela skill.
+Com o contexto preparado acima, execute o fluxo completo da skill `/issue-refine` a partir da **FASE 0**, tratando o contexto montado no passo 4.1 como a entrada (`$ARGUMENTS`) daquela skill.
 
-Siga todas as fases do create-issue:
+Siga todas as fases do issue-refine:
 - Fase 0: Exploração da codebase (use os repositórios já identificados como ponto de partida)
 - Fase 1: Refinamento — faça perguntas apenas sobre o que a thread **não** responde
 - Fase 2: Mapeamento de repositórios
@@ -322,4 +322,4 @@ Siga todas as fases do create-issue:
 - Fase 6: Atualização da issue principal
 - Fase 7: Conclusão
 
-> **Nota:** Ao chegar na Fase 1 do create-issue, prefira perguntas focadas nas lacunas — muito do contexto de negócio já foi coletado da thread do Slack. Não repita perguntas sobre o que as mensagens já respondem.
+> **Nota:** Ao chegar na Fase 1 do issue-refine, prefira perguntas focadas nas lacunas — muito do contexto de negócio já foi coletado da thread do Slack. Não repita perguntas sobre o que as mensagens já respondem.

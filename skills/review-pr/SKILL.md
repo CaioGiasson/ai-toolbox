@@ -252,6 +252,26 @@ Tipo: Change Request | Comentário
 <texto do comentário no formato do guia — construtivo, com explicação do porquê e sugestão concreta>
 ```
 
+### Instruções de correção (obrigatórias para 🔴 e 🟡)
+
+Todo item **🔴 Bloqueador** ou **🟡 Importante** deve incluir, logo após o texto do comentário, um bloco **Como resolver** com informação suficiente para um **dev júnior** corrigir sem perguntar nada:
+
+```
+Como resolver:
+1. Onde: <arquivo(s) e linha(s) exatos a alterar, e arquivos novos a criar, se houver>
+2. O que está errado e por quê: <causa em linguagem simples + risco concreto, citando a regra do guideline (ex: ARCHITECTURE.md §2)>
+3. Passo a passo: <lista numerada de ações, na ordem, sem passos implícitos>
+4. Exemplo: <trecho "antes" e "depois" em código, copiável, seguindo o padrão de um arquivo existente do repositório (cite o caminho)>
+5. Como validar: <teste a criar/rodar (nome do arquivo e comando), cenário manual ou comando de build/lint que deve passar>
+6. Commit sugerido: <mensagem em pt-BR com prefixo de conventional commit>
+```
+
+Regras:
+- Seja específico: nada de "melhore o tratamento de erros" sem dizer qual classe de erro usar, onde lançá-la e como testar.
+- Se a correção tiver mais de uma abordagem válida, recomende **uma** e justifique em uma linha.
+- Se a correção afetar outros arquivos (testes, OpenAPI, `.http`, i18n, docs), liste-os explicitamente.
+- Itens 🟢 Sugestão não exigem o bloco, apenas a sugestão concreta.
+
 ---
 
 ## FASE 7 — Apresentação das sugestões ao usuário
@@ -267,14 +287,17 @@ Apresente todas as sugestões organizadas por prioridade:
 ──────────────────────────────────────────────────
 [1] arquivo.ts:42
     Change Request (🔴): <texto>
+    Como resolver: <onde / o que e por quê / passo a passo / exemplo / como validar / commit sugerido>
 
 [2] outro-arquivo.ts:17
     Change Request (🔴): <texto>
+    Como resolver: <...>
 
 🟡 IMPORTANTES (<N> itens)
 ──────────────────────────────────────────────────
 [3] arquivo.ts:88
     Change Request (🟡): <texto>
+    Como resolver: <...>
 
 🟢 SUGESTÕES (<N> itens)
 ──────────────────────────────────────────────────
@@ -317,7 +340,7 @@ Com base na seleção do usuário:
      --field 'comments[][body]=<texto>'
    ```
 
-   Agrupe todos os comentários selecionados em **uma única review**, não em requests separados.
+   O corpo de cada comentário 🔴/🟡 inclui o bloco **Como resolver** completo. Agrupe todos os comentários selecionados em **uma única review**, não em requests separados.
 
 2. Se houver **itens bloqueadores selecionados**, submeta a review com `event: REQUEST_CHANGES`.
    Se houver **apenas sugestões**, submeta com `event: COMMENT`.
