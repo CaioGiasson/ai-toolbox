@@ -340,7 +340,7 @@ EOF
 )"
 ```
 
-- **Não** aplique a label `Reviewed` nem faça merge: o primeiro review é do usuário (e/ou `/review-pr`) e a aprovação final é feita por `/issue-approve`.
+- **Não** aplique a label `Reviewed` nem faça merge: o primeiro review é do usuário (e/ou `/issue-review`) e a aprovação final é feita por `/issue-approve`.
 - **Board — In Progress → Review:** mova a issue para a coluna **Review** (ou nome equivalente, ex: "In Review") usando o mesmo procedimento da Fase 2, passo 5. Se não for possível, avise sem bloquear.
 
 Após o push e a abertura da PR, exiba:
@@ -394,6 +394,6 @@ Itens não-críticos: <lista ou "nenhum">
 
 Próximos passos:
 1. Execute o roteiro acima.
-2. (Opcional) Rode `/review-pr <url da PR>` para um review com comentários inline.
+2. (Opcional) Rode `/issue-review <url da PR>` para um review com comentários inline, conferência do que foi pedido e teste funcional.
 3. Se tudo estiver aprovado, rode `/issue-approve <url da PR>` — a skill fará a última camada de review e, estando limpa, o merge e a limpeza das branches.
 ```

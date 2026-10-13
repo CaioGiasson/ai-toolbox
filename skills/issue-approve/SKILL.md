@@ -85,7 +85,7 @@ Classifique cada achado como no `GUIA_REVISAO_PR_GERAL.md`:
 - **🟡 Importante** — edge case real, inconsistência de API/UI, performance, manutenibilidade, docs do aceite faltando, testes insuficientes
 - **🟢 Sugestão / nit** — legibilidade e refactors não críticos (não bloqueiam nada)
 
-Para cada 🔴 e 🟡 prepare o bloco **Como resolver** (onde, o que e por quê, passo a passo, exemplo antes/depois, como validar, commit sugerido), detalhado o bastante para um dev júnior corrigir — mesmo formato da skill `/review-pr`.
+Para cada 🔴 e 🟡 prepare o bloco **Como resolver** (onde, o que e por quê, passo a passo, exemplo antes/depois, como validar, commit sugerido), detalhado o bastante para um dev júnior corrigir — mesmo formato da skill `/issue-review`.
 
 ---
 

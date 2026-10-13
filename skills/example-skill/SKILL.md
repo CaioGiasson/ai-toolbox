@@ -29,7 +29,7 @@ Instruções detalhadas para o Claude executar a skill...
 
 ```markdown
 ---
-name: review-pr
+name: issue-review
 description: Faz code review de um PR seguindo os padrões de mercado.
 ---
 

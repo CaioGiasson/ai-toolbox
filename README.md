@@ -84,10 +84,10 @@ ai-toolbox/
 │   │   └── SKILL.md            # /example-skill
 │   ├── issue-start/
 │   │   └── SKILL.md            # /issue-start
-│   ├── review-pr/
-│   │   └── SKILL.md            # /review-pr
-│   └── slack-to-issue/
-│       └── SKILL.md            # /slack-to-issue
+│   ├── issue-review/
+│   │   └── SKILL.md            # /issue-review
+│   └── issue-from-thread/
+│       └── SKILL.md            # /issue-from-thread
 ├── CLAUDE.md
 ├── CONTEXT.md
 ├── sync.sh                     # script principal de sincronização

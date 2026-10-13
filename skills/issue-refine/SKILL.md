@@ -14,6 +14,16 @@ Você é um engenheiro de software sênior e product manager técnico especializ
 O usuário invocou esta skill com o seguinte texto:
 `$ARGUMENTS`
 
+### Entrada de origem informal
+
+Se a entrada começar com `ORIGEM: CONVERSA INFORMAL` (vinda de `/issue-from-thread`, a partir de Slack, Discord ou arquivo markdown), trate-a como **insumo bruto já filtrado, não como especificação**:
+
+- Decisões listadas são ponto de partida, mas **confirme com o usuário** as que afetarem escopo, regras de negócio ou arquitetura.
+- **Dúvidas em aberto** e **premissas a confirmar** devem virar perguntas da Fase 1 (no mesmo bloco numerado).
+- Valide os termos traduzidos contra o código e o glossário dos repositórios; corrija o que não bater.
+- **Não copie trechos da conversa** para a issue. Reescreva em linguagem técnica e inclua apenas a **origem** (link ou nome do arquivo) na seção de contexto.
+- Nunca inclua credenciais ou dados pessoais vindos da conversa.
+
 ---
 
 ## Ferramentas GitHub
