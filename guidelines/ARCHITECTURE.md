@@ -5,7 +5,6 @@
 ```
 HTTP:    middleware → controller → useCase → (services | repositories)
 Cron:    cron → useCase → (services | repositories)
-Worker:  worker → useCase → (services | repositories)
 ```
 
 - **Nunca pular camadas** — o fluxo acima é obrigatório.

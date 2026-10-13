@@ -14,17 +14,19 @@
 
 ## Stack padrão do time
 
-- **Backend:** Node.js + TypeScript + MongoDB + Prisma + RabbitMQ
+- **Backend:** Node.js + TypeScript + MongoDB + Prisma
 - **Frontend:** Next.js 15 + TypeScript + Tailwind CSS + shadcn/ui
-- **Infra/Observabilidade:** Datadog, RabbitMQ, Docker
+- **Infra:** Docker
 - **ORM:** Prisma
-- **Autenticação:** JWT + serviço `id` interno
+- **Autenticação:** JWT
+
+Projeto de referência: https://github.com/CaioGiasson/boilerplate-webapp
 
 ## Convenções de código
 
 - Nomenclatura em camelCase para variáveis/funções, PascalCase para classes/tipos.
 - Arquivos de serviço seguem o padrão `*.service.ts`, controllers `*.controller.ts`.
-- Erros de domínio são lançados com classes customizadas estendendo `Error`.
+- Erros são lançados com classes customizadas da hierarquia `AppError` (ver `ERRORS_AND_VALIDATION.md`), nunca `Error` direto.
 - Variáveis de ambiente sempre via `process.env` com validação na inicialização.
 
 ## Guidelines de desenvolvimento
@@ -101,5 +103,5 @@ Ao entrar em plan mode, ler `CONVENTIONS.md` e `ARCHITECTURE.md` antes de escrev
 
 - Nunca logar dados sensíveis: tokens, senhas, CPF, dados de pagamento.
 - Nunca expor secrets em código — sempre via variáveis de ambiente.
-- Validar inputs em todos os boundaries externos (rotas HTTP, mensagens de fila, webhooks).
+- Validar inputs em todos os boundaries externos (rotas HTTP, webhooks).
 - Operações destrutivas ou irreversíveis (migrations com deleção, drops, updates em massa) exigem confirmação explícita do usuário antes de executar.

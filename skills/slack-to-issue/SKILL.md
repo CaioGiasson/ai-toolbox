@@ -92,9 +92,9 @@ Com base nas mensagens coletadas, extraia:
 - Há uma decisão tomada ou ainda é uma discussão em aberto?
 
 ### 1.2 — Serviços e repositórios referenciados
-- Quais serviços internos são mencionados explicitamente? (ex: `parcelatudo-backend-api`, `id`, `checkout`, `detran`, etc.)
-- Quais fluxos ou funcionalidades são citados? (ex: "tela de pagamento", "webhook do Cielo", "wallet", "notificação por WhatsApp")
-- Há menção a telas, componentes, endpoints, filas ou modelos específicos?
+- Quais serviços internos são mencionados explicitamente? (ex: `boilerplate-webapp`, `auth`, `payments`, etc.)
+- Quais fluxos ou funcionalidades são citados? (ex: "tela de pagamento", "webhook do gateway de pagamento", "carteira", "notificação por e-mail")
+- Há menção a telas, componentes, endpoints, filas de mensageria (ex: RabbitMQ, SQS) ou modelos específicos?
 
 ### 1.3 — Tasks identificadas
 - Liste as ações concretas mencionadas na thread (ex: "adicionar campo X", "mudar cor do botão", "criar endpoint Y", "integrar com serviço Z").
@@ -156,7 +156,7 @@ Com base na análise e na verificação de arquitetura, classifique a mudança c
 A mudança é de **baixo impacto** se **todos** os critérios abaixo forem verdadeiros:
 
 - Não altera fluxos de negócio existentes
-- Não cria nem modifica endpoints, modelos de banco, filas ou integrações externas
+- Não cria nem modifica endpoints, modelos de banco, filas de mensageria (ex: RabbitMQ, SQS) ou integrações externas
 - Não afeta mais de 1 repositório
 - É exclusivamente uma das seguintes naturezas:
   - Mudança visual: cor, fonte, espaçamento, layout, ícone
@@ -169,7 +169,7 @@ A mudança é de **baixo impacto** se **todos** os critérios abaixo forem verda
 A mudança é de **alto impacto** se **qualquer** condição abaixo for verdadeira:
 
 - Cria ou modifica lógica de negócio
-- Adiciona ou altera endpoints, modelos, filas ou integrações
+- Adiciona ou altera endpoints, modelos, filas de mensageria (ex: RabbitMQ, SQS) ou integrações
 - Afeta 2 ou mais repositórios
 - Requer novo serviço, módulo ou fluxo
 - Envolve autenticação, pagamento, dados sensíveis ou permissões

@@ -309,7 +309,7 @@ Use o checklist abaixo para verificar:
     ```
 
 -   [ ] **Validação na inicialização**: Variáveis obrigatórias validadas
--   [ ] **Documentação**: Variáveis documentadas no `example.env`
+-   [ ] **Documentação**: Variáveis documentadas no `.env.example`
 -   [ ] **Sem secrets no código**: Secrets nunca commitados
 
 ### ✅ Git e Commits

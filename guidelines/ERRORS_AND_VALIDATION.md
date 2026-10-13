@@ -7,7 +7,7 @@
 ```
 AppError
   ├── ClientError     → dados inválidos do cliente (HTTP 4xx)
-  ├── DomainError     → regras de negócio (HTTP 5xx)
+  ├── DomainError     → regras de negócio (HTTP 4xx, ex: 409/422)
   │     └── UseCaseError
   └── InfraError      → falhas de infraestrutura (HTTP 5xx)
         ├── RepositoryError

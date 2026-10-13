@@ -67,7 +67,7 @@ Com base no contexto recebido e no que foi explorado na Fase 0, identifique o qu
 - **Critérios de aceite:** como saberemos que está pronto? (lista de condições verificáveis)
 - **Regras de negócio:** há limites, validações, exceções, permissões ou fluxos condicionais?
 - **Interface/UX:** se houver tela envolvida, como ela se comporta? Quais estados (loading, erro, vazio, sucesso)?
-- **Integrações:** envolve serviços externos, webhooks, filas, e-mails, notificações?
+- **Integrações:** envolve serviços externos, webhooks, filas de mensageria (ex: RabbitMQ, SQS), e-mails, notificações?
 - **Edge cases:** o que pode dar errado? Quais cenários fora do fluxo feliz precisam ser tratados?
 - **Dependências:** depende de outra issue, feature flag, ou serviço que ainda não existe?
 
@@ -275,7 +275,7 @@ Issue principal: <owner>/<repo>#<número>
 
 ## Escopo das alterações
 
-<Descrição técnica e precisa do que precisa ser alterado neste repositório. Módulos, endpoints, modelos, componentes, filas, etc.>
+<Descrição técnica e precisa do que precisa ser alterado neste repositório. Módulos, endpoints, modelos, componentes, filas de mensageria (ex: RabbitMQ, SQS), etc.>
 
 ## Dependências
 
@@ -304,7 +304,7 @@ Issue principal: <owner>/<repo>#<número>
 <!-- Se envolver rotas HTTP -->
 **API** *(quando aplicável)*
 - [ ] Rota segue convenções REST (verbo correto, recurso no plural, versionamento)
-- [ ] Swagger atualizado
+- [ ] OpenAPI atualizado
 - [ ] Arquivo `.http` criado em `requests/`
 - [ ] Autenticação via middleware, não no controller
 

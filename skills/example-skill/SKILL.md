@@ -1,6 +1,6 @@
 ---
 name: example-skill
-description: Exemplo de skill compartilhada. Substitua pelo conteúdo real e renomeie o arquivo.
+description: Exemplo de skill compartilhada. Substitua pelo conteúdo real.
 ---
 
 # Como criar uma skill
@@ -20,7 +20,7 @@ Instruções detalhadas para o Claude executar a skill...
 
 ## Boas práticas
 
-- Um arquivo `.md` por skill, nomeado igual ao `name` no frontmatter.
+- Um diretório por skill (`skills/<name>/SKILL.md`), nomeado igual ao `name` no frontmatter.
 - Seja específico na `description` — ela é o que aparece no menu do Claude Code.
 - Inclua exemplos de uso quando o comportamento não for óbvio.
 - Skills de revisão de código, geração de testes e análise de PR são bons candidatos.
