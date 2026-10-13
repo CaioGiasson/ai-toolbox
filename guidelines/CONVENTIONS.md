@@ -12,7 +12,7 @@
 | Entidades no banco | PascalCase, singular | `User`, `BatchDebt` |
 
 - **Código em inglês** — variáveis, funções, tipos e todo código executável.
-- **Comunicação humana em português** — comentários, commits, PRs, documentação, Swagger.
+- **Comunicação humana em português** — comentários, commits, PRs, documentação, OpenAPI.
 - **Nunca abreviar nomes** — clareza tem precedência sobre brevidade.
 - **Funções com responsabilidade única** — evitar funções com dupla finalidade (`getOrCreate` → separar em `get` e `create`).
 - **Constantes no topo do arquivo** — declarar em UPPER_SNAKE_CASE no início do módulo.

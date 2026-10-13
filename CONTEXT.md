@@ -9,7 +9,7 @@ O `ai-toolbox` é um conjunto de ferramentas de IA (instruções, guidelines e s
 ## Padrões de comunicação
 
 - Issues e PRs em português.
-- Commits em inglês (conventional commits: `feat:`, `fix:`, `chore:`, `refactor:`, etc.).
+- Commits em português, com prefixos de conventional commits em inglês (`feat:`, `fix:`, `chore:`, `refactor:`, etc.).
 - Branches no padrão `tipo/descricao-curta` (ex: `feat/user-wallet`).
 
 ## Fluxo de trabalho
@@ -17,7 +17,7 @@ O `ai-toolbox` é um conjunto de ferramentas de IA (instruções, guidelines e s
 1. Branch a partir de `main` ou `develop` (depende do repositório).
 2. PR com template definido no repositório.
 3. Review obrigatório de ao menos 1 pessoa.
-4. Merge via squash sempre que possível para manter histórico limpo.
+4. Merge commit (sem squash), conforme `DEVOPS.md`.
 
 ## Variáveis de ambiente
 

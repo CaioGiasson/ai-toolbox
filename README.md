@@ -72,13 +72,20 @@ ai-toolbox/
 │   ├── ARCHITECTURE.md         # camadas, fluxo, persistência
 │   ├── ERRORS_AND_VALIDATION.md
 │   ├── API_AND_SECURITY.md
+│   ├── GUIA_REVISAO_PR_GERAL.md # checklist e formato de code review de PRs
 │   ├── QUALITY.md              # observabilidade, testes, documentação, code review
 │   └── DEVOPS.md               # commits, CI/CD, branching, infra
 ├── skills/
 │   ├── create-issue/
 │   │   └── SKILL.md            # /create-issue
-│   └── example-skill/
-│       └── SKILL.md            # /example-skill
+│   ├── example-skill/
+│   │   └── SKILL.md            # /example-skill
+│   ├── review-pr/
+│   │   └── SKILL.md            # /review-pr
+│   ├── slack-to-issue/
+│   │   └── SKILL.md            # /slack-to-issue
+│   └── start-issue/
+│       └── SKILL.md            # /start-issue
 ├── CLAUDE.md
 ├── CONTEXT.md
 ├── sync.sh                     # script principal de sincronização

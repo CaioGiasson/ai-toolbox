@@ -36,13 +36,12 @@ ci:       configuração de pipeline
 ## 4. Boas Práticas de Infraestrutura
 
 - **Dependências com versão fixa** — nunca `"latest"` no `package.json`.
-- **Crons centralizados** — via `CronManager`, com jobs separados por domínio.
-- **Mensageria isolada** — RabbitMQ em `src/queues/` ou `src/workers/`. Mensagens persistentes.
-- **Graceful shutdown** — fechar conexões de DB e filas antes do processo encerrar.
+- **Crons centralizados** — em `scripts/cron/`, com jobs separados por domínio.
+- **Graceful shutdown** — fechar conexões de DB antes do processo encerrar.
 
 ### Twelve-Factor App
 - Config via variáveis de ambiente.
-- Backing services (banco, fila, cache) como recursos substituíveis via URL.
+- Backing services (banco, cache) como recursos substituíveis via URL.
 - Dev/prod parity — ambientes o mais parecidos possível.
 - Logs para stdout.
 - Startup rápido e graceful shutdown.
