@@ -6,6 +6,15 @@
 
 O `ai-toolbox` é um conjunto de ferramentas de IA (instruções, guidelines e skills do Claude Code) para otimizar o desenvolvimento de software. Ele não pertence a nenhum produto ou sistema específico: o conteúdo aqui é genérico e reutilizável em qualquer projeto.
 
+## Regras de manutenção do ai-toolbox
+
+Valem para qualquer agente ou pessoa que altere este repositório:
+
+- **Renomear ou remover uma skill ou guideline:** o `sync.sh` só copia, nunca apaga por conta própria. Na mesma PR, adicione o nome **antigo** ao `legacy.txt` (`skill <nome>` ou `guideline <arquivo.md>`); o sync o removerá de `~/.claude`. Nunca apague itens de `~/.claude` manualmente nem edite o `sync.sh` para isso.
+- **Criar uma skill ou guideline:** siga o README (`skills/<nome>/SKILL.md`, referência no `CLAUDE.md` com o gatilho de leitura). Se o nome já constar no `legacy.txt`, remova a linha de lá.
+- **Renomear uma skill:** atualize também as referências cruzadas em outras skills, no `README.md` (estrutura de pastas) e nos exemplos.
+- **Antes de abrir a PR:** rode `bash -n sync.sh` se o script foi alterado e valide com `HOME` temporário, sem tocar no `~/.claude` real.
+
 ## Padrões de comunicação
 
 - Issues e PRs em português (pt-BR).
