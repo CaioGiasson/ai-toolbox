@@ -211,12 +211,13 @@ Para cada arquivo alterado, avalie:
 - Nomenclatura e código limpo
 - TypeScript (uso de `any`, tipagem, interfaces)
 - Funções e métodos (responsabilidade única, parâmetros)
-- Tratamento de erros (classes específicas, não `throw new Error` direto)
+- Tratamento de erros (classes específicas da hierarquia `AppError`, em vez de `throw new Error` genérico)
 - Segurança (validação de inputs, sem hardcode de secrets)
 - Performance (N+1, paginação, cache)
-- APIs REST (convenções, status codes)
-- Banco de dados (soft delete, transações, índices)
-- Observabilidade (logs estruturados, sem `console.log`, sem dados sensíveis)
+- APIs REST (convenções, status codes, `ApiPresenter`; endpoint criado/alterado com `docs/openapi.yaml` + `requests/*.http` + `requests/README.md` atualizados — bloqueador quando ausente)
+- Banco de dados (soft delete preferido considerando campo ausente/null no Mongo, transações, índices)
+- Observabilidade (logger da aplicação, sem `console.log`, sem dados sensíveis)
+- i18n (textos de UI nos catálogos de todos os idiomas, quando houver UI)
 - Variáveis de ambiente (sem hardcode, validação na inicialização)
 
 **Baseado em `CONVENTIONS.md`:**

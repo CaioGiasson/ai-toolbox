@@ -86,6 +86,8 @@ Continuando com o GitHub CLI como fallback...
 
 ## FASE 2 — Preparação
 
+0. Faça o assignee da issue ao usuário que está iniciando o desenvolvimento (`gh issue edit <número> --add-assignee @me`). Perguntas e respostas feitas durante o desenvolvimento devem ser registradas como comentários na issue.
+
 1. Se existir `tasks/lessons.md` no repositório atual, leia-o antes de qualquer ação.
 
 2. Leia os arquivos de guidelines em `~/.claude/guidelines/` indicados na seção `### Antes de começar` do prompt da issue. Se essa seção não estiver presente, leia por padrão:
@@ -196,10 +198,12 @@ Revise toda a implementação (código e testes) contra os guidelines lidos na F
 ### Classificação de problemas
 
 **Crítico** — deve ser corrigido automaticamente:
-- Violação do fluxo de camadas (controller com lógica de negócio, `req`/`res` em useCases, etc.)
+- Violação do fluxo de camadas (controller com lógica de negócio, `req`/`res` em useCases, Prisma fora de repository, etc.)
+- Endpoint criado/alterado sem `docs/openapi.yaml` + `requests/*.http` atualizados (quando o repositório adota esse contrato)
+- Texto de UI hardcoded fora dos catálogos i18n (quando o repositório usa i18n)
 - Uso de `any` explícito ou implícito
-- `throw new Error` direto sem classe de erro específica
-- `console.log` no código de produção
+- `throw new Error` genérico quando existe classe adequada na hierarquia `AppError`
+- `console.log` no código de produção (usar o logger da aplicação)
 - URL hardcoded
 - Dado sensível exposto em log ou resposta
 - Validação ausente em boundary externo
@@ -288,6 +292,10 @@ Closes #<número da issue>
 EOF
 )"
 ```
+
+Se o repositório possuir `.github/pull_request_template.md`, siga a estrutura dele no corpo da PR (preservando `Closes #<número>`).
+
+Se o repositório definir fluxo de review de PR (ex: `docs/issue-workflow.md` ou `.cursor/rules/pr-review.mdc`: corrigir bloqueantes/importantes, comentar o pós-review e aplicar a label `Reviewed`), execute-o após abrir a PR.
 
 Após o push e a abertura da PR, exiba:
 ```

@@ -206,24 +206,21 @@ Use o checklist abaixo para verificar:
 
 -   [ ] **Métodos HTTP corretos**: GET, POST, PATCH, PUT, DELETE adequados
 -   [ ] **Status codes apropriados**: Status HTTP refletem resultado
--   [ ] **Documentação**: API documentada (Swagger, etc)
--   [ ] **Respostas consistentes**: Formato de resposta consistente
+-   [ ] **Documentação**: API documentada em `requests/*.http` + inventário em `requests/README.md` **e** `docs/openapi.yaml` (obrigatório; Swagger UI consome o YAML)
+-   [ ] **Respostas consistentes**: Formato `ApiPresenter` (`success`, `message`, `data` / `code`)
 
 ### ✅ Banco de Dados
 
 -   [ ] **Transações quando necessário**: Operações atômicas usam transações
 -   [ ] **Índices apropriados**: Índices para queries frequentes
--   [ ] **Soft Delete obrigatório**: Todas as deleções devem usar soft delete (padrão da empresa). Hard deletes não são permitidos
+-   [ ] **Soft delete**: preferir `deletedAt`; filtros devem considerar campo **ausente ou null** no Mongo
 
     ```typescript
-    // ❌ Revisar - hard delete não permitido
-    await db.users.delete({ where: { id: userId } })
+    // ❌ Revisar — assume deletedAt sempre presente
+    where: { deletedAt: null }
 
-    // ✅ Aprovar - soft delete
-    await db.users.update({
-    	where: { id: userId },
-    	data: { deletedAt: new Date() },
-    })
+    // ✅ Aprovar
+    where: { OR: [{ deletedAt: null }, { deletedAt: { isSet: false } }] }
     ```
 
 ### ✅ Testes
@@ -245,56 +242,20 @@ Use o checklist abaixo para verificar:
 
 ### ✅ Observabilidade e Logging
 
--   [ ] **Logs estruturados**: Logs em formato estruturado (JSON)
+-   [ ] **Logger da aplicação** (ex: `LogManager`) — não `console.log` em código de app
 
     ```typescript
     // ❌ Revisar
     console.log('User created', userId)
 
     // ✅ Aprovar
-    logger.info('User created', {
-    	userId,
-    	timestamp: new Date().toISOString(),
-    	action: 'user.create',
-    })
+    LogManager.info('User created', { userId })
     ```
 
--   [ ] **Níveis de log**: Uso adequado de debug, info, warn, error
+-   [ ] **Níveis de log**: Uso adequado de info, warn, error
 -   [ ] **Contexto nos logs**: Logs incluem contexto suficiente
 -   [ ] **Sem dados sensíveis**: Credenciais não aparecem em logs
--   [ ] **Métricas customizadas**: Pontos críticos (ex: tempo de resposta de serviços externos, contagem de eventos de negócio) têm métricas customizadas implementadas (Prometheus, OpenTelemetry Collector, etc)
-
-    ```typescript
-    // ✅ Aprovar - com métricas
-    const startTime = Date.now()
-    const result = await externalService.call()
-    const duration = Date.now() - startTime
-
-    metrics.histogram('external_service.duration', duration, {
-    	service: 'externalService',
-    	endpoint: '/api/data',
-    })
-    ```
-
--   [ ] **Tracing distribuído**: Se a arquitetura usa tracing (OpenTelemetry), o novo código propaga o contexto de trace corretamente entre serviços
-
-    ```typescript
-    // ✅ Aprovar - propagando trace context
-    const headers = {
-    	traceparent: traceContext.traceparent,
-    	tracestate: traceContext.tracestate,
-    }
-    await fetch('https://external-api.com', { headers })
-    ```
-
--   [ ] **Feature flags**: Novas funcionalidades que precisam ser liberadas gradualmente ou desativadas rapidamente usam feature flags corretamente
-    ```typescript
-    // ✅ Aprovar - com feature flag
-    if (featureFlags.isEnabled('new-payment-flow')) {
-    	return await newPaymentFlow()
-    }
-    return await legacyPaymentFlow()
-    ```
+-   [ ] **Métricas / tracing / feature flags** — desejável; não bloquear PR por ausência salvo aceite explícito
 
 ### ✅ Variáveis de Ambiente
 
@@ -330,13 +291,14 @@ Use o checklist abaixo para verificar:
 -   [ ] **README atualizado**: Mudanças significativas documentadas
 -   [ ] **Comentários em código complexo**: Código complexo comentado
 -   [ ] **Documentação de API**: API documentada (Swagger, etc)
--   [ ] **Changelog (Início de Implementação)**: Mudanças significativas devem ser registradas no `CHANGELOG.md`. Nota: Esta é uma nova prática que deve ser implementada nos serviços ativos e futuros. Serviços em fase de implementação inicial podem não ter changelog por enquanto.
+-   [ ] **Comentários em pt-BR**: explicam regras de negócio não óbvias
+-   [ ] **Contrato HTTP e i18n**: `requests/` + OpenAPI atualizados; textos de UI nos catálogos de todos os idiomas quando houver UI
 
 ### ✅ Qualidade de Código
 
 -   [ ] **Lint passou**: Linter configurado e passando
 -   [ ] **Formatação consistente**: Código formatado (Prettier)
--   [ ] **Usar Logger Estruturado**: Garantir que o logger da aplicação seja usado em vez de `console.log`, conforme detalhado na seção **Observabilidade e Logging**
+-   [ ] **Logger da aplicação** — não `console.log` (ver Observabilidade acima)
 -   [ ] **Imports organizados**: Imports organizados e sem duplicatas
 
 ## 💬 Como Dar Feedback

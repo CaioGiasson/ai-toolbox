@@ -11,8 +11,8 @@
 | Arquivos de infraestrutura (repositories, services, types) | camelCase pela entidade | `person.repository.ts` |
 | Entidades no banco | PascalCase, singular | `User`, `BatchDebt` |
 
-- **Código em inglês** — variáveis, funções, tipos e todo código executável.
-- **Comunicação humana em português** — comentários, commits, PRs, documentação, OpenAPI.
+- **Código em inglês** — variáveis, funções, tipos, nomes de arquivo executável e todo código compilável.
+- **Comunicação humana em português (pt-BR)** — comentários no código, mensagens de commit, descrições de PR, documentação, issues e OpenAPI.
 - **Nunca abreviar nomes** — clareza tem precedência sobre brevidade.
 - **Funções com responsabilidade única** — evitar funções com dupla finalidade (`getOrCreate` → separar em `get` e `create`).
 - **Constantes no topo do arquivo** — declarar em UPPER_SNAKE_CASE no início do módulo.

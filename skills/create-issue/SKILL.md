@@ -216,6 +216,8 @@ Crie uma issue no repositório principal informado pelo usuário com o seguinte 
 **Título:** `[FEATURE] <título claro e direto da funcionalidade>`
 (ajuste o prefixo conforme o tipo: `[BUG]`, `[MELHORIA]`, `[DIVIDA-TECNICA]`)
 
+**Label:** toda issue recebe a label correspondente ao tipo. Se não existir label adequada, pergunte ao usuário qual criar, crie-a e só então associe.
+
 **Corpo:**
 
 ```markdown
@@ -297,29 +299,30 @@ Issue principal: <owner>/<repo>#<número>
 
 **Código e arquitetura**
 - [ ] Nomenclatura segue as convenções de mercado (camelCase, PascalCase, UPPER_SNAKE_CASE)
-- [ ] Fluxo de camadas respeitado (middleware → controller → useCase → services/repositories)
+- [ ] Fluxo de camadas respeitado (rota → controller → useCase → services/repositories)
 - [ ] Controllers sem lógica de negócio
-- [ ] `req`/`res` não propagados para camadas internas
+- [ ] `req`/`res` (ou `NextRequest`/`NextResponse`) não propagados para camadas internas
 
 <!-- Se envolver rotas HTTP -->
 **API** *(quando aplicável)*
 - [ ] Rota segue convenções REST (verbo correto, recurso no plural, versionamento)
-- [ ] OpenAPI atualizado
-- [ ] Arquivo `.http` criado em `requests/`
-- [ ] Autenticação via middleware, não no controller
+- [ ] `docs/openapi.yaml` atualizado
+- [ ] Arquivo `.http` criado/atualizado em `requests/` e inventário em `requests/README.md` atualizado
+- [ ] Autenticação via middleware/helper de sessão, não implementada no controller
+- [ ] Autorização nos use cases
 
 <!-- Se envolver persistência -->
 **Persistência** *(quando aplicável)*
 - [ ] Prisma confinado ao repositório
-- [ ] Soft delete implementado via `deletedAt`
+- [ ] Soft delete via `deletedAt` (preferido), com filtro que considera campo ausente/null no Mongo
 - [ ] Transação usada em operações com múltiplas escritas
-- [ ] Query de listagem com paginação
+- [ ] Query de listagem com paginação (cursor + `nextCursor`)
 
 <!-- Se envolver erros ou validação -->
 **Erros e validação** *(quando aplicável)*
-- [ ] Classes de erro específicas criadas (sem `throw new Error` direto)
-- [ ] Validação de formato no controller, regras de domínio no useCase
-- [ ] Resposta de erro no formato `{ success, message, code }`
+- [ ] Classes de erro específicas da hierarquia `AppError` (em vez de `throw new Error` genérico)
+- [ ] Validação de formato (Zod) no controller, regras de domínio no useCase
+- [ ] Resposta de erro no formato `{ success: false, message, code }`
 
 <!-- Se envolver integrações externas -->
 **Integrações** *(quando aplicável)*
@@ -328,7 +331,8 @@ Issue principal: <owner>/<repo>#<número>
 - [ ] Dados externos convertidos para modelos internos antes de sair do service
 
 **Qualidade**
-- [ ] Testes escritos para os useCases e policies afetados
+- [ ] Testes escritos para os useCases, middlewares e regras de autorização afetados
+- [ ] Textos de UI nos catálogos de todos os idiomas (i18n), quando houver UI
 - [ ] Nenhum `console.log` adicionado — usar LogManager
 - [ ] Nenhum dado sensível logado
 

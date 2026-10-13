@@ -7,6 +7,8 @@
 ```
 AppError
   ├── ClientError     → dados inválidos do cliente (HTTP 4xx)
+  │     ├── ValidationError, NotFoundError, UnauthorizedError
+  │     └── ForbiddenError, ConflictError, TooManyRequestsError (+ Retry-After)
   ├── DomainError     → regras de negócio (HTTP 4xx, ex: 409/422)
   │     └── UseCaseError
   └── InfraError      → falhas de infraestrutura (HTTP 5xx)
@@ -15,7 +17,7 @@ AppError
         └── IntegrationError
 ```
 
-- **Nunca usar `throw new Error` diretamente** — criar classes específicas por contexto.
+- **Preferir subclasses tipadas a `throw new Error` genérico** — criar classes específicas por contexto.
 
 ```ts
 export class UserNotFoundError extends DomainError {
@@ -26,17 +28,17 @@ export class UserNotFoundError extends DomainError {
 }
 ```
 
-- **Resposta de erro padronizada** — todas as rotas retornam `{ success, message, code }`.
-- **Global error handler** — manter handler de fallback no `app.ts` para erros não capturados.
+- **Resposta de erro padronizada** — todas as rotas retornam `{ success: false, message, code }`.
+- **Handler central de rotas** — converte `AppError` em JSON; erros não mapeados viram 500 com mensagem genérica, sem vazar stack ao cliente.
 - **`catch (error: unknown)`** — nunca `catch (error: any)`.
-- **Try/catch obrigatório em integrações externas** — toda chamada a serviços externos tem tratamento de erro.
+- **Try/catch obrigatório em integrações externas** — toda chamada a serviços externos tem timeout e tratamento de erro (erro tipado); aplicar retry com jitter em 429/5xx transitórios e circuit breaker em dependências críticas.
 
 ---
 
 ## 2. Validação
 
 - **Validar em duas etapas:**
-  - **Controller** — formato e estrutura (schema/DTO).
+  - **Controller / rota** — formato e estrutura (Zod: body, query, params).
   - **UseCase** — regras de domínio.
 - **Nenhum dado não validado chega à lógica de negócio** — validar body, query params, path params e headers.
 - **Centralizar validações reutilizáveis** — regras como CPF, telefone, email em módulos dedicados.
