@@ -1,0 +1,14 @@
+# Itens que existiram no ai-toolbox e foram removidos ou renomeados.
+# O sync.sh apaga estes itens de ~/.claude na próxima sincronização.
+#
+# Formato (um por linha):  <tipo> <nome>
+#   skill      <nome-do-diretorio-da-skill>
+#   guideline  <arquivo.md>
+#
+# Ao renomear ou remover uma skill/guideline, adicione o nome ANTIGO aqui.
+# Itens que ainda existem no repositório são ignorados (proteção contra erro).
+
+skill create-issue
+skill start-issue
+skill review-pr
+skill slack-to-issue
