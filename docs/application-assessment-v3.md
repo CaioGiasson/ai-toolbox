@@ -841,6 +841,19 @@ Registrar no relatório a versão efetivamente usada de cada referência. Versõ
 - [ ] 🆕 **AIR-14.02 · Ciclo de aprendizado** `[A]` — cada erro recorrente de agente gera uma correção sistêmica: regra de lint, teste, tipo, skill ou ajuste de instrução — nesta ordem de preferência. Existe registro dessas melhorias.
 - [ ] 🆕 **AIR-14.03 · Avaliação de tarefas de referência** `[R]` — um conjunto pequeno de tarefas representativas do repositório (ex.: “adicionar campo ao endpoint X com teste e migration”) é usado periodicamente para avaliar se mudanças em instruções, skills ou ferramentas melhoram ou pioram o resultado e o consumo de tokens.
 
+
+### 15. 🆕 Complementos de documentação e higiene do repositório
+
+> Itens incorporados a partir do assessment de AI-readiness do vitraux, não cobertos explicitamente pelas seções anteriores.
+
+- [ ] 🆕 **AIR-15.01 · CONTRIBUTING** `[M]` — `CONTRIBUTING.md` (ou seção equivalente) descreve como instalar, configurar o ambiente, rodar testes e lint, nomear branches, escrever commits e abrir PR — para humanos e agentes.
+- [ ] 🆕 **AIR-15.02 · `.env.example` completo** `[A]` — todas as variáveis de ambiente lidas pelo código (`process.env.*` ou equivalente) estão no `.env.example` com comentário de finalidade e valores fictícios; nenhuma variável usada falta no exemplo e nenhum valor real está versionado.
+- [ ] 🆕 **AIR-15.03 · Índice de scripts operacionais** `[M]` — cada script do `package.json` (ou Makefile/equivalente) e cada script em `scripts/` está listado em um índice (`scripts/README.md` ou seção do README) com efeito, riscos e se é destrutivo/seguro em produção.
+- [ ] 🆕 **AIR-15.04 · Catálogos de texto centralizados** `[M]` *(Se: o produto é multilíngue ou tem UI com textos)* — textos visíveis ao usuário ficam em catálogos centralizados e tipados (ex.: next-intl, i18next), com chaves presentes em todos os idiomas; não há strings de UI hardcoded em componentes.
+- [ ] 🆕 **AIR-15.05 · Templates de issue** `[M]` — existem templates de issue (bug, feature) que exigem objetivo, critérios de aceite e escopo, e as issues recentes seguem esse formato em vez de one-liners.
+- [ ] 🆕 **AIR-15.06 · Assessments e relatórios com códigos estáveis** `[M]` — assessments e relatórios (segurança, privacidade, performance, AI readiness) são versionados no repositório com IDs estáveis por item, permitindo que agentes citem e atualizem o status sem reescrever prosa.
+- [ ] 🆕 **AIR-15.07 · Separação app × operação × docs** `[M]` — código de runtime da aplicação, scripts de operação/CLI e documentação ficam em diretórios separados e declarados; scripts de operador não são importados pelo código da aplicação.
+
 ---
 ## Anexo A — Registro de mudanças em relação à v2
 
@@ -901,6 +914,12 @@ Registrar no relatório a versão efetivamente usada de cada referência. Versõ
 |---|---|
 | “inputs do usuário fornecidos ao modelo de IA passam por sanitização prévia (ex: NeMo Guardrails) para evitar jailbreaks” | Premissa incorreta: sanitização de texto **não** impede prompt injection de forma confiável; manter o trecho levaria a marcar “Atende” com um controle insuficiente. Substituído por defesa em camadas em SEC-10.01. A menção a um produto específico foi removida para manter o checklist neutro em relação a fornecedores. |
 | “A introspecção do GraphQL é estritamente desabilitada em produção” (redação absoluta) | Ver A.4 (SEC-5.15). |
+
+### A.7 Itens adicionados após a publicação da v3
+
+| Itens | Origem | Motivo |
+|---|---|---|
+| AIR-15.01 a AIR-15.07 | Assessment de AI-readiness do vitraux (AGENT-03, DOC-05, SCRIPT-01/02, I18N-01, TOOL-04, CTX-03, STRUCT-05) | Controles de documentação e higiene do repositório que o v3 não cobria explicitamente. Os demais itens daquele assessment já estavam cobertos pelos itens AIR existentes. |
 
 ### A.6 Principais adições por pilar
 

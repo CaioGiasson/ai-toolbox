@@ -88,19 +88,8 @@ GUIDE = {
  'AIR-12': "Procure planos/specs versionados, ADRs, `tasks/lessons.md` ou equivalente e o fluxo de especificação antes do código.",
  'AIR-13': "Verifique templates de PR/issue, tamanho típico das PRs (`gh pr list`), revisão humana + automatizada documentada e checkpoints/rollback.",
  'AIR-14': "Procure métricas de efetividade de agentes, registro de melhorias sistêmicas após erros recorrentes e tarefas de referência para avaliação.",
- 'AIR-15': "Itens complementares derivados do assessment de AI-readiness usado no vitraux. Verifique os arquivos citados diretamente no repositório.",
+ 'AIR-15': "Verifique diretamente os arquivos citados em cada item (`CONTRIBUTING.md`, `.env.example` × `process.env.*` no código, índice de scripts, catálogos de i18n, `.github/ISSUE_TEMPLATE`, `docs/assessments/`, estrutura de pastas).",
 }
-
-# Itens complementares de AI Readiness (derivados do AI-READINESS-ASSESSMENT do vitraux, não cobertos explicitamente pelo v3)
-AIR_EXTRA = [
- ('AIR-15.01', 'CONTRIBUTING', 'M', None, "`CONTRIBUTING.md` (ou seção equivalente) descreve como instalar, configurar o ambiente, rodar testes e lint, nomear branches, escrever commits e abrir PR — para humanos e agentes."),
- ('AIR-15.02', '`.env.example` completo', 'A', None, "Todas as variáveis de ambiente lidas pelo código (`process.env.*` ou equivalente) estão no `.env.example` com comentário de finalidade e valores fictícios; nenhuma variável usada falta no exemplo e nenhum valor real está versionado."),
- ('AIR-15.03', 'Índice de scripts operacionais', 'M', None, "Cada script do `package.json` (ou Makefile/equivalente) e cada script em `scripts/` está listado em um índice (`scripts/README.md` ou seção do README) com efeito, riscos e se é destrutivo/seguro em produção."),
- ('AIR-15.04', 'Catálogos de texto centralizados', 'M', 'o produto é multilíngue ou tem UI com textos', "Textos visíveis ao usuário ficam em catálogos centralizados e tipados (ex.: next-intl, i18next), com chaves presentes em todos os idiomas; não há strings de UI hardcoded em componentes."),
- ('AIR-15.05', 'Templates de issue', 'M', None, "Existem templates de issue (bug, feature) que exigem objetivo, critérios de aceite e escopo, e as issues recentes seguem esse formato em vez de one-liners."),
- ('AIR-15.06', 'Assessments e relatórios com códigos estáveis', 'M', None, "Assessments e relatórios (segurança, privacidade, performance, AI readiness) são versionados no repositório com IDs estáveis por item, permitindo que agentes citem e atualizem o status sem reescrever prosa."),
- ('AIR-15.07', 'Separação app × operação × docs', 'M', None, "Código de runtime da aplicação, scripts de operação/CLI e documentação ficam em diretórios separados e declarados; scripts de operador não são importados pelo código da aplicação."),
-]
 
 ITEM_RE = re.compile(r'^- \[ \] (?:🆕 |✎ )*\*\*(?P<id>[A-Z]+-\d+\.\d+) · (?P<title>.+?)\*\* `\[(?P<sev>[BAMR])\]`(?P<rest>.*)$')
 COND_RE = re.compile(r'\*\(Se: (.+?)\)\*')
@@ -159,7 +148,7 @@ def parse(lines):
     return pillars
 
 
-def render(code, P, extra=None):
+def render(code, P):
     _, skill, name, prefix = P['meta']
     out = []
     counts = Counter()
@@ -177,8 +166,6 @@ def render(code, P, extra=None):
         out.extend(P['intro'])
         out.append('')
     secs = list(P['sections'])
-    if extra:
-        secs.append({'num': '15', 'title': 'Complementos (base: AI-READINESS-ASSESSMENT do vitraux)', 'notes': [], 'items': extra})
     for s in secs:
         key = f"{prefix}-{s['num']}"
         out.append(f"## {prefix}-{s['num']}. {s['title']}\n")
@@ -192,9 +179,6 @@ def render(code, P, extra=None):
             if isinstance(it, tuple) and it[0] == 'SUB':
                 out.append(f"### {it[1]}\n")
                 continue
-            if isinstance(it, tuple):
-                iid, title, sev, cond, text = it
-                it = {'id': iid, 'title': title, 'sev': sev, 'cond': cond, 'legal': None, 'text': text}
             label, w = SEV[it['sev']]
             counts[label] += 1
             meta = [f"**{label}** (peso {w}, origem `[{it['sev']}]`)"]
@@ -220,7 +204,7 @@ lines = open(SRC, encoding='utf-8').read().splitlines()
 pillars = parse(lines)
 grand = 0
 for code, P in pillars.items():
-    total, counts = render(code, P, AIR_EXTRA if code == 'AIR' else None)
+    total, counts = render(code, P)
     grand += total
     print(code, total, dict(counts))
-print('itens no fonte:', sum(1 for l in lines if l.startswith('- [ ]')), '| gerados (sem extras):', grand - len(AIR_EXTRA))
+print('itens no fonte:', sum(1 for l in lines if l.startswith('- [ ]')), '| gerados:', grand)

@@ -326,9 +326,11 @@ cada erro recorrente de agente gera uma correção sistêmica: regra de lint, te
 **Menor** (peso 1, origem `[R]`)  
 um conjunto pequeno de tarefas representativas do repositório (ex.: “adicionar campo ao endpoint X com teste e migration”) é usado periodicamente para avaliar se mudanças em instruções, skills ou ferramentas melhoram ou pioram o resultado e o consumo de tokens.
 
-## AIR-15. Complementos (base: AI-READINESS-ASSESSMENT do vitraux)
+## AIR-15. Complementos de documentação e higiene do repositório
 
-**Como verificar:** Itens complementares derivados do assessment de AI-readiness usado no vitraux. Verifique os arquivos citados diretamente no repositório.
+**Como verificar:** Verifique diretamente os arquivos citados em cada item (`CONTRIBUTING.md`, `.env.example` × `process.env.*` no código, índice de scripts, catálogos de i18n, `.github/ISSUE_TEMPLATE`, `docs/assessments/`, estrutura de pastas).
+
+> Itens incorporados a partir do assessment de AI-readiness do vitraux, não cobertos explicitamente pelas seções anteriores.
 
 #### AIR-15.01 · CONTRIBUTING
 **Menor** (peso 1, origem `[M]`)  
@@ -336,24 +338,24 @@ um conjunto pequeno de tarefas representativas do repositório (ex.: “adiciona
 
 #### AIR-15.02 · `.env.example` completo
 **Importante** (peso 2, origem `[A]`)  
-Todas as variáveis de ambiente lidas pelo código (`process.env.*` ou equivalente) estão no `.env.example` com comentário de finalidade e valores fictícios; nenhuma variável usada falta no exemplo e nenhum valor real está versionado.
+todas as variáveis de ambiente lidas pelo código (`process.env.*` ou equivalente) estão no `.env.example` com comentário de finalidade e valores fictícios; nenhuma variável usada falta no exemplo e nenhum valor real está versionado.
 
 #### AIR-15.03 · Índice de scripts operacionais
 **Menor** (peso 1, origem `[M]`)  
-Cada script do `package.json` (ou Makefile/equivalente) e cada script em `scripts/` está listado em um índice (`scripts/README.md` ou seção do README) com efeito, riscos e se é destrutivo/seguro em produção.
+cada script do `package.json` (ou Makefile/equivalente) e cada script em `scripts/` está listado em um índice (`scripts/README.md` ou seção do README) com efeito, riscos e se é destrutivo/seguro em produção.
 
 #### AIR-15.04 · Catálogos de texto centralizados
 **Menor** (peso 1, origem `[M]`) · Condicional — *Se: o produto é multilíngue ou tem UI com textos*  
-Textos visíveis ao usuário ficam em catálogos centralizados e tipados (ex.: next-intl, i18next), com chaves presentes em todos os idiomas; não há strings de UI hardcoded em componentes.
+textos visíveis ao usuário ficam em catálogos centralizados e tipados (ex.: next-intl, i18next), com chaves presentes em todos os idiomas; não há strings de UI hardcoded em componentes.
 
 #### AIR-15.05 · Templates de issue
 **Menor** (peso 1, origem `[M]`)  
-Existem templates de issue (bug, feature) que exigem objetivo, critérios de aceite e escopo, e as issues recentes seguem esse formato em vez de one-liners.
+existem templates de issue (bug, feature) que exigem objetivo, critérios de aceite e escopo, e as issues recentes seguem esse formato em vez de one-liners.
 
 #### AIR-15.06 · Assessments e relatórios com códigos estáveis
 **Menor** (peso 1, origem `[M]`)  
-Assessments e relatórios (segurança, privacidade, performance, AI readiness) são versionados no repositório com IDs estáveis por item, permitindo que agentes citem e atualizem o status sem reescrever prosa.
+assessments e relatórios (segurança, privacidade, performance, AI readiness) são versionados no repositório com IDs estáveis por item, permitindo que agentes citem e atualizem o status sem reescrever prosa.
 
 #### AIR-15.07 · Separação app × operação × docs
 **Menor** (peso 1, origem `[M]`)  
-Código de runtime da aplicação, scripts de operação/CLI e documentação ficam em diretórios separados e declarados; scripts de operador não são importados pelo código da aplicação.
+código de runtime da aplicação, scripts de operação/CLI e documentação ficam em diretórios separados e declarados; scripts de operador não são importados pelo código da aplicação.
