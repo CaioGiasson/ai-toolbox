@@ -26,6 +26,8 @@ Valem para qualquer agente ou pessoa que altere este repositório:
 
 ## Fluxo de trabalho
 
+Board do ai-toolbox: [https://github.com/users/CaioGiasson/projects/6](https://github.com/users/CaioGiasson/projects/6) — é o board de referência mesmo sendo privado (o repositório é público); issues deste repo são vinculadas a ele.
+
 1. Sem tarefas ad-hoc: refinar → issue no board (com label) → branch → implementar → PR (`Closes #N`).
 2. Branch a partir de `main` (`homolog`, quando existir, é só para QA integrado; não há `develop`).
 3. Commit e push na branch da issue ao concluir (ou em marcos lógicos), sem esperar pedido.
