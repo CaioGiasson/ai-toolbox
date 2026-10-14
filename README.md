@@ -15,11 +15,25 @@
 </tr>
 </table>
 
-**[Install](#how-to-install) · [Before and after](#before-and-after) · [Catalog](#skill-catalog) · [How to use](#how-to-use) · [Update](#how-to-update) · [FAQ](#faq) · [Privacy](#privacy)**
+**[Value](#why-it-matters-for-the-business) · [Install](#how-to-install) · [Before and after](#before-and-after) · [Catalog](#skill-catalog) · [How to use](#how-to-use) · [Update](#how-to-update) · [FAQ](#faq) · [Privacy](#privacy)**
 
 </div>
 
 ---
+
+## Why it matters for the business
+
+**Less rework, more predictable delivery, and risks found before they become incidents.** ai-toolbox turns your team's way of working into something Claude repeats every day, for everyone.
+
+| The everyday problem | What ai-toolbox does | What changes for the business |
+|---|---|---|
+| Vague requests cause back-and-forth and rework | Turns loose ideas and conversations into complete tasks, with a goal, rules and a test script | Fewer questions halfway through and deliveries that are easier to estimate |
+| Everyone works their own way | Everyone follows the same rules, the same steps and the same quality standard | Predictable quality and faster onboarding of new people |
+| Coding, testing and reviewing eats the team's time | Claude implements, writes tests, reviews itself and delivers a ready pull request | The team spends energy on decisions, not repetitive tasks |
+| Security, performance and privacy (LGPD) risks show up late | Health checks with a 0 to 100 score and a prioritized problem list | You see risks before they become incidents and get an action plan in a clear order |
+| Team knowledge lives in a few people's heads | Rules are recorded and versioned, and everyone gets updates with one message | Less dependence on key people |
+
+**Who it's for:** managers and leaders who want predictability, product people who want well-defined tasks, and development teams who want more time for what matters.
 
 ## Before and after
 

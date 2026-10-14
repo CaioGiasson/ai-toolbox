@@ -15,11 +15,25 @@
 </tr>
 </table>
 
-**[Instalar](#como-instalar) · [Antes e depois](#antes-e-depois) · [Catálogo](#catálogo-de-skills) · [Como usar](#como-usar) · [Atualizar](#como-atualizar) · [Dúvidas](#dúvidas-comuns) · [Privacidade](#privacidade)**
+**[Valor](#por-que-isso-importa-para-o-negócio) · [Instalar](#como-instalar) · [Antes e depois](#antes-e-depois) · [Catálogo](#catálogo-de-skills) · [Como usar](#como-usar) · [Atualizar](#como-atualizar) · [Dúvidas](#dúvidas-comuns) · [Privacidade](#privacidade)**
 
 </div>
 
 ---
+
+## Por que isso importa para o negócio
+
+**Menos retrabalho, entregas mais previsíveis e riscos descobertos antes de virarem incidente.** O ai-toolbox transforma o jeito de trabalhar do seu time em algo que o Claude repete todo dia, para todo mundo.
+
+| O problema do dia a dia | O que o ai-toolbox faz | O que muda para o negócio |
+|---|---|---|
+| Pedidos vagos geram idas e vindas e retrabalho | Transforma ideias e conversas soltas em tarefas completas, com objetivo, regras e roteiro de testes | Menos dúvidas no meio do caminho e entregas mais fáceis de estimar |
+| Cada pessoa trabalha de um jeito | Todo mundo usa as mesmas regras, o mesmo passo a passo e o mesmo padrão de qualidade | Qualidade previsível e entrada de novas pessoas mais rápida |
+| Programar, testar e revisar consome o tempo do time | O Claude implementa, cria testes, se revisa e entrega um pedido de revisão pronto | O time gasta energia nas decisões, não nas tarefas repetitivas |
+| Riscos de segurança, desempenho e LGPD aparecem tarde | Check-ups com nota de 0 a 100 e lista de problemas por prioridade | Você enxerga os riscos antes de virarem incidente e tem um plano de ação com ordem clara |
+| O conhecimento do time fica na cabeça de poucas pessoas | As regras ficam registradas e versionadas, e todos recebem as atualizações com uma mensagem | Menos dependência de pessoas-chave |
+
+**Para quem é:** gestores e líderes que querem previsibilidade, pessoas de produto que querem tarefas bem definidas e times de desenvolvimento que querem mais tempo para o que importa.
 
 ## Antes e depois
 
