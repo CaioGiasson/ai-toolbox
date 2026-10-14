@@ -1,0 +1,19 @@
+{
+  "name": "cainitech",
+  "owner": {
+    "name": "cainitech",
+    "url": "https://github.com/CaioGiasson"
+  },
+  "plugins": [
+    {
+      "name": "checkup",
+      "source": "./plugins/checkup",
+      "description": "Scores an application from 0 to 100 on security, performance, privacy (LGPD) and AI readiness, with a prioritized backlog of findings."
+    },
+    {
+      "name": "spec",
+      "source": "./plugins/spec",
+      "description": "From a loose idea to a merged change: refine tasks, implement them, review and approve — on GitHub or without it."
+    }
+  ]
+}

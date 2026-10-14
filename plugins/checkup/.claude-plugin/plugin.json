@@ -1,0 +1,13 @@
+{
+  "name": "checkup",
+  "version": "1.0.0",
+  "description": "Read-only assessments of an application with a 0-100 score, a classification (Dangerous to Platinum) and a prioritized backlog: security, performance, privacy (LGPD), AI readiness, or all four at once (512 criteria).",
+  "author": {
+    "name": "cainitech",
+    "url": "https://github.com/CaioGiasson"
+  },
+  "homepage": "https://github.com/CaioGiasson/cainitech-plugins",
+  "repository": "https://github.com/CaioGiasson/cainitech-plugins",
+  "license": "Apache-2.0",
+  "keywords": ["checkup", "assessment", "security", "performance", "privacy", "lgpd", "ai-readiness", "audit"]
+}
