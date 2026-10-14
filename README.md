@@ -1,162 +1,166 @@
+<p align="right"><b>🇺🇸 English</b> · <a href="README.pt-BR.md">🇧🇷 Português</a></p>
+
 <div align="center">
 
-# Seu Claude, com jeito de time
+# Your Claude, with a team's way of working
 
-**O ai-toolbox ensina o Claude a trabalhar do jeito do seu time: da ideia à tarefa, da tarefa ao código, do código à revisão. Você pede em português. Ele entrega.**
+**ai-toolbox teaches Claude to work the way your team does: from idea to task, from task to code, from code to review. You ask in plain language. It delivers.**
 
 <table>
 <tr>
-<td align="center" width="25%"><h3>10 skills</h3>prontas para usar<br><sub><a href="#catálogo-de-skills">ver catálogo</a></sub></td>
-<td align="center" width="25%"><h3>4 check-ups</h3>segurança, velocidade, LGPD e preparo para IA<br><sub><a href="#check-up-do-sistema">ver como funciona</a></sub></td>
-<td align="center" width="25%"><h3>512 critérios</h3>avaliados no check-up completo<br><sub><a href="#check-up-do-sistema">ver detalhes</a></sub></td>
-<td align="center" width="25%"><h3>1 mensagem</h3>para instalar, direto no chat<br><sub><a href="#como-instalar">ver instalação</a></sub></td>
+<td align="center" width="25%"><h3>10 skills</h3>ready to use<br><sub><a href="#skill-catalog">see catalog</a></sub></td>
+<td align="center" width="25%"><h3>4 health checks</h3>security, speed, privacy (LGPD) and AI readiness<br><sub><a href="#system-health-check">see how it works</a></sub></td>
+<td align="center" width="25%"><h3>512 criteria</h3>assessed in the full health check<br><sub><a href="#system-health-check">see details</a></sub></td>
+<td align="center" width="25%"><h3>1 message</h3>to install, right in the chat<br><sub><a href="#how-to-install">see installation</a></sub></td>
 </tr>
 </table>
 
-**[Instalar](#como-instalar) · [Antes e depois](#antes-e-depois) · [Catálogo](#catálogo-de-skills) · [Como usar](#como-usar) · [Atualizar](#como-atualizar) · [Dúvidas](#dúvidas-comuns) · [Privacidade](#privacidade)**
+**[Install](#how-to-install) · [Before and after](#before-and-after) · [Catalog](#skill-catalog) · [How to use](#how-to-use) · [Update](#how-to-update) · [FAQ](#faq) · [Privacy](#privacy)**
 
 </div>
 
 ---
 
-## Antes e depois
+## Before and after
 
 <table>
 <tr>
-<th width="50%">Sem o ai-toolbox</th>
-<th width="50%">Com o ai-toolbox</th>
+<th width="50%">Without ai-toolbox</th>
+<th width="50%">With ai-toolbox</th>
 </tr>
 <tr>
 <td valign="top">
 
-> "Precisamos de um jeito de baixar a fatura."
+> "We need a way to download the invoice."
 
-Uma frase solta. Cada pessoa entende de um jeito, o desenvolvedor faz perguntas por dias e o resultado depende de quem pegou a tarefa.
+One loose sentence. Everyone reads it differently, the developer asks questions for days, and the result depends on who picked up the task.
 
 </td>
 <td valign="top">
 
-> Tarefa completa no GitHub: objetivo, regras, o que mudar, como testar. Código pronto para revisão e um roteiro de testes na mão.
+> A complete task on GitHub: goal, rules, what to change, how to test. Code ready for review and a test script in hand.
 
-O Claude estuda o sistema, pergunta só o que falta e entrega no padrão do time.
+Claude studies the system, asks only what's missing and delivers to the team's standard.
 
 </td>
 </tr>
 </table>
 
-<sub>Exemplo ilustrativo do tipo de resultado que cada skill produz.</sub>
+<sub>Illustrative example of the kind of result each skill produces.</sub>
 
-**Mesma ideia. Entrega organizada, no padrão do time.**
+**Same idea. Organized delivery, to the team's standard.**
 
-## Como instalar
+## How to install
 
-Você não precisa abrir terminal. Precisa de três coisas instaladas: o **aplicativo Claude** (aba **Code**), o **Git** e o **Node.js**. Se faltar algo, o próprio Claude avisa e te guia.
+You don't need to open a terminal. You need three things installed: the **Claude app** (**Code** tab), **Git** and **Node.js**. If something is missing, Claude tells you and guides you.
 
-1. Abra o aplicativo Claude e entre na aba **Code**.
-2. Escolha a pasta onde ficam os seus projetos (a "pasta pai").
-3. Cole esta mensagem no chat e envie:
+1. Open the Claude app and go to the **Code** tab.
+2. Choose the folder where your projects live (the "parent folder").
+3. Paste this message into the chat and send it:
 
-   > Instale o ai-toolbox: clone https://github.com/CaioGiasson/ai-toolbox.git na pasta atual, rode `npm install` e `npm run sync` dentro dele, e me diga quando terminar.
+   > Install ai-toolbox: clone https://github.com/CaioGiasson/ai-toolbox.git into the current folder, run `npm install` and `npm run sync` inside it, and tell me when it's done.
 
-4. Espere o Claude confirmar e abra uma **nova conversa**. As skills já aparecem na lista.
+4. Wait for Claude to confirm and open a **new conversation**. The skills now show up in the list.
 
-Uma mensagem. Só isso.
+One message. That's it.
 
-<sub>Prefere o terminal? Veja a <a href="docs/TECNICO.md#instalação-via-terminal">instalação técnica</a>.</sub>
+<sub>Prefer the terminal? See the <a href="docs/TECNICO.md#instalação-via-terminal">technical installation</a> (in Portuguese).</sub>
 
-## Como atualizar
+## How to update
 
-Quando o time lançar novidades, abra uma conversa na aba **Code** e envie:
+When the team ships news, open a conversation in the **Code** tab and send:
 
-> Atualize o ai-toolbox: entre na pasta ai-toolbox, rode `git pull` e `npm run sync`.
+> Update ai-toolbox: go into the ai-toolbox folder, run `git pull` and `npm run sync`.
 
-Skills novas e melhorias chegam na hora.
+New skills and improvements arrive right away.
 
-## Como usar
+## How to use
 
-Em qualquer conversa na aba **Code**, digite `/` e escolha a skill na lista. Depois escreva o que precisa em português normal.
+In any conversation in the **Code** tab, type `/` and pick the skill from the list. Then write what you need in plain language.
 
-> `/issue-refine` Quero que o cliente consiga baixar a fatura em PDF na tela de pagamentos.
+> `/issue-refine` I want customers to be able to download their invoice as a PDF on the payments screen.
 
-Se preferir, só descreva o que quer. O Claude também sugere a skill certa.
+Or just describe what you want. Claude also suggests the right skill.
 
-## Catálogo de skills
+> The skills are written for a Portuguese-speaking team, so they work and answer in Brazilian Portuguese by default.
 
-Dez skills em três grupos. Cada uma diz o que faz e qual resultado você recebe.
+## Skill catalog
 
-| Grupo | Para que serve | Skills |
+Ten skills in three groups. Each one says what it does and what result you get.
+
+| Group | What it's for | Skills |
 |---|---|---|
-| **[Da ideia à tarefa](#da-ideia-à-tarefa-pronta)** | Transformar conversa solta em tarefa clara | `/issue-from-thread` · `/issue-refine` |
-| **[Do código à entrega](#do-código-à-entrega)** | Programar, revisar e finalizar | `/issue-start` · `/issue-review` · `/issue-approve` |
-| **[Check-up do sistema](#check-up-do-sistema)** | Medir a saúde do projeto, sem alterar nada | `/eval-security` · `/eval-performance` · `/eval-privacy` · `/eval-ai-readiness` · `/full-assessment` |
+| **[From idea to task](#from-idea-to-ready-task)** | Turn loose conversation into a clear task | `/issue-from-thread` · `/issue-refine` |
+| **[From code to delivery](#from-code-to-delivery)** | Build, review and finish | `/issue-start` · `/issue-review` · `/issue-approve` |
+| **[System health check](#system-health-check)** | Measure project health, changing nothing | `/eval-security` · `/eval-performance` · `/eval-privacy` · `/eval-ai-readiness` · `/full-assessment` |
 
-**O caminho completo de uma tarefa:** `/issue-from-thread` ou `/issue-refine` → `/issue-start` → `/issue-review` → você testa → `/issue-approve`.
+**A task's full path:** `/issue-from-thread` or `/issue-refine` → `/issue-start` → `/issue-review` → you test → `/issue-approve`.
 
-### Da ideia à tarefa pronta
+### From idea to ready task
 
-| Skill | O que faz | O que você recebe |
+| Skill | What it does | What you get |
 |---|---|---|
-| **`/issue-from-thread`** | Lê uma conversa informal (link de thread do Slack, link do Discord ou arquivo `.md`), ignora o ruído e separa decisões de dúvidas e opiniões. | Uma tarefa organizada no quadro do GitHub, sem piadas, gírias nem informações soltas. |
-| **`/issue-refine`** | Pega uma ideia descrita em poucas linhas, estuda o sistema, faz perguntas objetivas e detalha tudo. | Uma tarefa completa no GitHub (objetivo, regras, o que mudar e como testar), clara o bastante para qualquer pessoa executar. Quando envolve vários sistemas, cria uma sub-tarefa para cada um. |
+| **`/issue-from-thread`** | Reads an informal conversation (Slack thread link, Discord link or a `.md` file), drops the noise and separates decisions from doubts and opinions. | An organized task on the GitHub board, with no jokes, slang or loose information. |
+| **`/issue-refine`** | Takes an idea described in a few lines, studies the system, asks focused questions and details everything. | A complete task on GitHub (goal, rules, what to change and how to test), clear enough for anyone to carry out. When several systems are involved, it creates one sub-task for each. |
 
-### Do código à entrega
+### From code to delivery
 
-| Skill | O que faz | O que você recebe |
+| Skill | What it does | What you get |
 |---|---|---|
-| **`/issue-start`** | Recebe o link de uma tarefa, move no quadro para "Em andamento", programa a solução, cria os testes e se revisa sozinha. | Uma *pull request* (pedido de revisão) pronta, com o código em etapas organizadas e um roteiro de testes para você conferir. |
-| **`/issue-review`** | Revisa uma *pull request*: confere se tudo o que foi pedido foi feito, roda os testes e analisa a qualidade do código. | Comentários de revisão publicados no trecho certo do código, depois que você escolhe o que postar. Só corrige algo se você pedir. |
-| **`/issue-approve`** | Entra depois dos seus testes manuais e faz a última revisão antes de finalizar. | Se estiver tudo certo: comentário final, marcação "Reviewed", entrega concluída (*merge*) e limpeza das cópias de trabalho. Se achar problema sério, apenas avisa você e não mexe em nada. |
+| **`/issue-start`** | Takes a task link, moves it on the board to "In progress", builds the solution, writes the tests and reviews its own work. | A ready *pull request* (a request for review), with the code in organized steps and a test script for you to check. |
+| **`/issue-review`** | Reviews a *pull request*: checks that everything requested was done, runs the tests and analyzes code quality. | Review comments posted on the right spot in the code, after you choose what to post. It only fixes something if you ask. |
+| **`/issue-approve`** | Steps in after your manual tests and does the final review before wrapping up. | If all is well: a final comment, a "Reviewed" label, the delivery completed (*merge*) and the working copies cleaned up. If it finds a serious problem, it only tells you and touches nothing. |
 
-### Check-up do sistema
+### System health check
 
-**Só leem e avaliam. Não alteram nada no seu projeto.** Cada check-up entrega um relatório com **nota de 0 a 100**, uma **classificação** e uma **lista de problemas por prioridade**, pronta para virar plano de ação. O relatório fica salvo na pasta `docs/assessments` do projeto avaliado.
+**They only read and assess. They change nothing in your project.** Each health check delivers a report with a **score from 0 to 100**, a **rating** and a **list of problems by priority**, ready to become an action plan. The report is saved in the assessed project's `docs/assessments` folder.
 
-| Skill | O que avalia | Critérios | O que você recebe |
+| Skill | What it assesses | Criteria | What you get |
 |---|---|---:|---|
-| **`/eval-security`** | Segurança: login, proteção de dados, brechas conhecidas, segredos expostos. Serve de preparação para um teste de invasão. | 153 | Nota de segurança e pontos fracos por gravidade. |
-| **`/eval-performance`** | Velocidade, capacidade de crescer, estabilidade e custos de infraestrutura. | 163 | Onde o sistema fica lento ou caro e o que priorizar. |
-| **`/eval-privacy`** | Conformidade com a LGPD: consentimento, direitos dos titulares, guarda de dados pessoais. | 126 | Lacunas legais, cada uma ligada ao artigo da lei. |
-| **`/eval-ai-readiness`** | Quão preparado o projeto está para ser desenvolvido com ajuda de IA: documentação, testes, organização. | 70 | O que melhorar para a IA trabalhar mais rápido e errar menos. |
-| **`/full-assessment`** | Os quatro check-ups de uma vez. | 512 | Os quatro relatórios mais um geral, com nota única, riscos que atravessam as áreas e uma lista única de prioridades. |
+| **`/eval-security`** | Security: login, data protection, known weaknesses, exposed secrets. Works as preparation for a penetration test. | 153 | A security score and weak points by severity. |
+| **`/eval-performance`** | Speed, ability to grow, stability and infrastructure costs. | 163 | Where the system is slow or expensive and what to prioritize. |
+| **`/eval-privacy`** | Compliance with Brazil's LGPD: consent, data subject rights, personal data retention. | 126 | Legal gaps, each tied to its article of the law. |
+| **`/eval-ai-readiness`** | How ready the project is to be developed with AI help: documentation, tests, organization. | 70 | What to improve so AI works faster and makes fewer mistakes. |
+| **`/full-assessment`** | All four health checks at once. | 512 | The four reports plus an overall one, with a single score, risks that cut across areas and one list of priorities. |
 
-Como ler a nota:
+How to read the score:
 
-| Nota | Classificação |
+| Score | Rating |
 |---|---|
-| 90 a 100 | 🏆 Platinum |
-| 70 a 89 | 🥇 Gold |
-| 50 a 69 | 🥈 Silver |
-| 25 a 49 | 🥉 Bronze |
-| 0 a 24 | 🚨 Dangerous |
+| 90 to 100 | 🏆 Platinum |
+| 70 to 89 | 🥇 Gold |
+| 50 to 69 | 🥈 Silver |
+| 25 to 49 | 🥉 Bronze |
+| 0 to 24 | 🚨 Dangerous |
 
-## Antes de usar as skills de tarefas
+## Before using the task skills
 
-As skills `/issue-*` conversam com o GitHub. O Claude usa a conexão com o GitHub que você já tiver e, se não houver, avisa e usa o GitHub CLI (`gh`). Se algo pedir acesso, é só aprovar quando o Claude perguntar.
+The `/issue-*` skills talk to GitHub. Claude uses the GitHub connection you already have and, if there is none, warns you and uses the GitHub CLI (`gh`). If something asks for access, just approve it when Claude asks.
 
-## Dúvidas comuns
+## FAQ
 
-**Preciso saber programar?** Não para instalar nem para usar o refinamento de tarefas e os check-ups.
+**Do I need to know how to code?** Not to install it or to use task refinement and the health checks.
 
-**As skills mudam meu projeto sem avisar?** Os check-ups nunca alteram nada. As demais mostram o que vão fazer e pedem confirmação nas decisões importantes.
+**Do the skills change my project without telling me?** The health checks never change anything. The others show what they will do and ask for confirmation on important decisions.
 
-**A skill não apareceu na lista.** Abra uma nova conversa depois de instalar ou atualizar.
+**The skill didn't show up in the list.** Open a new conversation after installing or updating.
 
-**Quero criar ou editar skills, ou entender a estrutura de pastas.** Veja a [documentação técnica](docs/TECNICO.md).
+**I want to create or edit skills, or understand the folder structure.** See the [technical documentation](docs/TECNICO.md) (in Portuguese).
 
-## Privacidade
+## Privacy
 
-- O ai-toolbox é só um conjunto de arquivos de texto. A instalação **copia** esses arquivos para a pasta `.claude` do seu computador e não envia nada para fora.
-- As skills rodam dentro do seu Claude, com a sua conta e as suas permissões.
-- As skills `/issue-*` leem e escrevem no GitHub porque esse é o trabalho delas, sempre com a sua conta.
+- ai-toolbox is just a set of text files. Installing it **copies** those files to the `.claude` folder on your computer and sends nothing out.
+- The skills run inside your Claude, with your account and your permissions.
+- The `/issue-*` skills read and write on GitHub because that is their job, always with your account.
 
 ---
 
 <div align="center">
 
-**Um time, um jeito de trabalhar. Cada pessoa com o seu Claude.**
+**One team, one way of working. Everyone with their own Claude.**
 
 <sub>
-<a href="docs/TECNICO.md">Documentação técnica</a> ·
+<a href="docs/TECNICO.md">Technical documentation (PT)</a> ·
 <a href="https://github.com/CaioGiasson/ai-toolbox/issues">Issues</a>
 </sub>
 
