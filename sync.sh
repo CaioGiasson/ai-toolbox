@@ -118,15 +118,24 @@ if [[ -d "$SKILLS_SRC" ]]; then
 
     skill_name="$(basename "$skill_dir")"
     dst_skill_dir="$SKILLS_DST/$skill_name"
-    dst_skill_file="$dst_skill_dir/SKILL.md"
 
-    mkdir -p "$dst_skill_dir"
+    # Copia SKILL.md e arquivos de apoio (ex.: references/), preservando a estrutura
+    changed=0
+    while IFS= read -r -d '' src_file; do
+      rel="${src_file#"$skill_dir"}"
+      dst_file="$dst_skill_dir/$rel"
+      if [[ -f "$dst_file" ]] && diff -q "$src_file" "$dst_file" > /dev/null 2>&1; then
+        continue
+      fi
+      mkdir -p "$(dirname "$dst_file")"
+      cp "$src_file" "$dst_file"
+      changed=1
+    done < <(find "$skill_dir" -type f -print0)
 
-    if [[ -f "$dst_skill_file" ]] && diff -q "$skill_dir/SKILL.md" "$dst_skill_file" > /dev/null 2>&1; then
+    if [[ $changed -eq 0 ]]; then
       log_ok "skill/$skill_name já está atualizada"
     else
-      cp "$skill_dir/SKILL.md" "$dst_skill_file"
-      log_ok "skill/$skill_name sincronizada → $dst_skill_file"
+      log_ok "skill/$skill_name sincronizada → $dst_skill_dir"
       ((skill_count++)) || true
     fi
   done
