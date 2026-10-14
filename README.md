@@ -133,6 +133,99 @@ How to read the score:
 | 25 to 49 | 🥉 Bronze |
 | 0 to 24 | 🚨 Dangerous |
 
+## What a health-check result looks like
+
+An example **with made-up data** of `/eval-security` run on a project called `loja-online`. This is the reply that appears in the chat; the full report is saved to a file. Reports are generated in Portuguese, the language the skills were written in.
+
+```text
+# Score Security: 56,1 / 100 — Silver
+
+63 compliant · 28 parciais · 46 não compliant · 16 N/A (153 critérios)
+Evolução: primeira execução
+
+🔴 Críticos não compliant (14):
+  SEC-2.04 · Brute force, credential stuffing e evasão de rate limit
+  SEC-2.05 · MFA
+  SEC-2.08 · Recovery
+  SEC-3.02 · BOLA/IDOR
+  SEC-5.06 · XSS
+  … e mais 9 (lista completa no relatório)
+🟠 Top 5 do backlog por ganho no score:
+  SEC-3.02 · Validar dono do pedido em todas as rotas /orders · +1,0 pt
+  SEC-2.04 · Rate limit por conta e por IP no login · +1,0 pt
+  SEC-2.08 · Token de recuperação de uso único e com expiração · +1,0 pt
+  SEC-2.05 · Oferecer MFA para contas administrativas · +1,0 pt
+  SEC-5.06 · Sanitizar o campo de comentário do produto · +1,0 pt
+
+📄 Relatório: docs/assessments/2026-10-14-security.md
+```
+
+In plain English: the project scored **56.1 out of 100 (Silver)**; 14 critical problems are open, and the list says which ones to fix first and how many points each fix is worth.
+
+<details>
+<summary><b>See an excerpt of the saved report</b></summary>
+
+
+````markdown
+# Score: 56,1 / 100
+## Classificação: Silver
+
+# Assessment de Security — loja-online
+
+| Campo | Valor |
+|---|---|
+| Data | 2026-10-14 |
+| Commit avaliado | `a3f9c21` (branch `main`) |
+| Catálogo | application-assessment v3 — 153 itens (137 aplicáveis, 16 N/A) |
+| Escopo | API Node.js + Next.js + MongoDB; app mobile e LLM fora do escopo (N/A) |
+| Execução anterior | primeira execução |
+
+## Resumo
+
+| Severidade | Compliant | Parcial | Não compliant | N/A | Pontos obtidos / possíveis |
+|---|---:|---:|---:|---:|---:|
+| Crítico | 20 | 9 | 14 | 5 | 73,5 / 129 |
+| Importante | 36 | 17 | 28 | 8 | 89 / 162 |
+| Menor | 7 | 2 | 4 | 3 | 8 / 13 |
+| **Total** | 63 | 28 | 46 | 16 | **170,5 / 304 = 56,1** |
+
+Principais riscos: qualquer cliente logado consegue ver pedidos de outros clientes
+trocando o número na URL; o login não limita tentativas, o que permite adivinhar
+senhas; contas administrativas não exigem segundo fator.
+
+## 1. Itens não compliant
+
+### 1.1 Críticos
+
+#### SEC-3.02 · BOLA/IDOR — Crítico · Não compliant
+
+- **Critério:** toda rota que recebe o identificador de um objeto confirma, no servidor, que o usuário autenticado tem direito a ele.
+- **Situação encontrada:** as rotas de pedidos buscam o registro só pelo `id`, sem comparar com o usuário logado.
+- **Motivo do status:** o controle não existe e não há teste negativo (ASSESSMENT §2 e §3).
+- **Evidência:** `src/modules/orders/orders.controller.ts:58` — `orders.findById(req.params.id)` sem filtro por `userId`; busca `rg "findById\(req.params" src/` → 6 ocorrências, 5 sem verificação de dono.
+- **Componentes afetados:** `GET /orders/:id`, `PATCH /orders/:id`, `GET /orders/:id/invoice` e outras 3 rotas.
+- **Impacto / risco:** um cliente autenticado percorre ids sequenciais e lê nome, endereço e itens de pedidos de terceiros (vazamento de dados pessoais, com impacto na LGPD).
+- **Recomendação:** buscar sempre por `{ id, userId }` na camada de repositório e responder 404 quando não encontrar. Adicionar teste em que o usuário A tenta ler o pedido do usuário B e recebe 404.
+- **Critério de reteste:** teste negativo de acesso cruzado existe e passa no CI para todas as rotas listadas.
+- **Esforço estimado:** P (≤ 1 dia)
+- **Referências:** SEC-3.02 · OWASP API Security Top 10 (API1 — BOLA)
+
+## 5. Backlog sugerido
+
+| Prioridade | ID | Título da tarefa | Severidade | Esforço | Ganho no score |
+|---:|---|---|---|---|---:|
+| 1 | SEC-3.02 | Validar dono do pedido em todas as rotas `/orders` | Crítico | P | +1,0 |
+| 2 | SEC-2.04 | Rate limit por conta e por IP no login | Crítico | P | +1,0 |
+| 3 | SEC-2.08 | Token de recuperação de uso único e com expiração | Crítico | P | +1,0 |
+| 4 | SEC-2.05 | Oferecer MFA para contas administrativas | Crítico | M | +1,0 |
+
+*(…demais seções omitidas neste exemplo)*
+````
+
+</details>
+
+After the report, Claude offers to turn the backlog items into tasks with `/issue-refine`.
+
 ## Before using the task skills
 
 The `/issue-*` skills talk to GitHub. Claude uses the GitHub connection you already have and, if there is none, warns you and uses the GitHub CLI (`gh`). If something asks for access, just approve it when Claude asks.
