@@ -4,12 +4,12 @@
 
 # Seu Claude, com jeito de time
 
-**O ai-toolbox ensina o Claude a trabalhar do jeito do seu time: da ideia à tarefa, da tarefa ao código, do código à revisão. Você pede em português. Ele entrega.**
+**Dois plugins que ensinam o Claude a trabalhar como um time experiente: da ideia à tarefa, da tarefa ao código, do código à revisão, mais um check-up de toda a sua aplicação. Você pede em português. Ele entrega.**
 
 <table>
 <tr>
+<td align="center" width="25%"><h3>2 plugins</h3>instale só o que precisa<br><sub><a href="#catálogo-de-skills">ver catálogo</a></sub></td>
 <td align="center" width="25%"><h3>10 skills</h3>prontas para usar<br><sub><a href="#catálogo-de-skills">ver catálogo</a></sub></td>
-<td align="center" width="25%"><h3>4 check-ups</h3>segurança, velocidade, LGPD e preparo para IA<br><sub><a href="#check-up-do-sistema">ver como funciona</a></sub></td>
 <td align="center" width="25%"><h3>512 critérios</h3>avaliados no check-up completo<br><sub><a href="#check-up-do-sistema">ver detalhes</a></sub></td>
 <td align="center" width="25%"><h3>1 mensagem</h3>para instalar, direto no chat<br><sub><a href="#como-instalar">ver instalação</a></sub></td>
 </tr>
@@ -23,24 +23,26 @@
 
 ## Por que isso importa para o negócio
 
-**Menos retrabalho, entregas mais previsíveis e riscos descobertos antes de virarem incidente.** O ai-toolbox transforma o jeito de trabalhar do seu time em algo que o Claude repete todo dia, para todo mundo.
+**Menos retrabalho, entregas mais previsíveis e riscos descobertos antes de virarem incidente.** Os plugins transformam o jeito de trabalhar do seu time em algo que o Claude repete todo dia, para todo mundo.
 
-| O problema do dia a dia | O que o ai-toolbox faz | O que muda para o negócio |
+| O problema do dia a dia | O que os plugins fazem | O que muda para o negócio |
 |---|---|---|
-| Pedidos vagos geram idas e vindas e retrabalho | Transforma ideias e conversas soltas em tarefas completas, com objetivo, regras e roteiro de testes | Menos dúvidas no meio do caminho e entregas mais fáceis de estimar |
-| Cada pessoa trabalha de um jeito | Todo mundo usa as mesmas regras, o mesmo passo a passo e o mesmo padrão de qualidade | Qualidade previsível e entrada de novas pessoas mais rápida |
+| Pedidos vagos geram idas e vindas e retrabalho | Transformam ideias e conversas soltas em tarefas completas, com objetivo, regras e roteiro de testes | Menos dúvidas no meio do caminho e entregas mais fáceis de estimar |
+| Cada pessoa trabalha de um jeito | Todo mundo segue o mesmo passo a passo e o mesmo padrão de qualidade | Qualidade previsível e entrada de novas pessoas mais rápida |
 | Programar, testar e revisar consome o tempo do time | O Claude implementa, cria testes, se revisa e entrega um pedido de revisão pronto | O time gasta energia nas decisões, não nas tarefas repetitivas |
 | Riscos de segurança, desempenho e LGPD aparecem tarde | Check-ups com nota de 0 a 100 e lista de problemas por prioridade | Você enxerga os riscos antes de virarem incidente e tem um plano de ação com ordem clara |
-| O conhecimento do time fica na cabeça de poucas pessoas | As regras ficam registradas e versionadas, e todos recebem as atualizações com uma mensagem | Menos dependência de pessoas-chave |
+| O conhecimento fica na cabeça de poucas pessoas | Toda tarefa fica registrada na documentação do próprio projeto, com ou sem quadro de tarefas | Menos dependência de pessoas-chave |
 
 **Para quem é:** gestores e líderes que querem previsibilidade, pessoas de produto que querem tarefas bem definidas e times de desenvolvimento que querem mais tempo para o que importa.
+
+**Se adapta ao projeto que você tem:** usa o quadro de tarefas do GitHub quando existe, funciona sem GitHub e, se o projeto não tem nenhum controle de versão, mantém um registro simples das mudanças. Responde no idioma em que você escreve.
 
 ## Antes e depois
 
 <table>
 <tr>
-<th width="50%">Sem o ai-toolbox</th>
-<th width="50%">Com o ai-toolbox</th>
+<th width="50%">Sem os plugins</th>
+<th width="50%">Com os plugins</th>
 </tr>
 <tr>
 <td valign="top">
@@ -52,7 +54,7 @@ Uma frase solta. Cada pessoa entende de um jeito, o desenvolvedor faz perguntas 
 </td>
 <td valign="top">
 
-> Tarefa completa no GitHub: objetivo, regras, o que mudar, como testar. Código pronto para revisão e um roteiro de testes na mão.
+> Tarefa completa: objetivo, regras, o que mudar, como testar — no seu quadro e na sua documentação. Código pronto para revisão e um roteiro de testes na mão.
 
 O Claude estuda o sistema, pergunta só o que falta e entrega no padrão do time.
 
@@ -66,62 +68,65 @@ O Claude estuda o sistema, pergunta só o que falta e entrega no padrão do time
 
 ## Como instalar
 
-Você não precisa abrir terminal. Precisa de três coisas instaladas: o **aplicativo Claude** (aba **Code**), o **Git** e o **Node.js**. Se faltar algo, o próprio Claude avisa e te guia.
+Você não precisa aprender comandos. Precisa do **aplicativo Claude** (aba **Code**). Se faltar mais alguma coisa, o próprio Claude avisa e te guia.
 
 1. Abra o aplicativo Claude e entre na aba **Code**.
-2. Escolha a pasta onde ficam os seus projetos (a "pasta pai").
-3. Cole esta mensagem no chat e envie:
+2. Cole esta mensagem no chat e envie:
 
-   > Instale o ai-toolbox: clone https://github.com/CaioGiasson/ai-toolbox.git na pasta atual, rode `npm install` e `npm run sync` dentro dele, e me diga quando terminar.
+   > Instale os plugins do marketplace CaioGiasson/cainitech-plugins: rode `claude plugin marketplace add CaioGiasson/cainitech-plugins`, depois `claude plugin install checkup@cainitech` e `claude plugin install spec@cainitech`, e me avise quando terminar.
 
-4. Espere o Claude confirmar e abra uma **nova conversa**. As skills já aparecem na lista.
+3. Espere o Claude confirmar e abra uma **nova conversa**. As skills já aparecem quando você digita `/`.
 
-Uma mensagem. Só isso.
+Uma mensagem. Só isso. Quer só os check-ups, ou só o fluxo de tarefas? Peça apenas o `checkup` ou apenas o `spec`.
 
-<sub>Prefere o terminal? Veja a <a href="docs/TECNICO.md#instalação-via-terminal">instalação técnica</a>.</sub>
+**Prefere clicar?** Com o marketplace adicionado (passo 2), clique no botão **+** ao lado da caixa de mensagem, escolha **Plugins** e depois **Add plugin** para instalar, ou **Manage plugins** para ligar, desligar, atualizar ou remover um plugin.
+
+<sub>Prefere o terminal ou o VS Code? Veja a <a href="docs/TECNICO.md">documentação técnica</a>.</sub>
 
 ## Como atualizar
 
-Quando o time lançar novidades, abra uma conversa na aba **Code** e envie:
+Quando sair uma nova versão, abra **+ → Plugins → Manage plugins**, escolha o plugin e clique em **Update now**. Ou envie esta mensagem ao Claude na aba **Code**:
 
-> Atualize o ai-toolbox: entre na pasta ai-toolbox, rode `git pull` e `npm run sync`.
+> Atualize os plugins da cainitech: rode `claude plugin marketplace update cainitech`, depois `claude plugin update checkup@cainitech` e `claude plugin update spec@cainitech`.
 
-Skills novas e melhorias chegam na hora.
+Skills novas e melhorias chegam na hora (abra uma nova conversa para carregá-las).
 
 ## Como usar
 
-Em qualquer conversa na aba **Code**, digite `/` e escolha a skill na lista. Depois escreva o que precisa em português normal.
+Em qualquer conversa na aba **Code**, digite `/` e escolha a skill na lista. As skills de um plugin aparecem como `/<plugin>:<skill>`. Depois escreva o que precisa em português normal.
 
-> `/issue-refine` Quero que o cliente consiga baixar a fatura em PDF na tela de pagamentos.
+> `/spec:refine` Quero que o cliente consiga baixar a fatura em PDF na tela de pagamentos.
 
 Se preferir, só descreva o que quer. O Claude também sugere a skill certa.
 
+> As skills respondem no idioma em que você escreve. Se não conseguirem identificar, usam inglês.
+
 ## Catálogo de skills
 
-Dez skills em três grupos. Cada uma diz o que faz e qual resultado você recebe.
+Dez skills em dois plugins. Cada uma diz o que faz e qual resultado você recebe.
 
-| Grupo | Para que serve | Skills |
-|---|---|---|
-| **[Da ideia à tarefa](#da-ideia-à-tarefa-pronta)** | Transformar conversa solta em tarefa clara | `/issue-from-thread` · `/issue-refine` |
-| **[Do código à entrega](#do-código-à-entrega)** | Programar, revisar e finalizar | `/issue-start` · `/issue-review` · `/issue-approve` |
-| **[Check-up do sistema](#check-up-do-sistema)** | Medir a saúde do projeto, sem alterar nada | `/eval-security` · `/eval-performance` · `/eval-privacy` · `/eval-ai-readiness` · `/full-assessment` |
+| Plugin | Grupo | Para que serve | Skills |
+|---|---|---|---|
+| **`spec`** | **[Da ideia à tarefa](#da-ideia-à-tarefa-pronta)** | Transformar conversa solta em tarefa clara e registrada | `/spec:from-thread` · `/spec:refine` |
+| **`spec`** | **[Do código à entrega](#do-código-à-entrega)** | Programar, revisar e finalizar | `/spec:build` · `/spec:review` · `/spec:approve` |
+| **`checkup`** | **[Check-up do sistema](#check-up-do-sistema)** | Medir a saúde do projeto, sem alterar nada | `/checkup:security` · `/checkup:performance` · `/checkup:privacy` · `/checkup:ai-readiness` · `/checkup:full` |
 
-**O caminho completo de uma tarefa:** `/issue-from-thread` ou `/issue-refine` → `/issue-start` → `/issue-review` → você testa → `/issue-approve`.
+**O caminho completo de uma tarefa:** `/spec:from-thread` ou `/spec:refine` → `/spec:build` → `/spec:review` → você testa → `/spec:approve`.
 
 ### Da ideia à tarefa pronta
 
 | Skill | O que faz | O que você recebe |
 |---|---|---|
-| **`/issue-from-thread`** | Lê uma conversa informal (link de thread do Slack, link do Discord ou arquivo `.md`), ignora o ruído e separa decisões de dúvidas e opiniões. | Uma tarefa organizada no quadro do GitHub, sem piadas, gírias nem informações soltas. |
-| **`/issue-refine`** | Pega uma ideia descrita em poucas linhas, estuda o sistema, faz perguntas objetivas e detalha tudo. | Uma tarefa completa no GitHub (objetivo, regras, o que mudar e como testar), clara o bastante para qualquer pessoa executar. Quando envolve vários sistemas, cria uma sub-tarefa para cada um. |
+| **`/spec:from-thread`** | Lê uma conversa informal (link de thread do Slack, link do Discord ou arquivo `.md`), ignora o ruído e separa decisões de dúvidas e opiniões. | Uma tarefa refinada, registrada na documentação do projeto e, se houver quadro de tarefas no GitHub, criada lá — sem piadas, gírias nem informações soltas. |
+| **`/spec:refine`** | Pega uma ideia descrita em poucas linhas, estuda o sistema, faz perguntas objetivas e detalha tudo. | Uma tarefa completa (objetivo, regras, o que mudar e como testar), clara o bastante para qualquer pessoa executar. Ela é **sempre registrada na documentação do projeto**; se houver quadro, também é criada lá, com uma sub-tarefa para cada sistema envolvido. |
 
 ### Do código à entrega
 
 | Skill | O que faz | O que você recebe |
 |---|---|---|
-| **`/issue-start`** | Recebe o link de uma tarefa, move no quadro para "Em andamento", programa a solução, cria os testes e se revisa sozinha. | Uma *pull request* (pedido de revisão) pronta, com o código em etapas organizadas e um roteiro de testes para você conferir. |
-| **`/issue-review`** | Revisa uma *pull request*: confere se tudo o que foi pedido foi feito, roda os testes e analisa a qualidade do código. | Comentários de revisão publicados no trecho certo do código, depois que você escolhe o que postar. Só corrige algo se você pedir. |
-| **`/issue-approve`** | Entra depois dos seus testes manuais e faz a última revisão antes de finalizar. | Se estiver tudo certo: comentário final, marcação "Reviewed", entrega concluída (*merge*) e limpeza das cópias de trabalho. Se achar problema sério, apenas avisa você e não mexe em nada. |
+| **`/spec:build`** | Recebe uma tarefa, move no quadro para "Em andamento" (se houver quadro), programa a solução, cria os testes e se revisa sozinha. | No GitHub: uma *pull request* (pedido de revisão) pronta, com o código em etapas organizadas e um roteiro de testes para você conferir. Sem GitHub: commits locais organizados. Sem controle de versão: um arquivo de registro com a cópia de cada mudança. |
+| **`/spec:review`** | Revisa uma mudança: confere se tudo o que foi pedido foi feito, roda os testes e analisa a qualidade do código. | Comentários de revisão publicados no trecho certo do código, depois que você escolhe o que postar (sem GitHub, a revisão vem no chat). Só corrige algo se você pedir. |
+| **`/spec:approve`** | Entra depois dos seus testes manuais e faz a última revisão antes de finalizar. | Se estiver tudo certo: no GitHub, comentário final, marcação "Reviewed", entrega concluída (*merge*) e limpeza das cópias de trabalho; sem GitHub, um merge local. Se achar problema sério, apenas avisa você e não mexe em nada. |
 
 ### Check-up do sistema
 
@@ -129,11 +134,11 @@ Dez skills em três grupos. Cada uma diz o que faz e qual resultado você recebe
 
 | Skill | O que avalia | Critérios | O que você recebe |
 |---|---|---:|---|
-| **`/eval-security`** | Segurança: login, proteção de dados, brechas conhecidas, segredos expostos. Serve de preparação para um teste de invasão. | 153 | Nota de segurança e pontos fracos por gravidade. |
-| **`/eval-performance`** | Velocidade, capacidade de crescer, estabilidade e custos de infraestrutura. | 163 | Onde o sistema fica lento ou caro e o que priorizar. |
-| **`/eval-privacy`** | Conformidade com a LGPD: consentimento, direitos dos titulares, guarda de dados pessoais. | 126 | Lacunas legais, cada uma ligada ao artigo da lei. |
-| **`/eval-ai-readiness`** | Quão preparado o projeto está para ser desenvolvido com ajuda de IA: documentação, testes, organização. | 70 | O que melhorar para a IA trabalhar mais rápido e errar menos. |
-| **`/full-assessment`** | Os quatro check-ups de uma vez. | 512 | Os quatro relatórios mais um geral, com nota única, riscos que atravessam as áreas e uma lista única de prioridades. |
+| **`/checkup:security`** | Segurança: login, proteção de dados, brechas conhecidas, segredos expostos. Serve de preparação para um teste de invasão. | 153 | Nota de segurança e pontos fracos por gravidade. |
+| **`/checkup:performance`** | Velocidade, capacidade de crescer, estabilidade e custos de infraestrutura. | 163 | Onde o sistema fica lento ou caro e o que priorizar. |
+| **`/checkup:privacy`** | Conformidade com a LGPD: consentimento, direitos dos titulares, guarda de dados pessoais. | 126 | Lacunas legais, cada uma ligada ao artigo da lei. |
+| **`/checkup:ai-readiness`** | Quão preparado o projeto está para ser desenvolvido com ajuda de IA: documentação, testes, organização. | 70 | O que melhorar para a IA trabalhar mais rápido e errar menos. |
+| **`/checkup:full`** | Os quatro check-ups de uma vez. | 512 | Os quatro relatórios mais um geral, com nota única, riscos que atravessam as áreas e uma lista única de prioridades. |
 
 Como ler a nota:
 
@@ -147,7 +152,7 @@ Como ler a nota:
 
 ## Como é o resultado de um check-up
 
-Exemplo **com dados fictícios** de um `/eval-security` em um projeto chamado `loja-online`. É a resposta que aparece no chat; o relatório completo é salvo em arquivo.
+Exemplo **com dados fictícios** de um `/checkup:security` em um projeto chamado `loja-online`. É a resposta que aparece no chat; o relatório completo é salvo em arquivo.
 
 ```text
 # Score Security: 56,1 / 100 — Silver
@@ -233,11 +238,11 @@ senhas; contas administrativas não exigem segundo fator.
 
 </details>
 
-Depois do relatório, o Claude oferece transformar os itens do backlog em tarefas com `/issue-refine`.
+Depois do relatório, o Claude oferece transformar os itens do backlog em tarefas com `/spec:refine`, se o plugin `spec` estiver instalado.
 
 ## Antes de usar as skills de tarefas
 
-As skills `/issue-*` conversam com o GitHub. O Claude usa a conexão com o GitHub que você já tiver e, se não houver, avisa e usa o GitHub CLI (`gh`). Se algo pedir acesso, é só aprovar quando o Claude perguntar.
+As skills `/spec:*` usam o **quadro de tarefas do GitHub** quando o projeto tem um, pela conexão com o GitHub que você já tiver (ou pelo GitHub CLI, `gh`). Se algo pedir acesso, é só aprovar quando o Claude perguntar. Sem quadro? Elas registram tudo na documentação do projeto e continuam funcionando. Sem GitHub, ou sem nenhum controle de versão? Elas se adaptam (commits locais, ou um arquivo de registro das mudanças).
 
 ## Dúvidas comuns
 
@@ -245,15 +250,21 @@ As skills `/issue-*` conversam com o GitHub. O Claude usa a conexão com o GitHu
 
 **As skills mudam meu projeto sem avisar?** Os check-ups nunca alteram nada. As demais mostram o que vão fazer e pedem confirmação nas decisões importantes.
 
+**Onde o trabalho fica registrado?** Sempre na pasta de documentação do projeto (em `docs/specs/`), com ou sem quadro de tarefas. A única forma de pular o registro é dizer explicitamente ao Claude para não documentar.
+
 **A skill não apareceu na lista.** Abra uma nova conversa depois de instalar ou atualizar.
 
 **Quero criar ou editar skills, ou entender a estrutura de pastas.** Veja a [documentação técnica](docs/TECNICO.md).
 
 ## Privacidade
 
-- O ai-toolbox é só um conjunto de arquivos de texto. A instalação **copia** esses arquivos para a pasta `.claude` do seu computador e não envia nada para fora.
+- Os plugins são só arquivos de texto (instruções para o Claude). Instalá-los **copia** esses arquivos para o seu computador e não executa código próprio.
 - As skills rodam dentro do seu Claude, com a sua conta e as suas permissões.
-- As skills `/issue-*` leem e escrevem no GitHub porque esse é o trabalho delas, sempre com a sua conta.
+- As skills `/spec:*` leem e escrevem no GitHub (e na pasta do seu projeto) porque esse é o trabalho delas, sempre com a sua conta.
+
+## Licença
+
+[Apache-2.0](LICENSE). Uso, cópia e adaptação livres, inclusive comerciais, mantendo o aviso da licença.
 
 ---
 
@@ -263,7 +274,7 @@ As skills `/issue-*` conversam com o GitHub. O Claude usa a conexão com o GitHu
 
 <sub>
 <a href="docs/TECNICO.md">Documentação técnica</a> ·
-<a href="https://github.com/CaioGiasson/ai-toolbox/issues">Issues</a>
+<a href="https://github.com/CaioGiasson/cainitech-plugins/issues">Issues</a>
 </sub>
 
 </div>
