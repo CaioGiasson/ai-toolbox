@@ -43,6 +43,7 @@ Os arquivos abaixo ficam em `~/.claude/guidelines/` e devem ser lidos conforme o
 | `API_AND_SECURITY.md` | Ao criar ou modificar rotas HTTP, integrações externas ou middlewares de autenticação |
 | `QUALITY.md` | Ao escrever testes, finalizar uma feature para PR ou revisar código |
 | `DEVOPS.md` | Ao lidar com commits, branches, CI/CD, Docker ou deploy |
+| `ASSESSMENT.md` | Ao executar `/eval-performance`, `/eval-security`, `/eval-privacy`, `/eval-ai-readiness` ou `/full-assessment`, ou ao interpretar seus relatórios |
 
 Ao entrar em plan mode, ler `CONVENTIONS.md` e `ARCHITECTURE.md` antes de escrever o plano.
 

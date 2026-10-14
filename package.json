@@ -1,6 +1,6 @@
 {
   "name": "ai-toolbox",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Repositório de sincronização de contexto e skills compartilhadas do Claude Code para o time.",
   "private": true,
   "scripts": {

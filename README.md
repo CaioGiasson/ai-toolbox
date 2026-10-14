@@ -9,7 +9,7 @@ Repositório de sincronização de contexto e skills compartilhadas do **Claude 
 | `CLAUDE.md`             | `~/.claude/CLAUDE.md`                | Comportamento, convenções e princípios        |
 | `CONTEXT.md`            | `~/.claude/CONTEXT.md`               | Propósito do repo, comunicação e fluxo        |
 | `guidelines/*.md`       | `~/.claude/guidelines/`              | Guidelines de desenvolvimento por tema        |
-| `skills/<nome>/SKILL.md`| `~/.claude/skills/<nome>/SKILL.md`   | Skills invocáveis via `/<nome>` no Claude Code|
+| `skills/<nome>/`        | `~/.claude/skills/<nome>/`           | Skills invocáveis via `/<nome>` no Claude Code (`SKILL.md` + arquivos de apoio, ex.: `references/`)|
 
 ## Setup inicial (uma vez por máquina)
 
@@ -51,6 +51,18 @@ skills/
 
 A skill estará disponível no Claude Code via `/<nome-da-skill>`.
 
+## Skills de assessment
+
+| Skill | Avalia | Itens |
+|---|---|---:|
+| `/eval-performance` | Performance, escalabilidade, eficiência, CI/CD, FinOps | 163 |
+| `/eval-security` | Segurança (preparação para pentest whitebox) | 153 |
+| `/eval-privacy` | Conformidade LGPD e normas conexas | 126 |
+| `/eval-ai-readiness` | Prontidão do repositório para agentes de IA | 70 |
+| `/full-assessment` | Os quatro pilares + relatório consolidado | 512 |
+
+Cada execução gera um relatório em `docs/assessments/AAAA-MM-DD-<pilar>.md` no repositório avaliado, que começa pelo score (0–100) e pela classificação (Dangerous, Bronze, Silver, Gold, Platinum). Em seguida vêm os itens não compliant, os parciais (Críticos, Importantes e Menores) e os compliant, além de um backlog sugerido. A metodologia está em `guidelines/ASSESSMENT.md`. Os catálogos são gerados a partir de `docs/application-assessment-v3.md` por `scripts/gen-assessment-catalog.py`.
+
 ## Como adicionar uma guideline
 
 1. Crie um arquivo `.md` na pasta `guidelines/`.
@@ -85,8 +97,19 @@ ai-toolbox/
 │   ├── API_AND_SECURITY.md
 │   ├── GUIA_REVISAO_PR_GERAL.md # checklist e formato de code review de PRs
 │   ├── QUALITY.md              # observabilidade, testes, documentação, code review
-│   └── DEVOPS.md               # commits, CI/CD, branching, infra
+│   ├── DEVOPS.md               # commits, CI/CD, branching, infra
+│   └── ASSESSMENT.md           # metodologia, score e relatório das skills de assessment
+├── docs/
+│   └── application-assessment-v3.md # fonte dos catálogos de assessment
+├── scripts/
+│   └── gen-assessment-catalog.py    # gera skills/eval-*/references/checklist.md
 ├── skills/
+│   ├── eval-ai-readiness/      # /eval-ai-readiness (SKILL.md + references/checklist.md)
+│   ├── eval-performance/       # /eval-performance
+│   ├── eval-privacy/           # /eval-privacy
+│   ├── eval-security/          # /eval-security
+│   ├── full-assessment/
+│   │   └── SKILL.md            # /full-assessment
 │   ├── issue-approve/
 │   │   └── SKILL.md            # /issue-approve
 │   ├── issue-refine/
