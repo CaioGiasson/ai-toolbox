@@ -1,131 +1,282 @@
-# ai-toolbox
+<p align="right"><b>🇺🇸 English</b> · <a href="README.pt-BR.md">🇧🇷 Português</a></p>
 
-Repositório de sincronização de contexto e skills compartilhadas do **Claude Code** para times de desenvolvimento, seguindo padrões de mercado.
+<div align="center">
 
-## O que está aqui
+# Your Claude, with a team's way of working
 
-| Arquivo / Pasta         | Destino após sync                    | Finalidade                                    |
-|-------------------------|--------------------------------------|-----------------------------------------------|
-| `CLAUDE.md`             | `~/.claude/CLAUDE.md`                | Comportamento, convenções e princípios        |
-| `CONTEXT.md`            | `~/.claude/CONTEXT.md`               | Propósito do repo, comunicação e fluxo        |
-| `guidelines/*.md`       | `~/.claude/guidelines/`              | Guidelines de desenvolvimento por tema        |
-| `skills/<nome>/`        | `~/.claude/skills/<nome>/`           | Skills invocáveis via `/<nome>` no Claude Code (`SKILL.md` + arquivos de apoio, ex.: `references/`)|
+**Two Claude plugins that teach it to work like an experienced team: from idea to task, from task to code, from code to review, plus a health check for your whole application. You ask in plain language. It delivers.**
 
-## Setup inicial (uma vez por máquina)
+<table>
+<tr>
+<td align="center" width="25%"><h3>2 plugins</h3>install only what you need<br><sub><a href="#skill-catalog">see catalog</a></sub></td>
+<td align="center" width="25%"><h3>10 skills</h3>ready to use<br><sub><a href="#skill-catalog">see catalog</a></sub></td>
+<td align="center" width="25%"><h3>512 criteria</h3>assessed in the full health check<br><sub><a href="#system-health-check">see details</a></sub></td>
+<td align="center" width="25%"><h3>1 message</h3>to install, right in the chat<br><sub><a href="#how-to-install">see installation</a></sub></td>
+</tr>
+</table>
 
-```bash
-git clone git@github.com:CaioGiasson/ai-toolbox.git ~/projects/ai-toolbox
-cd ~/projects/ai-toolbox
-npm install        # instala o husky e registra os hooks
-npm run sync       # sincroniza imediatamente
+**[Value](#why-it-matters-for-the-business) · [Install](#how-to-install) · [Before and after](#before-and-after) · [Catalog](#skill-catalog) · [How to use](#how-to-use) · [Update](#how-to-update) · [FAQ](#faq) · [Privacy](#privacy)**
+
+</div>
+
+---
+
+## Why it matters for the business
+
+**Less rework, more predictable delivery, and risks found before they become incidents.** These plugins turn your team's way of working into something Claude repeats every day, for everyone.
+
+| The everyday problem | What the plugins do | What changes for the business |
+|---|---|---|
+| Vague requests cause back-and-forth and rework | Turn loose ideas and conversations into complete tasks, with a goal, rules and a test script | Fewer questions halfway through and deliveries that are easier to estimate |
+| Everyone works their own way | Everyone follows the same steps and the same quality standard | Predictable quality and faster onboarding of new people |
+| Coding, testing and reviewing eats the team's time | Claude implements, writes tests, reviews itself and delivers a ready pull request | The team spends energy on decisions, not repetitive tasks |
+| Security, performance and privacy (LGPD) risks show up late | Health checks with a 0 to 100 score and a prioritized problem list | You see risks before they become incidents and get an action plan in a clear order |
+| Knowledge lives in a few people's heads | Every task is recorded in the project's own documentation, with or without a task board | Less dependence on key people |
+
+**Who it's for:** managers and leaders who want predictability, product people who want well-defined tasks, and development teams who want more time for what matters.
+
+**Fits the project you have:** it uses your GitHub task board when there is one, still works without GitHub, and falls back to a plain change log when the project has no version control. It answers in the language you write in.
+
+## Before and after
+
+<table>
+<tr>
+<th width="50%">Without these plugins</th>
+<th width="50%">With these plugins</th>
+</tr>
+<tr>
+<td valign="top">
+
+> "We need a way to download the invoice."
+
+One loose sentence. Everyone reads it differently, the developer asks questions for days, and the result depends on who picked up the task.
+
+</td>
+<td valign="top">
+
+> A complete task: goal, rules, what to change, how to test — on your board and in your docs. Code ready for review and a test script in hand.
+
+Claude studies the system, asks only what's missing and delivers to the team's standard.
+
+</td>
+</tr>
+</table>
+
+<sub>Illustrative example of the kind of result each skill produces.</sub>
+
+**Same idea. Organized delivery, to the team's standard.**
+
+## How to install
+
+You don't need to learn commands. You need the **Claude app** (**Code** tab). If something else is missing, Claude tells you and guides you.
+
+1. Open the Claude app and go to the **Code** tab.
+2. Paste this message into the chat and send it:
+
+   > Install the plugins from the marketplace CaioGiasson/cainitech-plugins: run `claude plugin marketplace add CaioGiasson/cainitech-plugins`, then `claude plugin install checkup@cainitech` and `claude plugin install spec@cainitech`, and tell me when it's done.
+
+3. Wait for Claude to confirm and open a **new conversation**. The skills now show up when you type `/`.
+
+One message. That's it. Want only the health checks, or only the task workflow? Ask for just `checkup` or just `spec`.
+
+**Prefer clicking?** Once the marketplace is added (step 2), click the **+** button next to the prompt box, choose **Plugins** and then **Add plugin** to install, or **Manage plugins** to turn a plugin on or off, update it or remove it.
+
+<sub>Prefer the terminal or VS Code? See the <a href="docs/TECHNICAL.md">technical documentation</a>.</sub>
+
+## How to update
+
+When a new version is released, open **+ → Plugins → Manage plugins**, choose the plugin and click **Update now**. Or send this to Claude in the **Code** tab:
+
+> Update the cainitech plugins: run `claude plugin marketplace update cainitech`, then `claude plugin update checkup@cainitech` and `claude plugin update spec@cainitech`.
+
+New skills and improvements arrive right away (start a new conversation to load them).
+
+## How to use
+
+In any conversation in the **Code** tab, type `/` and pick the skill from the list. Skills of a plugin appear as `/<plugin>:<skill>`. Then write what you need in plain language.
+
+> `/spec:refine` I want customers to be able to download their invoice as a PDF on the payments screen.
+
+Or just describe what you want. Claude also suggests the right skill.
+
+> The skills reply in the language you write in. If they can't tell, they use English.
+
+## Skill catalog
+
+Ten skills in two plugins. Each one says what it does and what result you get.
+
+| Plugin | Group | What it's for | Skills |
+|---|---|---|---|
+| **`spec`** | **[From idea to task](#from-idea-to-ready-task)** | Turn loose conversation into a clear, recorded task | `/spec:from-thread` · `/spec:refine` |
+| **`spec`** | **[From code to delivery](#from-code-to-delivery)** | Build, review and finish | `/spec:build` · `/spec:review` · `/spec:approve` |
+| **`checkup`** | **[System health check](#system-health-check)** | Measure project health, changing nothing | `/checkup:security` · `/checkup:performance` · `/checkup:privacy` · `/checkup:ai-readiness` · `/checkup:full` |
+
+**A task's full path:** `/spec:from-thread` or `/spec:refine` → `/spec:build` → `/spec:review` → you test → `/spec:approve`.
+
+### From idea to ready task
+
+| Skill | What it does | What you get |
+|---|---|---|
+| **`/spec:from-thread`** | Reads an informal conversation (Slack thread link, Discord link or a `.md` file), drops the noise and separates decisions from doubts and opinions. | A refined task recorded in your project's docs and, if you have a GitHub task board, created there — with no jokes, slang or loose information. |
+| **`/spec:refine`** | Takes an idea described in a few lines, studies the system, asks focused questions and details everything. | A complete task (goal, rules, what to change and how to test), clear enough for anyone to carry out. It is **always recorded in your project's documentation**; if there's a board, it is also created there, with one sub-task per system involved. |
+
+### From code to delivery
+
+| Skill | What it does | What you get |
+|---|---|---|
+| **`/spec:build`** | Takes a task, moves it on the board to "In progress" (if there is a board), builds the solution, writes the tests and reviews its own work. | On GitHub: a ready *pull request* with the code in organized steps and a test script for you to check. Without GitHub: organized local commits. Without version control: a change log file with a copy of every change. |
+| **`/spec:review`** | Reviews a change: checks that everything requested was done, runs the tests and analyzes code quality. | Review comments posted on the right spot in the code, after you choose what to post (without GitHub, the review comes in the chat). It only fixes something if you ask. |
+| **`/spec:approve`** | Steps in after your manual tests and does the final review before wrapping up. | If all is well: on GitHub, a final comment, a "Reviewed" label, the delivery completed (*merge*) and the working copies cleaned up; without GitHub, a local merge. If it finds a serious problem, it only tells you and touches nothing. |
+
+### System health check
+
+**They only read and assess. They change nothing in your project.** Each health check delivers a report with a **score from 0 to 100**, a **rating** and a **list of problems by priority**, ready to become an action plan. The report is saved in the assessed project's `docs/assessments` folder.
+
+| Skill | What it assesses | Criteria | What you get |
+|---|---|---:|---|
+| **`/checkup:security`** | Security: login, data protection, known weaknesses, exposed secrets. Works as preparation for a penetration test. | 153 | A security score and weak points by severity. |
+| **`/checkup:performance`** | Speed, ability to grow, stability and infrastructure costs. | 163 | Where the system is slow or expensive and what to prioritize. |
+| **`/checkup:privacy`** | Compliance with Brazil's LGPD: consent, data subject rights, personal data retention. | 126 | Legal gaps, each tied to its article of the law. |
+| **`/checkup:ai-readiness`** | How ready the project is to be developed with AI help: documentation, tests, organization. | 70 | What to improve so AI works faster and makes fewer mistakes. |
+| **`/checkup:full`** | All four health checks at once. | 512 | The four reports plus an overall one, with a single score, risks that cut across areas and one list of priorities. |
+
+How to read the score:
+
+| Score | Rating |
+|---|---|
+| 90 to 100 | 🏆 Platinum |
+| 70 to 89 | 🥇 Gold |
+| 50 to 69 | 🥈 Silver |
+| 25 to 49 | 🥉 Bronze |
+| 0 to 24 | 🚨 Dangerous |
+
+## What a health-check result looks like
+
+An example **with made-up data** of `/checkup:security` run on a project called `loja-online`. This is the reply that appears in the chat; the full report is saved to a file.
+
+```text
+# Security score: 56.1 / 100 — Silver
+
+63 compliant · 28 partial · 46 non-compliant · 16 N/A (153 criteria)
+Evolution: first run
+
+🔴 Non-compliant criticals (14):
+  SEC-2.04 · Brute force, credential stuffing and rate-limit evasion
+  SEC-2.05 · MFA
+  SEC-2.08 · Recovery
+  SEC-3.02 · BOLA/IDOR
+  SEC-5.06 · XSS
+  … and 9 more (full list in the report)
+🟠 Top 5 of the backlog by score gain:
+  SEC-3.02 · Check order ownership on every /orders route · +1.0 pt
+  SEC-2.04 · Rate limit per account and per IP on login · +1.0 pt
+  SEC-2.08 · Single-use, expiring password-recovery token · +1.0 pt
+  SEC-2.05 · Offer MFA for administrative accounts · +1.0 pt
+  SEC-5.06 · Sanitize the product comment field · +1.0 pt
+
+📄 Report: docs/assessments/2026-10-14-security.md
 ```
 
-> `~/projects` é só um exemplo de **pasta pai**: o diretório que contém os demais projetos. O `ai-toolbox` deve ficar no mesmo nível dos outros repositórios, diretamente dentro da pasta pai (ex: `~/projects/ai-toolbox`, `~/projects/boilerplate-webapp`), nunca dentro de outro repositório.
+In plain English: the project scored **56.1 out of 100 (Silver)**; 14 critical problems are open, and the list says which ones to fix first and how many points each fix is worth.
 
-> O `npm install` já configura o Husky via o script `prepare`. A partir daí, cada `git pull` dispara o `post-merge` hook e roda o `sync.sh` automaticamente.
+<details>
+<summary><b>See an excerpt of the saved report</b></summary>
 
-## Sincronização manual
+````markdown
+# Score: 56.1 / 100
+## Classification: Silver
 
-```bash
-npm run sync
-# ou diretamente:
-bash sync.sh
-```
+# Security Assessment — loja-online
 
-## Como adicionar uma skill
+| Field | Value |
+|---|---|
+| Date | 2026-10-14 |
+| Assessed commit | `a3f9c21` (branch `main`) |
+| Catalog | application-assessment v3 — 153 items (137 applicable, 16 N/A) |
+| Scope | Node.js API + Next.js + MongoDB; mobile app and LLM out of scope (N/A) |
+| Previous run | first run |
 
-Cada skill é um subdiretório dentro de `skills/` com um arquivo `SKILL.md` dentro. O nome do diretório define o comando de invocação.
+## Summary
 
-```
-skills/
-└── minha-skill/
-    └── SKILL.md      # invocada com /minha-skill
-```
+| Severity | Compliant | Partial | Non-compliant | N/A | Points earned / possible |
+|---|---:|---:|---:|---:|---:|
+| Critical | 20 | 9 | 14 | 5 | 73.5 / 129 |
+| Important | 36 | 17 | 28 | 8 | 89 / 162 |
+| Minor | 7 | 2 | 4 | 3 | 8 / 13 |
+| **Total** | 63 | 28 | 46 | 16 | **170.5 / 304 = 56.1** |
 
-**Passos:**
+Main risks: any logged-in customer can see other customers' orders by changing the
+number in the URL; login does not limit attempts, which allows password guessing;
+administrative accounts do not require a second factor.
 
-1. Crie o diretório `skills/<nome-da-skill>/`.
-2. Crie o arquivo `SKILL.md` dentro dele, seguindo o template em `skills/example-skill/SKILL.md`.
-3. Faça commit e push.
-4. Quem usa o repositório recebe a skill automaticamente no próximo `git pull`.
+## 1. Non-compliant items
 
-A skill estará disponível no Claude Code via `/<nome-da-skill>`.
+### 1.1 Critical
 
-## Skills de assessment
+#### SEC-3.02 · BOLA/IDOR — Critical · Non-compliant
 
-| Skill | Avalia | Itens |
-|---|---|---:|
-| `/eval-performance` | Performance, escalabilidade, eficiência, CI/CD, FinOps | 163 |
-| `/eval-security` | Segurança (preparação para pentest whitebox) | 153 |
-| `/eval-privacy` | Conformidade LGPD e normas conexas | 126 |
-| `/eval-ai-readiness` | Prontidão do repositório para agentes de IA | 70 |
-| `/full-assessment` | Os quatro pilares + relatório consolidado | 512 |
+- **Criterion:** every route that receives an object identifier confirms, on the server, that the authenticated user is entitled to it.
+- **Situation found:** the order routes fetch the record by `id` only, without comparing it to the logged-in user.
+- **Reason for the status:** the control does not exist and there is no negative test (ASSESSMENT §2 and §3).
+- **Evidence:** `src/modules/orders/orders.controller.ts:58` — `orders.findById(req.params.id)` with no `userId` filter; search `rg "findById\(req.params" src/` → 6 hits, 5 without an ownership check.
+- **Affected components:** `GET /orders/:id`, `PATCH /orders/:id`, `GET /orders/:id/invoice` and 3 other routes.
+- **Impact / risk:** an authenticated customer walks through sequential IDs and reads name, address and items of other people's orders (personal data leak, with LGPD impact).
+- **Recommendation:** always fetch by `{ id, userId }` in the repository layer and answer 404 when nothing is found. Add a test where user A tries to read user B's order and gets 404.
+- **Retest criterion:** a negative cross-access test exists and passes in CI for all listed routes.
+- **Estimated effort:** S (≤ 1 day)
+- **References:** SEC-3.02 · OWASP API Security Top 10 (API1 — BOLA)
 
-Cada execução gera um relatório em `docs/assessments/AAAA-MM-DD-<pilar>.md` no repositório avaliado, que começa pelo score (0–100) e pela classificação (Dangerous, Bronze, Silver, Gold, Platinum). Em seguida vêm os itens não compliant, os parciais (Críticos, Importantes e Menores) e os compliant, além de um backlog sugerido. A metodologia está em `guidelines/ASSESSMENT.md`. Os catálogos são gerados a partir de `docs/application-assessment-v3.md` por `scripts/gen-assessment-catalog.py`.
+## 5. Suggested backlog
 
-## Como adicionar uma guideline
+| Priority | ID | Task title | Severity | Effort | Score gain |
+|---:|---|---|---|---|---:|
+| 1 | SEC-3.02 | Check order ownership on every `/orders` route | Critical | S | +1.0 |
+| 2 | SEC-2.04 | Rate limit per account and per IP on login | Critical | S | +1.0 |
+| 3 | SEC-2.08 | Single-use, expiring password-recovery token | Critical | S | +1.0 |
+| 4 | SEC-2.05 | Offer MFA for administrative accounts | Critical | M | +1.0 |
 
-1. Crie um arquivo `.md` na pasta `guidelines/`.
-2. Referencie-a no `CLAUDE.md` com o gatilho de leitura adequado.
-3. Faça commit e push.
+*(…other sections omitted in this example)*
+````
 
-## Como remover ou renomear uma skill/guideline
+</details>
 
-O `sync.sh` só copia; não apaga nada por conta própria. Ao remover ou renomear, adicione o nome **antigo** ao `legacy.txt`:
+After the report, Claude offers to turn the backlog items into well-defined tasks with `/spec:refine` if the `spec` plugin is installed.
 
-```
-skill create-issue
-guideline ANTIGO.md
-```
+## Before using the task skills
 
-Na próxima sincronização, o `sync.sh` apaga esses itens de `~/.claude`. Só os nomes listados são removidos, nomes inválidos (com caminho ou `..`) são ignorados, e itens que ainda existem no repositório nunca são apagados.
+The `/spec:*` skills use your **GitHub task board** when the project has one, through the GitHub connection you already have (or the GitHub CLI, `gh`). If something asks for access, just approve it when Claude asks. No board? They record everything in your project's documentation and keep working. No GitHub, or no version control at all? They adapt (local commits, or a change log file).
 
-## Como atualizar os arquivos de contexto
+## FAQ
 
-Edite diretamente `CLAUDE.md` ou `CONTEXT.md` neste repositório, faça commit e push. Os demais usuários sincronizam automaticamente.
+**Do I need to know how to code?** Not to install it or to use task refinement and the health checks.
 
-## Estrutura de pastas
+**Do the skills change my project without telling me?** The health checks never change anything. The others show what they will do and ask for confirmation on important decisions.
 
-```
-ai-toolbox/
-├── .husky/
-│   └── post-merge              # hook disparado após git pull
-├── guidelines/
-│   ├── CONVENTIONS.md          # nomenclatura, código limpo, tipagem
-│   ├── ARCHITECTURE.md         # camadas, fluxo, persistência
-│   ├── ERRORS_AND_VALIDATION.md
-│   ├── API_AND_SECURITY.md
-│   ├── GUIA_REVISAO_PR_GERAL.md # checklist e formato de code review de PRs
-│   ├── QUALITY.md              # observabilidade, testes, documentação, code review
-│   ├── DEVOPS.md               # commits, CI/CD, branching, infra
-│   └── ASSESSMENT.md           # metodologia, score e relatório das skills de assessment
-├── docs/
-│   └── application-assessment-v3.md # fonte dos catálogos de assessment
-├── scripts/
-│   └── gen-assessment-catalog.py    # gera skills/eval-*/references/checklist.md
-├── skills/
-│   ├── eval-ai-readiness/      # /eval-ai-readiness (SKILL.md + references/checklist.md)
-│   ├── eval-performance/       # /eval-performance
-│   ├── eval-privacy/           # /eval-privacy
-│   ├── eval-security/          # /eval-security
-│   ├── full-assessment/
-│   │   └── SKILL.md            # /full-assessment
-│   ├── issue-approve/
-│   │   └── SKILL.md            # /issue-approve
-│   ├── issue-refine/
-│   │   └── SKILL.md            # /issue-refine
-│   ├── example-skill/
-│   │   └── SKILL.md            # /example-skill
-│   ├── issue-start/
-│   │   └── SKILL.md            # /issue-start
-│   ├── issue-review/
-│   │   └── SKILL.md            # /issue-review
-│   └── issue-from-thread/
-│       └── SKILL.md            # /issue-from-thread
-├── CLAUDE.md
-├── CONTEXT.md
-├── legacy.txt                  # itens antigos a remover de ~/.claude no sync
-├── sync.sh                     # script principal de sincronização
-├── package.json
-└── .gitignore
-```
+**Where does the work get recorded?** Always in your project's documentation folder (under `docs/specs/`), whether or not you have a task board. The only way to skip it is to tell Claude explicitly not to document.
+
+**The skill didn't show up in the list.** Open a new conversation after installing or updating.
+
+**I want to create or edit skills, or understand the folder structure.** See the [technical documentation](docs/TECHNICAL.md).
+
+## Privacy
+
+- The plugins are just text files (instructions for Claude). Installing them **copies** those files to your computer and runs no code of its own.
+- The skills run inside your Claude, with your account and your permissions.
+- The `/spec:*` skills read and write on GitHub (and in your project folder) because that is their job, always with your account.
+
+## License
+
+[Apache-2.0](LICENSE). Free to use, copy and adapt, including commercially, keeping the license notice.
+
+---
+
+<div align="center">
+
+**One team, one way of working. Everyone with their own Claude.**
+
+<sub>
+<a href="docs/TECHNICAL.md">Technical documentation</a> ·
+<a href="https://github.com/CaioGiasson/cainitech-plugins/issues">Issues</a>
+</sub>
+
+</div>
