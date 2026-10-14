@@ -1,131 +1,106 @@
 # ai-toolbox
 
-Repositório de sincronização de contexto e skills compartilhadas do **Claude Code** para times de desenvolvimento, seguindo padrões de mercado.
+**Uma caixa de ferramentas pronta para o seu Claude trabalhar como um time experiente.**
 
-## O que está aqui
+O ai-toolbox dá ao Claude um conjunto de "habilidades" (chamadas de *skills*) prontas para usar: transformar uma ideia em tarefa bem escrita, programar essa tarefa, revisar o resultado e avaliar a saúde de um sistema. Você pede em português, no chat, e recebe o trabalho entregue.
 
-| Arquivo / Pasta         | Destino após sync                    | Finalidade                                    |
-|-------------------------|--------------------------------------|-----------------------------------------------|
-| `CLAUDE.md`             | `~/.claude/CLAUDE.md`                | Comportamento, convenções e princípios        |
-| `CONTEXT.md`            | `~/.claude/CONTEXT.md`               | Propósito do repo, comunicação e fluxo        |
-| `guidelines/*.md`       | `~/.claude/guidelines/`              | Guidelines de desenvolvimento por tema        |
-| `skills/<nome>/`        | `~/.claude/skills/<nome>/`           | Skills invocáveis via `/<nome>` no Claude Code (`SKILL.md` + arquivos de apoio, ex.: `references/`)|
+Sem decorar comandos. Sem configurar nada complicado.
 
-## Setup inicial (uma vez por máquina)
+---
 
-```bash
-git clone git@github.com:CaioGiasson/ai-toolbox.git ~/projects/ai-toolbox
-cd ~/projects/ai-toolbox
-npm install        # instala o husky e registra os hooks
-npm run sync       # sincroniza imediatamente
-```
+## O que você ganha
 
-> `~/projects` é só um exemplo de **pasta pai**: o diretório que contém os demais projetos. O `ai-toolbox` deve ficar no mesmo nível dos outros repositórios, diretamente dentro da pasta pai (ex: `~/projects/ai-toolbox`, `~/projects/boilerplate-webapp`), nunca dentro de outro repositório.
+- **Tarefas bem escritas:** uma conversa solta de Slack ou Discord vira uma tarefa clara no GitHub.
+- **Trabalho entregue de ponta a ponta:** do código à revisão e à aprovação final.
+- **Um "check-up" do seu sistema:** notas de 0 a 100 para segurança, velocidade, privacidade (LGPD) e preparo para IA.
+- **Padrão de time:** o Claude passa a seguir as mesmas regras e o mesmo jeito de trabalhar para todas as pessoas.
 
-> O `npm install` já configura o Husky via o script `prepare`. A partir daí, cada `git pull` dispara o `post-merge` hook e roda o `sync.sh` automaticamente.
+---
 
-## Sincronização manual
+## Como instalar (sem usar terminal)
 
-```bash
-npm run sync
-# ou diretamente:
-bash sync.sh
-```
+Você precisa de três coisas instaladas no computador: o **aplicativo Claude** (aba **Code**), o **Git** e o **Node.js**. Se faltar algo, o próprio Claude avisa e te guia.
 
-## Como adicionar uma skill
+1. Abra o aplicativo Claude e entre na aba **Code**.
+2. Escolha a pasta onde ficam os seus projetos (a "pasta pai").
+3. Cole esta mensagem no chat e envie:
 
-Cada skill é um subdiretório dentro de `skills/` com um arquivo `SKILL.md` dentro. O nome do diretório define o comando de invocação.
+   > Instale o ai-toolbox: clone https://github.com/CaioGiasson/ai-toolbox.git na pasta atual, rode `npm install` e `npm run sync` dentro dele, e me diga quando terminar.
 
-```
-skills/
-└── minha-skill/
-    └── SKILL.md      # invocada com /minha-skill
-```
+4. Aguarde o Claude confirmar. Pronto: as skills já estão no seu Claude.
+5. Feche e abra uma nova conversa para as skills aparecerem na lista.
 
-**Passos:**
+## Como atualizar
 
-1. Crie o diretório `skills/<nome-da-skill>/`.
-2. Crie o arquivo `SKILL.md` dentro dele, seguindo o template em `skills/example-skill/SKILL.md`.
-3. Faça commit e push.
-4. Quem usa o repositório recebe a skill automaticamente no próximo `git pull`.
+Sempre que o time lançar novidades, abra uma conversa na aba **Code** e envie:
 
-A skill estará disponível no Claude Code via `/<nome-da-skill>`.
+> Atualize o ai-toolbox: entre na pasta ai-toolbox, rode `git pull` e `npm run sync`.
 
-## Skills de assessment
+As skills novas e as melhorias chegam na hora.
 
-| Skill | Avalia | Itens |
-|---|---|---:|
-| `/eval-performance` | Performance, escalabilidade, eficiência, CI/CD, FinOps | 163 |
-| `/eval-security` | Segurança (preparação para pentest whitebox) | 153 |
-| `/eval-privacy` | Conformidade LGPD e normas conexas | 126 |
-| `/eval-ai-readiness` | Prontidão do repositório para agentes de IA | 70 |
-| `/full-assessment` | Os quatro pilares + relatório consolidado | 512 |
+## Como usar uma skill
 
-Cada execução gera um relatório em `docs/assessments/AAAA-MM-DD-<pilar>.md` no repositório avaliado, que começa pelo score (0–100) e pela classificação (Dangerous, Bronze, Silver, Gold, Platinum). Em seguida vêm os itens não compliant, os parciais (Críticos, Importantes e Menores) e os compliant, além de um backlog sugerido. A metodologia está em `guidelines/ASSESSMENT.md`. Os catálogos são gerados a partir de `docs/application-assessment-v3.md` por `scripts/gen-assessment-catalog.py`.
+Em qualquer conversa na aba **Code**, digite `/` e escolha a skill na lista que aparece. Depois, escreva o que precisa em português normal.
 
-## Como adicionar uma guideline
+Exemplo:
 
-1. Crie um arquivo `.md` na pasta `guidelines/`.
-2. Referencie-a no `CLAUDE.md` com o gatilho de leitura adequado.
-3. Faça commit e push.
+> `/issue-refine` Quero que o cliente consiga baixar a fatura em PDF na tela de pagamentos.
 
-## Como remover ou renomear uma skill/guideline
+Se preferir, basta descrever o que quer: o Claude também sugere a skill certa.
 
-O `sync.sh` só copia; não apaga nada por conta própria. Ao remover ou renomear, adicione o nome **antigo** ao `legacy.txt`:
+---
 
-```
-skill create-issue
-guideline ANTIGO.md
-```
+## Catálogo de skills
 
-Na próxima sincronização, o `sync.sh` apaga esses itens de `~/.claude`. Só os nomes listados são removidos, nomes inválidos (com caminho ou `..`) são ignorados, e itens que ainda existem no repositório nunca são apagados.
+### 📝 Da ideia à tarefa pronta
 
-## Como atualizar os arquivos de contexto
+| Skill | O que faz | O que você recebe |
+|---|---|---|
+| **`/issue-from-thread`** | Lê uma conversa informal (link de thread do Slack, link do Discord ou arquivo `.md`), ignora o ruído, separa decisões de dúvidas e opiniões. | Uma tarefa organizada no quadro do GitHub, sem piadas, gírias nem informações soltas. |
+| **`/issue-refine`** | Pega uma ideia descrita em poucas linhas, estuda o sistema, faz perguntas objetivas e detalha tudo. | Uma tarefa completa no GitHub (objetivo, regras, o que mudar e como testar), clara o bastante para qualquer pessoa executar. Quando mexe em vários sistemas, cria uma sub-tarefa para cada um. |
 
-Edite diretamente `CLAUDE.md` ou `CONTEXT.md` neste repositório, faça commit e push. Os demais usuários sincronizam automaticamente.
+### 🛠️ Do código à entrega
 
-## Estrutura de pastas
+| Skill | O que faz | O que você recebe |
+|---|---|---|
+| **`/issue-start`** | Recebe o link de uma tarefa, move no quadro para "Em andamento", programa a solução, cria os testes e se revisa sozinha. | Uma *pull request* (pedido de revisão) pronta, com o código organizado em etapas e um roteiro de testes para você conferir. |
+| **`/issue-review`** | Revisa uma *pull request*: confere se tudo o que foi pedido foi feito, roda os testes e analisa a qualidade do código. | Comentários de revisão publicados direto no código, nos pontos certos, depois da sua escolha do que postar. Só corrige algo se você pedir. |
+| **`/issue-approve`** | Entra depois que você fez os testes manuais. Faz a última revisão antes de finalizar. | Se estiver tudo certo: comentário final, marcação "Reviewed", entrega concluída (*merge*) e limpeza das cópias de trabalho. Se encontrar problema sério, apenas avisa você e não mexe em nada. |
 
-```
-ai-toolbox/
-├── .husky/
-│   └── post-merge              # hook disparado após git pull
-├── guidelines/
-│   ├── CONVENTIONS.md          # nomenclatura, código limpo, tipagem
-│   ├── ARCHITECTURE.md         # camadas, fluxo, persistência
-│   ├── ERRORS_AND_VALIDATION.md
-│   ├── API_AND_SECURITY.md
-│   ├── GUIA_REVISAO_PR_GERAL.md # checklist e formato de code review de PRs
-│   ├── QUALITY.md              # observabilidade, testes, documentação, code review
-│   ├── DEVOPS.md               # commits, CI/CD, branching, infra
-│   └── ASSESSMENT.md           # metodologia, score e relatório das skills de assessment
-├── docs/
-│   └── application-assessment-v3.md # fonte dos catálogos de assessment
-├── scripts/
-│   └── gen-assessment-catalog.py    # gera skills/eval-*/references/checklist.md
-├── skills/
-│   ├── eval-ai-readiness/      # /eval-ai-readiness (SKILL.md + references/checklist.md)
-│   ├── eval-performance/       # /eval-performance
-│   ├── eval-privacy/           # /eval-privacy
-│   ├── eval-security/          # /eval-security
-│   ├── full-assessment/
-│   │   └── SKILL.md            # /full-assessment
-│   ├── issue-approve/
-│   │   └── SKILL.md            # /issue-approve
-│   ├── issue-refine/
-│   │   └── SKILL.md            # /issue-refine
-│   ├── example-skill/
-│   │   └── SKILL.md            # /example-skill
-│   ├── issue-start/
-│   │   └── SKILL.md            # /issue-start
-│   ├── issue-review/
-│   │   └── SKILL.md            # /issue-review
-│   └── issue-from-thread/
-│       └── SKILL.md            # /issue-from-thread
-├── CLAUDE.md
-├── CONTEXT.md
-├── legacy.txt                  # itens antigos a remover de ~/.claude no sync
-├── sync.sh                     # script principal de sincronização
-├── package.json
-└── .gitignore
-```
+**O caminho completo:** `/issue-from-thread` ou `/issue-refine` → `/issue-start` → `/issue-review` → você testa → `/issue-approve`.
+
+### 🩺 Check-up do sistema
+
+Estas skills **só leem e avaliam**: não alteram nada no seu projeto. Cada uma entrega um relatório com **nota de 0 a 100**, uma **classificação** e uma **lista de problemas por prioridade**, pronta para virar plano de ação. O relatório é salvo na pasta `docs/assessments` do projeto avaliado.
+
+| Nota | Classificação |
+|---|---|
+| 90 a 100 | 🏆 Platinum |
+| 70 a 89 | 🥇 Gold |
+| 50 a 69 | 🥈 Silver |
+| 25 a 49 | 🥉 Bronze |
+| 0 a 24 | 🚨 Dangerous |
+
+| Skill | O que avalia | O que você recebe |
+|---|---|---|
+| **`/eval-security`** | Segurança: login, proteção de dados, brechas conhecidas, segredos expostos. Serve de preparação para um teste de invasão. | Relatório com a nota de segurança e os pontos fracos por gravidade. |
+| **`/eval-performance`** | Velocidade, capacidade de crescer, estabilidade e custos de infraestrutura. | Relatório mostrando onde o sistema fica lento ou caro e o que priorizar. |
+| **`/eval-privacy`** | Conformidade com a LGPD: consentimento, direitos dos titulares, guarda de dados pessoais. | Relatório com as lacunas legais, cada uma ligada ao artigo da lei correspondente. |
+| **`/eval-ai-readiness`** | Quão preparado o projeto está para ser desenvolvido com ajuda de IA: documentação, testes, organização. | Relatório com o que melhorar para a IA trabalhar mais rápido e errar menos. |
+| **`/full-assessment`** | Os quatro check-ups de uma vez. | Os quatro relatórios mais um relatório geral, com nota única, riscos que atravessam as áreas e uma lista única de prioridades. |
+
+---
+
+## Antes de usar as skills de tarefas (`/issue-*`)
+
+Elas conversam com o GitHub. O Claude cuida disso com a ferramenta do GitHub que você já tiver conectada e, se não houver, avisa e usa o GitHub CLI (`gh`). Se algo pedir acesso, é só aprovar quando o Claude perguntar.
+
+## Dúvidas comuns
+
+**Preciso saber programar?** Não para instalar nem para usar as skills de check-up e de refinamento de tarefas.
+
+**As skills mudam meu projeto sem avisar?** As de check-up nunca alteram nada. As demais mostram o que vão fazer e pedem confirmação nas decisões importantes.
+
+**A skill não apareceu na lista.** Abra uma nova conversa depois de instalar ou atualizar.
+
+**Quero criar ou editar skills, ou entender a estrutura.** Veja a [documentação técnica](docs/TECNICO.md).

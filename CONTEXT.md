@@ -11,8 +11,8 @@ O `ai-toolbox` é um conjunto de ferramentas de IA (instruções, guidelines e s
 Valem para qualquer agente ou pessoa que altere este repositório:
 
 - **Renomear ou remover uma skill ou guideline:** o `sync.sh` só copia, nunca apaga por conta própria. Na mesma PR, adicione o nome **antigo** ao `legacy.txt` (`skill <nome>` ou `guideline <arquivo.md>`); o sync o removerá de `~/.claude`. Nunca apague itens de `~/.claude` manualmente nem edite o `sync.sh` para isso.
-- **Criar uma skill ou guideline:** siga o README (`skills/<nome>/SKILL.md`, referência no `CLAUDE.md` com o gatilho de leitura). Se o nome já constar no `legacy.txt`, remova a linha de lá.
-- **Renomear uma skill:** atualize também as referências cruzadas em outras skills, no `README.md` (estrutura de pastas) e nos exemplos.
+- **Criar uma skill ou guideline:** siga a `docs/TECNICO.md` (`skills/<nome>/SKILL.md`, referência no `CLAUDE.md` com o gatilho de leitura). Se o nome já constar no `legacy.txt`, remova a linha de lá.
+- **Renomear uma skill:** atualize também as referências cruzadas em outras skills, na `docs/TECNICO.md` (estrutura de pastas) e no `README.md` (catálogo) e nos exemplos.
 - **Arquivos de apoio de skills:** o `sync.sh` copia o diretório inteiro da skill (ex.: `references/`). Referencie esses arquivos pelo caminho `~/.claude/skills/<nome>/...`.
 - **Catálogos de assessment** (`skills/eval-*/references/checklist.md`): nunca edite à mão. Atualize a fonte `docs/application-assessment-v3.md` (ou os complementos/guias no próprio script) e regenere com `python -X utf8 scripts/gen-assessment-catalog.py`. Mudar ID ou severidade de um item quebra a comparação de score entre execuções — registre a mudança na PR.
 - **Antes de abrir a PR:** rode `bash -n sync.sh` se o script foi alterado e valide com `HOME` temporário, sem tocar no `~/.claude` real.
