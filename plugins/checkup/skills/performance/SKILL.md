@@ -32,7 +32,7 @@ Detect the user's language from `$ARGUMENTS` and their most recent messages, and
    - `${CLAUDE_PLUGIN_ROOT}/skills/performance/references/checklist.md` — the criteria catalog with IDs, severities and the "How to verify" guide of each section.
 2. Read the context of the assessed repository: `AGENTS.md`/`CLAUDE.md`, `README.md`, `tasks/lessons.md` (if they exist).
 3. Record the assessed commit: `git rev-parse --short HEAD` and `git branch --show-current`. If the repository has no git history, say so and record the date instead. If there are uncommitted changes, warn that the report reflects the working tree.
-4. Look for earlier reports of this pillar in `docs/assessments/*-performance.md` (and in the consolidated `*-full-assessment.md`). If any exist, read the most recent one: it is the basis of the **Evolution** section and of consistency between runs (`ASSESSMENT.md` §6).
+4. Look for earlier reports of this pillar in `docs/checkups/*-performance.md` (and in the consolidated `*-full.md`). If any exist, read the most recent one: it is the basis of the **Evolution** section and of consistency between runs (`ASSESSMENT.md` §6).
 
 ---
 
@@ -83,7 +83,7 @@ Show a summary of the inventory (stack, components, applicable and N/A condition
 
 1. Write the report **exactly** in the format of `ASSESSMENT.md` §8: score on the first line, classification right after, then summary, evolution, non-compliant (Critical → Important → Minor), partially compliant (Critical → Important → Minor), compliant, N/A, suggested backlog and methodology/limitations.
 2. Each non-compliant or partial item uses the finding format of §8.1 (criterion, situation, reason, evidence, components, impact, recommendation, retest criterion, effort, references).
-3. Save to `docs/assessments/YYYY-MM-DD-performance.md` in the assessed repository (without overwriting existing reports; see §7), unless `--skip-report-file` was passed or the user asked not to save files.
+3. Save to `docs/checkups/YYYY-MM-DD-performance.md` in the assessed repository (without overwriting existing reports; see §7), unless `--skip-report-file` was passed or the user asked not to save files.
 4. Do not commit the report: follow the assessed repository's commit rules.
 
 ---
@@ -101,7 +101,7 @@ Present in the chat, compactly:
 🔴 Non-compliant criticals: <list of ID · title (one per line)>
 🟠 Top 5 of the backlog by score gain: <ID · task · +N pts>
 
-📄 Report: docs/assessments/YYYY-MM-DD-performance.md
+📄 Report: docs/checkups/YYYY-MM-DD-performance.md
 ```
 
 Then offer to turn the backlog items into well-defined tasks with `/spec:refine` (one per item, or grouped by the same fix) if the `spec` plugin is installed.

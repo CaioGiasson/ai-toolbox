@@ -30,7 +30,7 @@ Detect the user's language from `$ARGUMENTS` and their most recent messages, and
 1. Read `${CLAUDE_PLUGIN_ROOT}/references/ASSESSMENT.md` in full (§9 covers the consolidated report).
 2. Record the assessed commit (`git rev-parse --short HEAD`, branch); **all pillars assess the same commit**. If the repository has no git history, say so and record the date instead. If there are uncommitted changes, warn the user.
 3. Read the repository context (`AGENTS.md`/`CLAUDE.md`, `README.md`, `tasks/lessons.md`).
-4. Look for earlier reports in `docs/assessments/` (per pillar and consolidated) for the Evolution section.
+4. Look for earlier reports in `docs/checkups/` (per pillar and consolidated) for the Evolution section.
 5. Build **a single inventory** of the application (stack, frontend, database, integrations, authentication, personal data, third parties, CI/CD, infrastructure, agent context files, AI usage); it is shared by the four pillars and avoids repeated work.
 
 ---
@@ -47,7 +47,7 @@ For each pillar, run the complete flow of the corresponding skill (its Phases 1 
 | AI Readiness | `/checkup:ai-readiness` | `${CLAUDE_PLUGIN_ROOT}/skills/ai-readiness/references/checklist.md` | 70 |
 
 - If the tool allows subagents, run the four pillars **in parallel**, one subagent per pillar, giving each one: the pillar's `SKILL.md`, the catalog path, the Phase 0 inventory, the commit and the earlier reports of that pillar. Otherwise run them in sequence: Security → Privacy → Performance → AI Readiness (Privacy uses the Security result in PRIV-12.01).
-- Each pillar saves its own report to `docs/assessments/YYYY-MM-DD-<pillar>.md` (see `ASSESSMENT.md` §7).
+- Each pillar saves its own report to `docs/checkups/YYYY-MM-DD-<pillar>.md` (see `ASSESSMENT.md` §7).
 - Before consolidating, check that each pillar assessed **all** of its items (count equal to the table above) and that the point sums add up.
 
 ---
@@ -63,7 +63,7 @@ For each pillar, run the complete flow of the corresponding skill (its Phases 1 
 
 ## PHASE 3 — Consolidated report
 
-Save to `docs/assessments/YYYY-MM-DD-full-assessment.md`, with the **overall score on the first line** and the **classification right after** (translate the labels per the Language section):
+Save to `docs/checkups/YYYY-MM-DD-full.md`, with the **overall score on the first line** and the **classification right after** (translate the labels per the Language section):
 
 ````markdown
 # Overall score: 58.2 / 100
@@ -125,7 +125,7 @@ Security <s> (<class>) · Privacy <s> (<class>) · Performance <s> (<class>) · 
 🔗 Cross-cutting risks: <short list>
 🟠 Top 5 of the backlog by overall score gain: <task · IDs · +N pts>
 
-📄 Reports: docs/assessments/YYYY-MM-DD-{full-assessment,security,privacy,performance,ai-readiness}.md
+📄 Reports: docs/checkups/YYYY-MM-DD-{full,security,privacy,performance,ai-readiness}.md
 ```
 
 Then offer to turn the consolidated backlog into well-defined tasks with `/spec:refine` if the `spec` plugin is installed.

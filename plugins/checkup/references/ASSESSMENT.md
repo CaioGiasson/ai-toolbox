@@ -32,7 +32,7 @@ Additional rules:
 
 - The condition written in the title or at the start of a section (*If: …*) applies to **all** items in the section.
 - **N/A without evidence = Non-compliant.**
-- **External evidence.** Items that depend on something outside the repository (production data, observability dashboard, signed contract, DR exercise) are compliant only if there is a versioned record in the repository (e.g., `docs/`, `docs/assessments/evidence/`) or if the user gives the evidence path when invoking the skill. Otherwise mark **Non-compliant** with the tag `external evidence needed` and explain in the recommendation how to record the evidence.
+- **External evidence.** Items that depend on something outside the repository (production data, observability dashboard, signed contract, DR exercise) are compliant only if there is a versioned record in the repository (e.g., `docs/`, `docs/checkups/evidence/`) or if the user gives the evidence path when invoking the skill. Otherwise mark **Non-compliant** with the tag `external evidence needed` and explain in the recommendation how to record the evidence.
 - When in doubt between two statuses, choose the more conservative one and note the doubt on the item.
 
 ## 3. Minimum evidence by severity
@@ -71,7 +71,7 @@ Round the score to **one decimal place**. The report always shows the calculatio
 
 ## 6. Comparison with previous runs
 
-Before assessing, look for previous reports of the same pillar in `docs/assessments/`. If one exists:
+Before assessing, look for previous reports of the same pillar in `docs/checkups/`. If one exists:
 
 1. Use the previous verdict as the starting point and re-assess **every** item with the current evidence.
 2. Record in the **Evolution** section: previous score → current, items that improved, items that regressed (always with the cause) and items added to or removed from the catalog.
@@ -79,11 +79,11 @@ Before assessing, look for previous reports of the same pillar in `docs/assessme
 
 ## 7. Where to save
 
-- Per-pillar report: `docs/assessments/YYYY-MM-DD-<pillar>.md` at the root of the assessed repository (`<pillar>` ∈ `performance`, `security`, `privacy`, `ai-readiness`).
-- Consolidated report: `docs/assessments/YYYY-MM-DD-full-assessment.md`.
+- Per-pillar report: `docs/checkups/YYYY-MM-DD-<pillar>.md` at the root of the assessed repository (`<pillar>` ∈ `performance`, `security`, `privacy`, `ai-readiness`).
+- Consolidated report: `docs/checkups/YYYY-MM-DD-full.md`.
 - If a file with the same name already exists, add a suffix `-2`, `-3`… (never overwrite history).
 - Do not commit automatically: follow the commit rules of the assessed repository.
-- If the project has no `docs/` folder, create `docs/assessments/`. If the user explicitly asks not to save files, only show the report in the chat.
+- If the project has no `docs/` folder, create `docs/checkups/`. If the user explicitly asks not to save files, only show the report in the chat.
 
 ## 8. Report format (per pillar)
 
