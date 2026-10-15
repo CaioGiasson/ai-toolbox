@@ -130,7 +130,7 @@ Dez skills em dois plugins. Cada uma diz o que faz e qual resultado você recebe
 
 ### Check-up do sistema
 
-**Só leem e avaliam. Não alteram nada no seu projeto.** Cada check-up entrega um relatório com **nota de 0 a 100**, uma **classificação** e uma **lista de problemas por prioridade**, pronta para virar plano de ação. O relatório fica salvo na pasta `docs/assessments` do projeto avaliado.
+**Só leem e avaliam. Não alteram nada no seu projeto.** Cada check-up entrega um relatório com **nota de 0 a 100**, uma **classificação** e uma **lista de problemas por prioridade**, pronta para virar plano de ação. O relatório fica salvo na pasta `docs/checkups` do projeto avaliado.
 
 | Skill | O que avalia | Critérios | O que você recebe |
 |---|---|---:|---|
@@ -174,7 +174,7 @@ Evolução: primeira execução
   SEC-2.05 · Oferecer MFA para contas administrativas · +1,0 pt
   SEC-5.06 · Sanitizar o campo de comentário do produto · +1,0 pt
 
-📄 Relatório: docs/assessments/2026-10-14-security.md
+📄 Relatório: docs/checkups/2026-10-14-security.md
 ```
 
 <details>
@@ -255,6 +255,16 @@ As skills `/spec:*` usam o **quadro de tarefas do GitHub** quando o projeto tem 
 **A skill não apareceu na lista.** Abra uma nova conversa depois de instalar ou atualizar.
 
 **Quero criar ou editar skills, ou entender a estrutura de pastas.** Veja a [documentação técnica](docs/TECNICO.md).
+
+## Ferramentas recomendadas
+
+Ferramentas opcionais que fazem os plugins funcionarem melhor. Nenhuma é obrigatória.
+
+| Ferramenta | Ajuda em | Observações |
+|---|---|---|
+| **[GitHub CLI (`gh`)](https://cli.github.com)** | As skills `/spec:*`: ler e criar issues, mover cards no quadro, abrir e mesclar pull requests | Instale e entre com `gh auth login`. Para mover cards no quadro, rode também `gh auth refresh -s project`. Sem ele, o `spec` continua funcionando pelos modos alternativos. Um conector do GitHub (MCP) também serve. |
+| **Conector do Slack ou do Discord** | `/spec:from-thread`, que lê uma conversa a partir de um link | Sem um deles, cole a conversa em um arquivo `.md` e informe o caminho do arquivo ao Claude. |
+| **[Caveman](https://github.com/JuliusBrussee/caveman)** | Fazer o Claude responder com menos palavras, para economizar tokens | Totalmente opcional e **não testado com estes plugins**. Segundo o README dele, só a skill (`npx skills add JuliusBrussee/caveman -g`) não envia nada, enquanto o CLI envia estatísticas de uso por padrão; por isso, instale só a skill se privacidade for importante para você. O estilo dele privilegia respostas muito curtas: teste antes de depender dele, já que os relatórios e as tarefas do `checkup` e do `spec` seguem modelos fixos e detalhados. |
 
 ## Privacidade
 

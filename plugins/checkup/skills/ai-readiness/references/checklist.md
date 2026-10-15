@@ -328,7 +328,7 @@ a small set of tasks representative of the repository (e.g., “add a field to e
 
 ## AIR-15. Documentation add-ons and repository hygiene
 
-**How to verify:** Check directly the files cited in each item (`CONTRIBUTING.md`, `.env.example` × `process.env.*` in the code, script index, i18n catalogs, `.github/ISSUE_TEMPLATE`, `docs/assessments/`, folder structure).
+**How to verify:** Check directly the files cited in each item (`CONTRIBUTING.md`, `.env.example` × `process.env.*` in the code, script index, i18n catalogs, `.github/ISSUE_TEMPLATE`, `docs/checkups/`, folder structure).
 
 > Items incorporated from an AI-readiness assessment, not explicitly covered by the previous sections.
 

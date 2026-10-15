@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Instalar o Claude Code (versão fixa)
+        run: npm install -g @anthropic-ai/claude-code@2.1.114
+
+      - name: Validar marketplace e plugins
+        run: |
+          claude plugin validate .
+          claude plugin validate plugins/checkup
+          claude plugin validate plugins/spec
+
+      - name: Conferir catálogos e referências
+        run: |
+          python3 -X utf8 - <<'PY'
+          import glob, os, re, sys
+          expected = {"security": 153, "performance": 163, "privacy": 126, "ai-readiness": 70}
+          errors = []
+          for skill, count in expected.items():
+              path = f"plugins/checkup/skills/{skill}/references/checklist.md"
+              text = open(path, encoding="utf-8").read()
+              ids = re.findall(r"^#### ([A-Z]+-\d+\.\d+)", text, re.M)
+              if len(ids) != count:
+                  errors.append(f"{skill}: {len(ids)} itens, esperado {count}")
+              if len(set(ids)) != len(ids):
+                  errors.append(f"{skill}: IDs duplicados")
+          for plugin in ("checkup", "spec"):
+              root = f"plugins/{plugin}"
+              for md in glob.glob(f"{root}/**/*.md", recursive=True):
+                  for m in re.finditer(r"\$\{CLAUDE_PLUGIN_ROOT\}/([A-Za-z0-9_./-]+)", open(md, encoding="utf-8").read()):
+                      ref = m.group(1).rstrip(".,`)")
+                      if not os.path.exists(os.path.join(root, ref)):
+                          errors.append(f"{md}: referência inexistente {ref}")
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+          print("Catálogos e referências OK")
+          PY

@@ -37,7 +37,6 @@ cainitech-plugins/
 │       │   └── PR_REVIEW_GUIDE.md  # stack-neutral review guide
 │       └── skills/
 │           ├── refine/  from-thread/  build/  review/  approve/
-├── personal/                       # the author's own context files; NOT distributed by the plugins
 ├── docs/
 │   ├── TECHNICAL.md                # this document
 │   └── TECNICO.md                  # Portuguese version
@@ -125,11 +124,9 @@ claude plugin validate plugins/spec
 
 Because `version` is set in each `plugin.json`, users only receive an update when you **increase it** (`claude plugin update` reports "already at the latest version" otherwise). Bump the version of every plugin you changed in the same pull request. Optionally tag releases with `claude plugin tag`.
 
+CI (`.github/workflows/ci.yml`) runs these validations on every pull request, pinned to a Claude Code version, and also checks that the catalogs keep their item counts (153 / 163 / 126 / 70, unique IDs) and that every `${CLAUDE_PLUGIN_ROOT}` reference points to an existing file. Bump the pinned version when you want newer validation.
+
 Note: the validator of older Claude Code versions rejects some newer optional manifest fields (for example `displayName` or a marketplace-level `description`), so the manifests here stick to the fields every version understands.
-
-## The `personal/` folder
-
-Holds the author's own `CLAUDE.md`, `CONTEXT.md` and stack guidelines (`personal/guidelines/`). They were the previous synchronization payload and are **not part of the plugins** (a plugin cannot ship a global `CLAUDE.md`). They are kept for reference and can be removed from the public repository at any time.
 
 ## License
 

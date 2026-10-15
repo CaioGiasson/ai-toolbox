@@ -130,7 +130,7 @@ Ten skills in two plugins. Each one says what it does and what result you get.
 
 ### System health check
 
-**They only read and assess. They change nothing in your project.** Each health check delivers a report with a **score from 0 to 100**, a **rating** and a **list of problems by priority**, ready to become an action plan. The report is saved in the assessed project's `docs/assessments` folder.
+**They only read and assess. They change nothing in your project.** Each health check delivers a report with a **score from 0 to 100**, a **rating** and a **list of problems by priority**, ready to become an action plan. The report is saved in the assessed project's `docs/checkups` folder.
 
 | Skill | What it assesses | Criteria | What you get |
 |---|---|---:|---|
@@ -174,7 +174,7 @@ Evolution: first run
   SEC-2.05 · Offer MFA for administrative accounts · +1.0 pt
   SEC-5.06 · Sanitize the product comment field · +1.0 pt
 
-📄 Report: docs/assessments/2026-10-14-security.md
+📄 Report: docs/checkups/2026-10-14-security.md
 ```
 
 In plain English: the project scored **56.1 out of 100 (Silver)**; 14 critical problems are open, and the list says which ones to fix first and how many points each fix is worth.
@@ -257,6 +257,16 @@ The `/spec:*` skills use your **GitHub task board** when the project has one, th
 **The skill didn't show up in the list.** Open a new conversation after installing or updating.
 
 **I want to create or edit skills, or understand the folder structure.** See the [technical documentation](docs/TECHNICAL.md).
+
+## Recommended tools
+
+Optional tools that make the plugins work better. None of them is required.
+
+| Tool | Helps with | Notes |
+|---|---|---|
+| **[GitHub CLI (`gh`)](https://cli.github.com)** | The `/spec:*` skills: reading and creating issues, moving cards on the board, opening and merging pull requests | Install it and sign in with `gh auth login`. To move board cards, also run `gh auth refresh -s project`. Without it, `spec` still works through its fallback modes. A GitHub connector (MCP) also works. |
+| **Slack or Discord connector** | `/spec:from-thread`, which reads a conversation from a link | Without one, paste the conversation into a `.md` file and give Claude the file path. |
+| **[Caveman](https://github.com/JuliusBrussee/caveman)** | Making Claude answer in fewer words, to save tokens | Entirely optional and **not tested with these plugins**. According to its README, the skill alone (`npx skills add JuliusBrussee/caveman -g`) sends nothing, while its CLI sends usage statistics by default, so install only the skill if privacy matters to you. Its style favors very short answers: try it before relying on it, since the reports and tasks of `checkup` and `spec` follow fixed, detailed templates. |
 
 ## Privacy
 
